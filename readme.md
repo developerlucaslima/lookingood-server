@@ -1,6 +1,6 @@
 ## BRs (Business Rules)
 <!-- Registration and Login: -->
-- [ ] Must be possible for users to register and authenticate via email.
+- [X] Must be possible for users to register and authenticate via email.
 - [ ] Must be possible for users to register and authenticate via Google account.
 - [ ] Users must specify whether they are looking for female, male, or both establishments.
 <!-- Establishment Selection: -->
