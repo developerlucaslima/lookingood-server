@@ -27,7 +27,7 @@ model Establishment {
   name        String
   description String?
   phone       String?
-  imageUrl    String
+  imageUrl    String?
   latitude    Decimal
   longitude   Decimal
 
