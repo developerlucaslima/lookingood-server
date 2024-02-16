@@ -3,7 +3,7 @@ import { Booking, Prisma } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
 import { BookingRepository } from '../bookings-repository'
 
-export class InMemoryBookingRepository implements BookingRepository {
+export class InMemoryBookingsRepository implements BookingRepository {
   public items: Booking[] = []
 
   async findAllByUserId(userId: string) {
