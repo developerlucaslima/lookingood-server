@@ -23,7 +23,7 @@ export class InMemoryEstablishmentsRepository
       name: data.name,
       description: data.description ?? null,
       phone: data.phone ?? null,
-      imageUrl: data.phone ?? null,
+      imageUrl: data.imageUrl ?? null,
       latitude: new Prisma.Decimal(data.latitude.toString()),
       longitude: new Prisma.Decimal(data.longitude.toString()),
     }
