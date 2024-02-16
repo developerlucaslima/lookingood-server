@@ -6,7 +6,7 @@ import { BookingRepository } from '../bookings-repository'
 export class InMemoryBookingRepository implements BookingRepository {
   public items: Booking[] = []
 
-  async findByUserId(userId: string) {
+  async findAllByUserId(userId: string) {
     const booking = this.items.find((item) => item.userId === userId)
 
     if (!booking) {
