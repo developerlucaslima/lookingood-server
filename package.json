@@ -6,10 +6,14 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "start": "node build/server.js",
-    "build": "tsup src --out-dir build"
+    "build": "tsup src --out-dir build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui"
   },
   "keywords": [],
-  "author": "",
+  "author": "Dev Lucas Lima",
   "license": "ISC",
   "devDependencies": {
     "@rocketseat/eslint-config": "2.1.0",
