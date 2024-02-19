@@ -1,4 +1,4 @@
-import { EstablishmentsRepository } from '@/repositories/establishment-repository'
+import { EstablishmentsRepository } from '@/repositories/establishments-repository'
 import { Establishment } from '@prisma/client'
 
 interface CreateEstablishmentUseCaseRequest {
