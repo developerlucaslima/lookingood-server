@@ -23,13 +23,16 @@ model User {
 }
 
 model Establishment {
-  id          String  @id @default(uuid())
-  name        String
-  description String?
-  phone       String?
-  imageUrl    String?
-  latitude    Decimal
-  longitude   Decimal
+  id            String   @id @default(uuid())
+  name          String
+  description   String?
+  phone         String?
+  imageUrl      String?
+  email         String   @unique
+  password_hash String
+  created_at    DateTime @default(now())
+  latitude      Decimal
+  longitude     Decimal
 
   service Service[]
   booking Booking[]
