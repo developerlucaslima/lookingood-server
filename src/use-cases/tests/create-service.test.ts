@@ -1,14 +1,17 @@
 import { expect, describe, it, beforeEach } from 'vitest'
+import { CreateServiceUseCase } from '../factories/create-service'
+import { InMemoryServicesRepository } from '@/repositories/in-memory/in-memory-services-repository'
 import { InMemoryEstablishmentsRepository } from '@/repositories/in-memory/in-memory-establishments-repository'
-import { CreateEstablishmentUseCase } from '../factories/create-establishment'
 
+let servicesRepository: InMemoryServicesRepository
 let establishmentRepository: InMemoryEstablishmentsRepository
-let sut: CreateEstablishmentUseCase
+let sut: CreateServiceUseCase
 
-describe('Create Establishment Use Case', () => {
+describe('Create Service Use Case', () => {
   beforeEach(() => {
+    servicesRepository = new InMemoryServicesRepository()
     establishmentRepository = new InMemoryEstablishmentsRepository()
-    sut = new CreateEstablishmentUseCase(establishmentRepository)
+    sut = new CreateServiceUseCase(servicesRepository, establishmentRepository)
   })
 
   it('should to create establishment', async () => {
