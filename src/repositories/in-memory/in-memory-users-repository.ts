@@ -24,13 +24,24 @@ export class InMemoryUsersRepository implements UsersRepository {
     return user
   }
 
+  async findByGender(serviceGender: string) {
+    const user = this.items.find((item) => item.serviceGender === serviceGender)
+
+    if (!user) {
+      return null
+    }
+
+    return user
+  }
+
   async create(data: Prisma.UserCreateInput) {
     const user = {
       id: randomUUID(),
       name: data.name,
+      serviceGender: data.serviceGender,
       email: data.email,
-      password_hash: data.password_hash,
-      created_at: new Date(),
+      passwordHash: data.passwordHash,
+      createdAt: new Date(),
     }
 
     this.items.push(user)
