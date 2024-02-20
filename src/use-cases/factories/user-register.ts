@@ -2,9 +2,11 @@ import { UsersRepository } from '@/repositories/users-repository'
 import { hash } from 'bcryptjs'
 import { User } from '@prisma/client'
 import { EmailAlreadyExistsError } from '../errors/email-already-exists-error'
+import { InvalidServiceGenderError } from '../errors/invalid-service-gender-error'
 
 interface UserRegisterUseCaseRequest {
   name: string
+  serviceGender: string
   email: string
   password: string
 }
@@ -18,6 +20,7 @@ export class UserRegisterUseCase {
 
   async execute({
     name,
+    serviceGender,
     email,
     password,
   }: UserRegisterUseCaseRequest): Promise<UserRegisterUseCaseResponse> {
@@ -26,12 +29,17 @@ export class UserRegisterUseCase {
       throw new EmailAlreadyExistsError()
     }
 
-    const password_hash = await hash(password, 6)
+    if (!['Male', 'Female', 'Both'].includes(serviceGender)) {
+      throw new InvalidServiceGenderError()
+    }
+
+    const passwordHash = await hash(password, 6)
 
     const user = await this.usersRepository.create({
       name,
+      serviceGender,
       email,
-      password_hash,
+      passwordHash,
     })
 
     return {
