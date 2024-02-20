@@ -13,9 +13,10 @@ datasource db {
 model User {
   id            String   @id @default(uuid())
   name          String
+  serviceGender String
   email         String   @unique
-  password_hash String
-  created_at    DateTime @default(now())
+  passwordHash  String
+  createdAt     DateTime @default(now())
 
   booking Booking[]
 
@@ -23,16 +24,16 @@ model User {
 }
 
 model Establishment {
-  id            String   @id @default(uuid())
-  name          String
-  description   String?
-  phone         String?
-  imageUrl      String?
-  email         String   @unique
-  password_hash String
-  created_at    DateTime @default(now())
-  latitude      Decimal
-  longitude     Decimal
+  id           String   @id @default(uuid())
+  name         String
+  description  String?
+  phone        String?
+  imageUrl     String?
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  latitude     Decimal
+  longitude    Decimal
 
   service Service[]
   booking Booking[]
@@ -44,6 +45,7 @@ model Service {
   id          String  @id @default(uuid())
   name        String
   price       Decimal @db.Decimal(10, 2)
+  gender      String
   description String?
   imageUrl    String?
 
