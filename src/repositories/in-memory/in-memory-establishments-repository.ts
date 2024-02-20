@@ -35,8 +35,8 @@ export class InMemoryEstablishmentsRepository
       phone: data.phone ?? null,
       imageUrl: data.imageUrl ?? null,
       email: data.email,
-      password_hash: data.password_hash,
-      created_at: new Date(),
+      passwordHash: data.passwordHash,
+      createdAt: new Date(),
       latitude: new Prisma.Decimal(data.latitude.toString()),
       longitude: new Prisma.Decimal(data.longitude.toString()),
     }

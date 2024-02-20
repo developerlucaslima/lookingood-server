@@ -11,6 +11,7 @@ export class InMemoryServicesRepository implements ServicesRepository {
       id: randomUUID(),
       name: data.name,
       price: new Prisma.Decimal(data.price.toString()),
+      gender: data.gender,
       description: data.description ?? null,
       imageUrl: data.imageUrl ?? null,
       establishmentId: data.establishmentId,
