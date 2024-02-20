@@ -1,8 +1,8 @@
 ## FRs (Functional Requirements):
 <!-- Users -->
-- [ ] Users must be able to register and authenticate via email.
+- [X] Users must be able to register and authenticate via email.
 - [ ] Users must be able to register and authenticate via Google account.
-- [ ] During registration, users must be able to specify the gender of establishments they are looking for (female, male, or both).
+- [X] During registration, users must be able to specify the gender of establishments they are looking for (female, male, or both).
 - [ ] Users must be able to book services.
 - [ ] Users must be able to select an establishment, professional, hour, date, and choose the desired service.
 - [ ] The application must display available appointment times for scheduling.
@@ -19,7 +19,7 @@
 - [ ] The application must implement a notification system to remind users of their reservations and notify them of changes or cancellations.
 
 ## BRs (Business Rules):
-- [ ] Users cannot register with duplicate emails.
+- [ ] Users and establishments cannot register with duplicate emails.
 - [ ] Users cannot book two services at the same time.
 - [ ] Users cannot book services in the past.
 - [ ] Establishments must confirm user bookings before proceeding.
