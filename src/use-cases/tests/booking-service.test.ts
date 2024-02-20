@@ -9,7 +9,7 @@ let bookingsRepository: InMemoryBookingsRepository
 let usersRepository: InMemoryUsersRepository
 let sut: BookingServiceUseCase
 
-describe('Create Establishment Use Case', () => {
+describe('Booking Service Use Case', () => {
   beforeEach(() => {
     establishmentsRepository = new InMemoryEstablishmentsRepository()
     bookingsRepository = new InMemoryBookingsRepository()
@@ -21,7 +21,7 @@ describe('Create Establishment Use Case', () => {
     )
   })
 
-  it('should to booking a service', async () => {
+  it('should be able to booking a service', async () => {
     const { booking } = await sut.execute({
       date: new Date(2022, 1, 1),
       status: 'Pendente',

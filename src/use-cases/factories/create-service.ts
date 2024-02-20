@@ -1,7 +1,7 @@
-import { EstablishmentsRepository } from '@/repositories/establishment-repository'
 import { ServicesRepository } from '@/repositories/services-repository'
 import { Service } from '@prisma/client'
 import { ResourceNotFoundError } from '../errors/resource-not-found-error'
+import { EstablishmentsRepository } from '@/repositories/establishments-repository'
 
 interface CreateServiceUseCaseRequest {
   name: string
