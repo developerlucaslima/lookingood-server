@@ -37,7 +37,7 @@ export class EstablishmentRegisterUseCase {
       throw new EmailAlreadyExistsError()
     }
 
-    const password_hash = await hash(password, 6)
+    const passwordHash = await hash(password, 6)
 
     const establishment = await this.establishmentsRepository.create({
       name,
@@ -45,7 +45,7 @@ export class EstablishmentRegisterUseCase {
       phone,
       imageUrl,
       email,
-      password_hash,
+      passwordHash,
       latitude,
       longitude,
     })

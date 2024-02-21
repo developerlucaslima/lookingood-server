@@ -26,7 +26,7 @@ export class EstablishmentAuthenticateUseCase {
 
     const doesPasswordsMatches = await compare(
       password,
-      establishment.password_hash,
+      establishment.passwordHash,
     )
 
     if (!doesPasswordsMatches) {
