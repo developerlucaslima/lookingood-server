@@ -78,16 +78,6 @@ describe('User Register Use Case', () => {
     expect(user.id).toEqual(expect.any(String))
   })
 
-  it('should validate serviceGender as "Female"', async () => {
-    const { user } = await sut.execute({
-      name: 'John Doe',
-      serviceGender: 'Female',
-      email: 'johndoe@example.com',
-      password: '123456',
-    })
-    expect(user.id).toEqual(expect.any(String))
-  })
-
   it('should validate serviceGender as "Both"', async () => {
     const { user } = await sut.execute({
       name: 'John Doe',
@@ -98,7 +88,7 @@ describe('User Register Use Case', () => {
     expect(user.id).toEqual(expect.any(String))
   })
 
-  it('should not be able to register ...', async () => {
+  it('should not be allowed to register service gender unless specified as "Male", "Female" or "Both"', async () => {
     await expect(() =>
       sut.execute({
         name: 'John Doe',
@@ -109,7 +99,7 @@ describe('User Register Use Case', () => {
     ).rejects.toBeInstanceOf(InvalidServiceGenderError)
   })
 
-  it('should not be able to register ...', async () => {
+  it('should not be allowed to register service gender as blank', async () => {
     await expect(() =>
       sut.execute({
         name: 'John Doe',
