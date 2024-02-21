@@ -9,11 +9,11 @@
 - [ ] Users must be able to receive booking confirmation via email or app notification.
 - [ ] Users must be able to cancel or reschedule their reservations within a period determined by the establishment.
 <!-- Establishments: -->
-- [ ] Establishments must be able to register and authenticate via email.
+- [X] Establishments must be able to register and authenticate via email.
 - [ ] Establishments must be able to register and authenticate via Google account.
 - [ ] For each service offered, establishments must specify the gender served (female, male, or both).
-- [ ] Establishments must be able to register professionals.
 - [ ] Establishments must be able to register services.
+- [ ] Establishments must be able to register professionals.
 - [ ] Establishments must be able to confirm bookings requested by users.
 - [ ] Professionals must be notified of changes or cancellations of bookings.
 - [ ] The application must implement a notification system to remind users of their reservations and notify them of changes or cancellations.
