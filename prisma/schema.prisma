@@ -37,6 +37,7 @@ model Establishment {
 
   service Service[]
   booking Booking[]
+  Barber  Barber[]
 
   @@map("establishments")
 }
@@ -57,6 +58,19 @@ model Service {
   @@map("services")
 }
 
+model Barber {
+  id       String  @id @default(uuid())
+  name     String
+  imageUrl String?
+
+  establishment   Establishment @relation(fields: [establishmentId], references: [id])
+  establishmentId String
+
+  booking Booking[]
+
+  @@map("barbers")
+}
+
 model Booking {
   id     String   @id @default(uuid())
   date   DateTime
@@ -68,6 +82,8 @@ model Booking {
   serviceId       String
   establishment   Establishment @relation(fields: [establishmentId], references: [id])
   establishmentId String
+  Barber          Barber?       @relation(fields: [barberId], references: [id])
+  barberId        String?
 
   @@map("bookings")
 }
