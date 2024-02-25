@@ -6,6 +6,26 @@ import { ServicesRepository } from '../services-repository'
 export class InMemoryServicesRepository implements ServicesRepository {
   public items: Service[] = []
 
+  async findById(id: string) {
+    const service = this.items.find((item) => item.id === id)
+
+    if (!service) {
+      return null
+    }
+
+    return service
+  }
+
+  async findByGender(gender: string) {
+    const service = this.items.find((item) => item.gender === gender)
+
+    if (!service) {
+      return null
+    }
+
+    return service
+  }
+
   async create(data: Prisma.ServiceUncheckedCreateInput) {
     const service = {
       id: randomUUID(),
