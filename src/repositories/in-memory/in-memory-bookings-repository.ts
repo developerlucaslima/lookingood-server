@@ -1,9 +1,9 @@
 import { Booking, Prisma } from '@prisma/client'
 // import dayjs from 'dayjs'
 import { randomUUID } from 'node:crypto'
-import { BookingRepository } from '../bookings-repository'
+import { BookingsRepository } from '../bookings-repository'
 
-export class InMemoryBookingsRepository implements BookingRepository {
+export class InMemoryBookingsRepository implements BookingsRepository {
   public items: Booking[] = []
 
   async findAllByUserId(userId: string) {
@@ -23,7 +23,7 @@ export class InMemoryBookingsRepository implements BookingRepository {
       status: data.status,
       userId: data.userId,
       serviceId: data.serviceId,
-      establishmentId: data.establishmentId,
+      professionalId: data.professionalId,
     }
 
     this.items.push(booking)
