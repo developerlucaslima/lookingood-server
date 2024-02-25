@@ -12,14 +12,13 @@ interface EstablishmentAuthenticateUseCaseResponse {
 }
 
 export class EstablishmentAuthenticateUseCase {
-  constructor(private establishmentRepository: EstablishmentsRepository) {}
+  constructor(private establishmentsRepository: EstablishmentsRepository) {}
 
   async execute({
     email,
     password,
   }: EstablishmentAuthenticateUseCaseRequest): Promise<EstablishmentAuthenticateUseCaseResponse> {
-    const establishment = await this.establishmentRepository.findByEmail(email)
-
+    const establishment = await this.establishmentsRepository.findByEmail(email)
     if (!establishment) {
       throw new InvalidCredentialsError()
     }
