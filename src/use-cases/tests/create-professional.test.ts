@@ -1,8 +1,8 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 import { InMemoryEstablishmentsRepository } from '@/repositories/in-memory/in-memory-establishments-repository'
 import { Decimal } from '@prisma/client/runtime/library'
-import { InMemoryProfessionalsRepository } from '@/repositories/in-memory/in-memory-barbers-repository'
-import { CreateProfessionalUseCase } from '../factories/create-barber'
+import { InMemoryProfessionalsRepository } from '@/repositories/in-memory/in-memory-professional-repository'
+import { CreateProfessionalUseCase } from '../factories/create-professional'
 
 let professionalsRepository: InMemoryProfessionalsRepository
 let establishmentsRepository: InMemoryEstablishmentsRepository

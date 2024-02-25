@@ -1,5 +1,5 @@
 import { expect, describe, it, beforeEach } from 'vitest'
-import { InMemoryProfessionalsRepository } from '@/repositories/in-memory/in-memory-barbers-repository'
+import { InMemoryProfessionalsRepository } from '@/repositories/in-memory/in-memory-professional-repository'
 import { InMemoryBookingsRepository } from '@/repositories/in-memory/in-memory-bookings-repository'
 import { InMemoryEstablishmentsRepository } from '@/repositories/in-memory/in-memory-establishments-repository'
 import { InMemoryServicesRepository } from '@/repositories/in-memory/in-memory-services-repository'
