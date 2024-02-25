@@ -1,7 +1,7 @@
 ## FRs (Functional Requirements):
 <!-- Users -->
 - [X] Users must be able to register and authenticate via email.
-- [ ] Users must be able to register and authenticate via Google account.
+- [-] Users must be able to register and authenticate via Google account.
 - [X] During registration, users must be able to specify the gender of establishments they are looking for (female, male, or both).
 - [ ] Users must be able to book services.
 - [ ] Users must be able to select an establishment, professional, hour, date, and choose the desired service.
@@ -10,13 +10,18 @@
 - [ ] Users must be able to cancel or reschedule their reservations within a period determined by the establishment.
 <!-- Establishments: -->
 - [X] Establishments must be able to register and authenticate via email.
-- [ ] Establishments must be able to register and authenticate via Google account.
-- [ ] For each service offered, establishments must specify the gender served (female, male, or both).
-- [ ] Establishments must be able to register services.
+- [-] Establishments must be able to register and authenticate via Google account.
+- [X] For each service offered, establishments must specify the gender served (female, male, or both).
+- [X] Establishments must be able to register services.
 - [ ] Establishments must be able to register professionals.
 - [ ] Establishments must be able to confirm bookings requested by users.
 - [ ] Professionals must be notified of changes or cancellations of bookings.
 - [ ] The application must implement a notification system to remind users of their reservations and notify them of changes or cancellations.
+
+ // TODO: service and professional from the same establishment?
+    // TODO: this establishment exits by id?
+    // TODO: fazer esses testes
+    // TODO: status, definir 3 status
 
 ## BRs (Business Rules):
 - [ ] Users and establishments cannot register with duplicate emails.
@@ -40,3 +45,9 @@
 - [ ] Use recommendation algorithms to suggest establishments based on user preferences and booking history.
 - [ ] Offer support for multiple languages to cater to a broader user base.
 - [ ] Establishments must be categorized by type of service offered (haircut, nail care, makeup, beard trimming, etc.).
+- vaga de emprego
+- modelo pra teste
+- cortou 10x ganha corte gratis
+- estabelecimento pode ser a domicilio, ou ambos, se for só a domicilio a localização nao é obrigatória
+- cobrar 4% sobre as reservas confirmadas
+- lista de estabelecimentos, pode filtrar por no local ou a domicilio
