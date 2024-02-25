@@ -12,6 +12,7 @@ describe('Establishment Authenticate Use Case', () => {
     establishmentsRepository = new InMemoryEstablishmentsRepository()
     sut = new EstablishmentAuthenticateUseCase(establishmentsRepository)
   })
+
   it('should be able to authenticate', async () => {
     await establishmentsRepository.create({
       name: 'Barber-01',
@@ -28,7 +29,6 @@ describe('Establishment Authenticate Use Case', () => {
       email: 'barber01@example.com',
       password: '123456',
     })
-
     expect(establishment.id).toEqual(expect.any(String))
   })
 
