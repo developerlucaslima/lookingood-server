@@ -34,12 +34,6 @@ export class BookingServiceUseCase {
     serviceId,
     professionalId,
   }: BookingServiceUseCaseRequest): Promise<BookingServicesUseCaseResponse> {
-    // TODO: service and professional from the same establishment?
-    // TODO: this establishment exits by id?
-    // TODO: fazer esses testes
-    // TODO: status, definir 3 status
-    // TODO: nao deve ser possivel agendar com o mesmo profissional no mesmo horario
-
     const professional = await this.professionalsRepository.findById(serviceId)
     if (!professional) {
       throw new ResourceNotFoundError() // TODO: create specific error
@@ -66,7 +60,6 @@ export class BookingServiceUseCase {
       throw new ResourceNotFoundError()
     }
 
-    // TODO: to think status names, to create only booked, to update can be anothers
     if (!['Booked', 'Confirmed', 'Check-Out', 'No-Show'].includes(status)) {
       throw new ResourceNotFoundError() // TODO: create specific error
     }
