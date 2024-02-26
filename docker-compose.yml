@@ -6,6 +6,6 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRESQL_USERNAME=devlucaslima
-      - POSTGRESQL_PASSWORD=devlucaslima
+      - POSTGRESQL_USERNAME=lookinggood
+      - POSTGRESQL_PASSWORD=lookinggood
       - POSTGRESQL_DATABASE=lookinggood
