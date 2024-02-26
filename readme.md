@@ -1,6 +1,6 @@
-## -- Use Cases --
+# Use Cases
 
-# Users
+## Users
 - [ ] - ✨ Users must be able register via email.
     - [ ] - 🧪 It should not be able to register with same email twice.
     - [ ] - 🧪 It should hash user password upon registration.
@@ -22,7 +22,7 @@
 - [ ] - ✨ Users must be able to view a list of services with information about whether it is confirmed, checked-out, or waiting for confirmation.
 - [ ] - ✨ Users must receive booking confirmation via email or app notification.
 
-# Establishments
+## Establishments
 - [ ] - ✨ Establishments must be able register via email.
     - [ ] - 🧪 It should not be able to register with same email twice.
     - [ ] - 🧪 It should hash user password upon registration.
@@ -43,13 +43,13 @@
 - [ ] - ✨ Establishments must be able to check in a user for a confirmed service booked.
 - [ ] - ✨ Establishments must be able to check out a user who has paid for and used a booked service.
 
-# Application
+## Application
 - [ ] - ✨ The application must display available establishments appointment times for scheduling.
     - [ ] - 🧪 It should display available time slots based on establishment and professional schedules.
     - [ ] - 🧪 It should prevent booking a service outside of the establishment's operating hours.
     - [ ] - 🧪 It should allow users to book multiple services at the same time if offered by the establishment and time slots do not overlap.
 
-# Additional Ideas
+## Additional Ideas
 🔜 Users can rate and leave comments about establishments and professionals after the service. (Moved from functionality list)
 🔜 Implement two-factor authentication for added security.
 🔜 Allow users to share their reservations and experiences on social networks.
