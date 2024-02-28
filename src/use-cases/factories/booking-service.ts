@@ -34,7 +34,8 @@ export class BookingServiceUseCase {
     serviceId,
     professionalId,
   }: BookingServiceUseCaseRequest): Promise<BookingServicesUseCaseResponse> {
-    const professional = await this.professionalsRepository.findById(serviceId)
+    const professional =
+      await this.professionalsRepository.findById(professionalId)
     if (!professional) {
       throw new ResourceNotFoundError() // TODO: create specific error
     }
