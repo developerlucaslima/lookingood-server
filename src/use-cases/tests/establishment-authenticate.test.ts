@@ -48,7 +48,7 @@ describe('Establishment Authenticate Use Case', () => {
       phone: '55 555-5555',
       imageUrl: 'image.url',
       email: 'barber01@example.com',
-      passwordHash: await hash('123456', 6),
+      passwordHash: await hash('1234567', 6),
       latitude: -27.2092052,
       longitude: -49.6401091,
     })
