@@ -1,17 +1,17 @@
 # Use Cases
 
 ## Users
-- [ ] - ✨ Users must be able register via email.
-    - [ ] - 🧪 It should not be able to register with same email twice.
-    - [ ] - 🧪 It should hash user password upon registration.
-    - [ ] - 🧪 It should validate serviceGender as "Male".
-    - [ ] - 🧪 It should validate serviceGender as "Female".
-    - [ ] - 🧪 It should validate serviceGender as "Both".
-    - [ ] - 🧪 It should not be allowed to register service gender unless specified as "Male", "Female" or "Both".
-    - [ ] - 🧪 It should not be allowed to register service gender as blank.
-- [ ] - ✨ Users must be able authenticate via email.
-    - [ ] - 🧪 It should not be able to authenticate with wrong email.
-    - [ ] - 🧪 It should not be able to authenticate with wrong password.
+- [X] - ✨ Users must be able register via email.
+    - [X] - 🧪 It should not be able to register with same email twice.
+    - [X] - 🧪 It should hash user password upon registration.
+    - [X] - 🧪 It should validate serviceGender as "Male".
+    - [X] - 🧪 It should validate serviceGender as "Female".
+    - [X] - 🧪 It should validate serviceGender as "Both".
+    - [X] - 🧪 It should not be allowed to register service gender unless specified as "Male", "Female" or "Both".
+    - [X] - 🧪 It should not be allowed to register service gender as blank.
+- [X] - ✨ Users must be able authenticate via email.
+    - [X] - 🧪 It should not be able to authenticate with wrong email.
+    - [X] - 🧪 It should not be able to authenticate with wrong password.
 - [ ] - ✨ Users must be able to book services by selecting an establishment, professional (optional), date, time, and desired service.
     - [ ] - 🧪 It should not be able to book two services at the same time.
     - [ ] - 🧪 It should not be able to schedule with the same professional at the same time twice.
@@ -23,14 +23,14 @@
 - [ ] - ✨ Users must receive booking confirmation via email or app notification.
 
 ## Establishments
-- [ ] - ✨ Establishments must be able register via email.
-    - [ ] - 🧪 It should not be able to register with same email twice.
-    - [ ] - 🧪 It should hash user password upon registration.
-    - [ ] - 🧪 It should not be allowed to register service gender unless specified as "Male", "Female" or "Both".
-    - [ ] - 🧪 It should not be allowed to register service gender as blank.
-- [ ] - ✨ Establishments must be able authenticate via email.
-    - [ ] - 🧪 It should not be able to authenticate with wrong email.
-    - [ ] - 🧪 It should not be able to authenticate with wrong password.
+- [X] - ✨ Establishments must be able register via email.
+    - [X] - 🧪 It should not be able to register with same email twice.
+    - [X] - 🧪 It should hash user password upon registration.
+    - [X] - 🧪 It should not be allowed to register service gender unless specified as "Male", "Female" or "Both".
+    - [X] - 🧪 It should not be allowed to register service gender as blank.
+- [X] - ✨ Establishments must be able authenticate via email.
+    - [X] - 🧪 It should not be able to authenticate with wrong email.
+    - [X] - 🧪 It should not be able to authenticate with wrong password.
 - [ ] - ✨ Establishments must be able to add a professional.
 - [ ] - ✨ Establishments must be able to add a service.
     - [ ] - 🧪 It should validate service as "Male".
