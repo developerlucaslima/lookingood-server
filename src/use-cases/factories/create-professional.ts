@@ -1,7 +1,7 @@
 import { ProfessionalsRepository } from '@/repositories/professionals-repository'
 import { Professional } from '@prisma/client'
-import { ResourceNotFoundError } from '../errors/resource-not-found-error'
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
+import { EstablishmentNotFoundError } from '../errors/establishment-not-found-error'
 
 interface CreateProfessionalUseCaseRequest {
   name: string
@@ -28,7 +28,7 @@ export class CreateProfessionalUseCase {
       await this.establishmentRepository.findById(establishmentId)
 
     if (!establishment) {
-      throw new ResourceNotFoundError()
+      throw new EstablishmentNotFoundError()
     }
 
     const professional = await this.professionalsRepository.create({
