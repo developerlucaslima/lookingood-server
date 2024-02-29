@@ -3,6 +3,7 @@ import { InMemoryEstablishmentsRepository } from '@/repositories/in-memory/in-me
 import { Decimal } from '@prisma/client/runtime/library'
 import { InMemoryProfessionalsRepository } from '@/repositories/in-memory/in-memory-professional-repository'
 import { CreateProfessionalUseCase } from '../factories/create-professional'
+import { ResourceNotFoundError } from '../errors/resource-not-found-error'
 
 let professionalsRepository: InMemoryProfessionalsRepository
 let establishmentsRepository: InMemoryEstablishmentsRepository
@@ -38,5 +39,15 @@ describe('Create Professional Use Case', () => {
       establishmentId: 'Barber-01',
     })
     expect(professional.id).toEqual(expect.any(String))
+  })
+
+  it('should not be able to add professional with nonexistent establishmentId', async () => {
+    await expect(() =>
+      sut.execute({
+        name: 'John Doe',
+        imageUrl: 'image.url',
+        establishmentId: 'Barber-02',
+      }),
+    ).rejects.toBeInstanceOf(ResourceNotFoundError)
   })
 })
