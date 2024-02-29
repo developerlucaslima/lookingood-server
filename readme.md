@@ -1,7 +1,7 @@
 # Use Cases
 
 ## Users
-- [X] - ✨ Users must be able register via email.
+- [X] - ✨ Users must be able *register via email*.
     - [X] - 🧪 It should not be able to register with same email twice.
     - [X] - 🧪 It should hash user password upon registration.
     - [X] - 🧪 It should validate serviceGender as "Male".
@@ -9,10 +9,10 @@
     - [X] - 🧪 It should validate serviceGender as "Both".
     - [X] - 🧪 It should not be allowed to register service gender unless specified as "Male", "Female" or "Both".
     - [X] - 🧪 It should not be allowed to register service gender as blank.
-- [X] - ✨ Users must be able authenticate via email.
+- [X] - ✨ Users must be able *authenticate via email*.
     - [X] - 🧪 It should not be able to authenticate with wrong email.
     - [X] - 🧪 It should not be able to authenticate with wrong password.
-- [X] - ✨ Users must be able to book services by selecting an establishment, professional (optional), date, time, and desired service.
+- [X] - ✨ Users must be able to *book services* by selecting an establishment, professional (optional), date, time, and desired service.
     - [X] - 🧪 It should not be able to book a service with nonexistent professionalId.
     - [X] - 🧪 It should not be able to book a service with nonexistent serviceId.
     - [X] - 🧪 It should not be able to book a service with nonexistent userId.
@@ -28,20 +28,20 @@
 - [ ] - ✨ Users must receive booking confirmation via email or app notification.
 
 ## Establishments
-- [X] - ✨ Establishments must be able register via email.
+- [X] - ✨ Establishments must be able *register via email*.
     - [X] - 🧪 It should not be able to register with same email twice.
     - [X] - 🧪 It should hash user password upon registration.
     - [X] - 🧪 It should not be allowed to register service gender unless specified as "Male", "Female" or "Both".
     - [X] - 🧪 It should not be allowed to register service gender as blank.
-- [X] - ✨ Establishments must be able authenticate via email.
+- [X] - ✨ Establishments must be able *authenticate via email*.
     - [X] - 🧪 It should not be able to authenticate with wrong email.
     - [X] - 🧪 It should not be able to authenticate with wrong password.
-- [X] - ✨ Establishments must be able to add a service.
+- [X] - ✨ Establishments must be able to *add a service*.
     - [X] - 🧪 It should not be able to create service with nonexistent establishmentId.
     - [X] - 🧪 It should validate service as "Male".
     - [X] - 🧪 It should validate service as "Female".
     - [X] - 🧪 It should validate service as "Both".
-- [X] - ✨ Establishments must be able to add a professional.
+- [X] - ✨ Establishments must be able to *add a professional*.
     - [X] - 🧪 It should not be able to add professional with nonexistent establishmentId.
 - [ ] - ✨ Establishments must be able to confirm a service booked by a user.
     - [ ] - 🧪 It should allow establishment confirm for service date changes.
@@ -79,7 +79,7 @@
 - 🔜 It should allow user to choose serviceGender from a dropdown or selection list instead of directly entering text.
 - 🔜 It should lock the account after a certain number of failed login attempts.
 - 🔜 It should offer "forgot password" functionality with email verification for password reset.
-- 🔜 It should not allow service date change after a specific timeframe (e.g., 24 hours before appointment).
+- 🔜 It should not allow service date change after a specific time-frame (e.g., 24 hours before appointment).
 - 🔜 It should notify both user and establishment about service cancellation or date change.
 - 🔜 It should allow filtering and sorting of services based on various criteria (e.g., date, status, establishment, professional).
 - 🔜 It should display clear and concise information for each service, including service details, confirmation status, and payment status.
