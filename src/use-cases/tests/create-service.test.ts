@@ -3,8 +3,8 @@ import { CreateServiceUseCase } from '../factories/create-service'
 import { InMemoryServicesRepository } from '@/repositories/in-memory/in-memory-services-repository'
 import { InMemoryEstablishmentsRepository } from '@/repositories/in-memory/in-memory-establishments-repository'
 import { Decimal } from '@prisma/client/runtime/library'
-import { Prisma } from '@prisma/client'
-import { randomUUID } from 'crypto'
+import { InvalidServiceGenderError } from '../errors/invalid-service-gender-error'
+import { ResourceNotFoundError } from '../errors/resource-not-found-error'
 
 let servicesRepository: InMemoryServicesRepository
 let establishmentRepository: InMemoryEstablishmentsRepository
@@ -34,11 +34,86 @@ describe('Create Service Use Case', () => {
     const { service } = await sut.execute({
       name: 'Hair cut',
       price: 40,
-      gender: 'Male',
+      genderFor: 'Male',
       description: 'Male hair cut',
       imageUrl: 'image.url',
       establishmentId: 'Barber-01',
     })
     expect(service.id).toEqual(expect.any(String))
+  })
+
+  it('should not be able to create service with nonexistent establishmentId', async () => {
+    await expect(() =>
+      sut.execute({
+        name: 'Moustache',
+        price: 40,
+        genderFor: '',
+        description: 'Trim your mustache',
+        imageUrl: 'image.url',
+        establishmentId: 'Barber-02',
+      }),
+    ).rejects.toBeInstanceOf(ResourceNotFoundError)
+  })
+
+  it('should validate serviceGender as "Both"', async () => {
+    const { service } = await sut.execute({
+      name: 'Hair cut',
+      price: 40,
+      genderFor: 'Both',
+      description: 'Hair cut',
+      imageUrl: 'image.url',
+      establishmentId: 'Barber-01',
+    })
+    expect(service.id).toEqual(expect.any(String))
+  })
+
+  it('should validate serviceGender as "Female"', async () => {
+    const { service } = await sut.execute({
+      name: 'Nails',
+      price: 40,
+      genderFor: 'Female',
+      description: 'Do the nails',
+      imageUrl: 'image.url',
+      establishmentId: 'Barber-01',
+    })
+    expect(service.id).toEqual(expect.any(String))
+  })
+
+  it('should validate serviceGender as "Male"', async () => {
+    const { service } = await sut.execute({
+      name: 'Moustache',
+      price: 40,
+      genderFor: 'Male',
+      description: 'Trim your mustache',
+      imageUrl: 'image.url',
+      establishmentId: 'Barber-01',
+    })
+    expect(service.id).toEqual(expect.any(String))
+  })
+
+  it('should not be allowed to register service gender unless specified as "Male", "Female" or "Both"', async () => {
+    await expect(() =>
+      sut.execute({
+        name: 'Moustache',
+        price: 40,
+        genderFor: 'Invalid',
+        description: 'Trim your mustache',
+        imageUrl: 'image.url',
+        establishmentId: 'Barber-01',
+      }),
+    ).rejects.toBeInstanceOf(InvalidServiceGenderError)
+  })
+
+  it('should not be allowed to register service gender as blank', async () => {
+    await expect(() =>
+      sut.execute({
+        name: 'Moustache',
+        price: 40,
+        genderFor: '',
+        description: 'Trim your mustache',
+        imageUrl: 'image.url',
+        establishmentId: 'Barber-01',
+      }),
+    ).rejects.toBeInstanceOf(InvalidServiceGenderError)
   })
 })
