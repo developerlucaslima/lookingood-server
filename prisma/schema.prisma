@@ -45,7 +45,7 @@ model Service {
   id          String  @id @default(uuid())
   name        String
   price       Decimal @db.Decimal(10, 2)
-  gender      String
+  genderFor   String
   description String?
   imageUrl    String?
 

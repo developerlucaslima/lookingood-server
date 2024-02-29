@@ -16,8 +16,8 @@ export class InMemoryServicesRepository implements ServicesRepository {
     return service
   }
 
-  async findByGender(gender: string) {
-    const service = this.items.find((item) => item.gender === gender)
+  async findByGender(genderFor: string) {
+    const service = this.items.find((item) => item.genderFor === genderFor)
 
     if (!service) {
       return null
@@ -31,7 +31,7 @@ export class InMemoryServicesRepository implements ServicesRepository {
       id: randomUUID(),
       name: data.name,
       price: new Prisma.Decimal(data.price.toString()),
-      gender: data.gender,
+      genderFor: data.genderFor,
       description: data.description ?? null,
       imageUrl: data.imageUrl ?? null,
       establishmentId: data.establishmentId,
