@@ -2,18 +2,18 @@ import { expect, describe, it, beforeEach } from 'vitest'
 import { InMemoryEstablishmentsRepository } from '@/repositories/in-memory/in-memory-establishments-repository'
 import { Decimal } from '@prisma/client/runtime/library'
 import { InMemoryProfessionalsRepository } from '@/repositories/in-memory/in-memory-professional-repository'
-import { CreateProfessionalUseCase } from '../factories/create-professional'
 import { ResourceNotFoundError } from '../errors/resource-not-found-error'
+import { AddProfessionalUseCase } from '../factories/add-professional'
 
 let professionalsRepository: InMemoryProfessionalsRepository
 let establishmentsRepository: InMemoryEstablishmentsRepository
-let sut: CreateProfessionalUseCase
+let sut: AddProfessionalUseCase
 
-describe('Create Professional Use Case', () => {
+describe('Add Professional Use Case', () => {
   beforeEach(() => {
     establishmentsRepository = new InMemoryEstablishmentsRepository()
     professionalsRepository = new InMemoryProfessionalsRepository()
-    sut = new CreateProfessionalUseCase(
+    sut = new AddProfessionalUseCase(
       establishmentsRepository,
       professionalsRepository,
     )

@@ -3,17 +3,17 @@ import { Professional } from '@prisma/client'
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
 import { EstablishmentNotFoundError } from '../errors/establishment-not-found-error'
 
-interface CreateProfessionalUseCaseRequest {
+interface AddProfessionalUseCaseRequest {
   name: string
   imageUrl: string | null
   establishmentId: string
 }
 
-interface CreateProfessionalUseCaseResponse {
+interface AddProfessionalUseCaseResponse {
   professional: Professional
 }
 
-export class CreateProfessionalUseCase {
+export class AddProfessionalUseCase {
   constructor(
     private establishmentRepository: EstablishmentsRepository,
     private professionalsRepository: ProfessionalsRepository,
@@ -23,7 +23,7 @@ export class CreateProfessionalUseCase {
     name,
     imageUrl,
     establishmentId,
-  }: CreateProfessionalUseCaseRequest): Promise<CreateProfessionalUseCaseResponse> {
+  }: AddProfessionalUseCaseRequest): Promise<AddProfessionalUseCaseResponse> {
     const establishment =
       await this.establishmentRepository.findById(establishmentId)
 

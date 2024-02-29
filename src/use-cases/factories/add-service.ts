@@ -4,7 +4,7 @@ import { EstablishmentsRepository } from '@/repositories/establishments-reposito
 import { InvalidServiceGenderError } from '../errors/invalid-service-gender-error'
 import { EstablishmentNotFoundError } from '../errors/establishment-not-found-error'
 
-interface CreateServiceUseCaseRequest {
+interface AddServiceUseCaseRequest {
   name: string
   price: number
   genderFor: string
@@ -13,11 +13,11 @@ interface CreateServiceUseCaseRequest {
   establishmentId: string
 }
 
-interface CreateServiceUseCaseResponse {
+interface AddServiceUseCaseResponse {
   service: Service
 }
 
-export class CreateServiceUseCase {
+export class AddServiceUseCase {
   constructor(
     private establishmentRepository: EstablishmentsRepository,
     private servicesRepository: ServicesRepository,
@@ -30,7 +30,7 @@ export class CreateServiceUseCase {
     description,
     imageUrl,
     establishmentId,
-  }: CreateServiceUseCaseRequest): Promise<CreateServiceUseCaseResponse> {
+  }: AddServiceUseCaseRequest): Promise<AddServiceUseCaseResponse> {
     const establishment =
       await this.establishmentRepository.findById(establishmentId)
 

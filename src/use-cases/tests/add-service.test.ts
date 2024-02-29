@@ -1,20 +1,20 @@
 import { expect, describe, it, beforeEach } from 'vitest'
-import { CreateServiceUseCase } from '../factories/create-service'
 import { InMemoryServicesRepository } from '@/repositories/in-memory/in-memory-services-repository'
 import { InMemoryEstablishmentsRepository } from '@/repositories/in-memory/in-memory-establishments-repository'
 import { Decimal } from '@prisma/client/runtime/library'
 import { InvalidServiceGenderError } from '../errors/invalid-service-gender-error'
 import { ResourceNotFoundError } from '../errors/resource-not-found-error'
+import { AddServiceUseCase } from '../factories/add-service'
 
 let servicesRepository: InMemoryServicesRepository
 let establishmentRepository: InMemoryEstablishmentsRepository
-let sut: CreateServiceUseCase
+let sut: AddServiceUseCase
 
-describe('Create Service Use Case', () => {
+describe('Add Service Use Case', () => {
   beforeEach(() => {
     establishmentRepository = new InMemoryEstablishmentsRepository()
     servicesRepository = new InMemoryServicesRepository()
-    sut = new CreateServiceUseCase(establishmentRepository, servicesRepository)
+    sut = new AddServiceUseCase(establishmentRepository, servicesRepository)
 
     establishmentRepository.items.push({
       id: 'Barber-01',
