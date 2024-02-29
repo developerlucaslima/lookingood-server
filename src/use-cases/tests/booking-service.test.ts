@@ -6,6 +6,10 @@ import { InMemoryServicesRepository } from '@/repositories/in-memory/in-memory-s
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { BookingServiceUseCase } from '../factories/booking-service'
 import { Decimal } from '@prisma/client/runtime/library'
+import { ResourceNotFoundError } from '../errors/resource-not-found-error'
+import { InvalidServiceGenderError } from '../errors/invalid-service-gender-error'
+import { InvalidBookingStatusError } from '../errors/invalid-booking-status-error'
+import { rejects } from 'assert'
 
 let establishmentsRepository: InMemoryEstablishmentsRepository
 let professionalsRepository: InMemoryProfessionalsRepository
@@ -53,7 +57,7 @@ describe('Booking Service Use Case', () => {
       id: 'Service-01',
       name: 'Hair cut',
       price: new Decimal(40),
-      gender: 'Male',
+      genderFor: 'Male',
       description: 'Male hair cut',
       imageUrl: 'image.url',
       establishmentId: 'Barber-01',
@@ -72,12 +76,73 @@ describe('Booking Service Use Case', () => {
   it('should be able to booking a service', async () => {
     const { booking } = await sut.execute({
       date: new Date(2022, 1, 1),
-      status: 'Booked',
       professionalId: 'Professional-01',
       serviceId: 'Service-01',
       userId: 'User-01',
     })
 
     expect(booking.id).toEqual(expect.any(String))
+  })
+
+  it('should not be able to book a service with nonexistent professionalId', async () => {
+    await expect(() =>
+      sut.execute({
+        date: new Date(2022, 1, 1),
+        professionalId: 'Professional-02',
+        serviceId: 'Service-01',
+        userId: 'User-01',
+      }),
+    ).rejects.toBeInstanceOf(ResourceNotFoundError)
+  })
+
+  it('should not be able to book a service with nonexistent serviceId', async () => {
+    await expect(() =>
+      sut.execute({
+        date: new Date(2022, 1, 1),
+        professionalId: 'Professional-01',
+        serviceId: 'Service-02',
+        userId: 'User-01',
+      }),
+    ).rejects.toBeInstanceOf(ResourceNotFoundError)
+  })
+
+  it('should not be able to book a service with nonexistent userId', async () => {
+    await expect(() =>
+      sut.execute({
+        date: new Date(2022, 1, 1),
+        professionalId: 'Professional-01',
+        serviceId: 'Service-01',
+        userId: 'User-02',
+      }),
+    ).rejects.toBeInstanceOf(ResourceNotFoundError)
+  })
+
+  it('should not be able to book a service with professional from different establishment', async () => {
+    professionalsRepository.items.push({
+      id: 'Professional-02',
+      name: 'John Doe',
+      imageUrl: 'image.url',
+      establishmentId: 'Barber-02',
+    })
+
+    await expect(() =>
+      sut.execute({
+        date: new Date(2022, 1, 1),
+        professionalId: 'Professional-02',
+        serviceId: 'Service-01',
+        userId: 'User-02',
+      }),
+    ).rejects.toBeInstanceOf(ResourceNotFoundError)
+  })
+
+  it('should not be able to book a service with any other status than "Waiting for confirmation"', async () => {
+    const { booking } = await sut.execute({
+      date: new Date(2022, 1, 1),
+      professionalId: 'Professional-01',
+      serviceId: 'Service-01',
+      userId: 'User-01',
+    })
+
+    expect(booking.status).toEqual('Waiting for confirmation')
   })
 })
