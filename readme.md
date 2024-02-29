@@ -12,14 +12,19 @@
 - [X] - ✨ Users must be able authenticate via email.
     - [X] - 🧪 It should not be able to authenticate with wrong email.
     - [X] - 🧪 It should not be able to authenticate with wrong password.
-- [ ] - ✨ Users must be able to book services by selecting an establishment, professional (optional), date, time, and desired service.
+- [X] - ✨ Users must be able to book services by selecting an establishment, professional (optional), date, time, and desired service.
+    - [X] - 🧪 It should not be able to book a service with nonexistent professionalId.
+    - [X] - 🧪 It should not be able to book a service with nonexistent serviceId.
+    - [X] - 🧪 It should not be able to book a service with nonexistent userId.
+    - [X] - 🧪 It should not be able to book a service with professional from different establishment.
+    - [X] - 🧪 It should not be able to book a service with any other status than "Waiting for confirmation".
     - [ ] - 🧪 It should not be able to book two services at the same time.
     - [ ] - 🧪 It should not be able to schedule with the same professional at the same time twice.
     - [ ] - 🧪 It should prevent booking a service outside of the establishment's operating hours.
     - [ ] - 🧪 It should allow users to book multiple services at the same time if offered by the establishment and time slots do not overlap.
 - [ ] - ✨ Users must be able to change a service date.
 - [ ] - ✨ Users must be able to cancel a booked service or confirmed service.
-- [ ] - ✨ Users must be able to view a list of services with information about whether it is confirmed, checked-out, or waiting for confirmation.
+- [ ] - ✨ Users must be able to view a list of services with information about whether it is Confirmed, Checked-out, or Waiting for confirmation.
 - [ ] - ✨ Users must receive booking confirmation via email or app notification.
 
 ## Establishments
@@ -31,11 +36,13 @@
 - [X] - ✨ Establishments must be able authenticate via email.
     - [X] - 🧪 It should not be able to authenticate with wrong email.
     - [X] - 🧪 It should not be able to authenticate with wrong password.
-- [ ] - ✨ Establishments must be able to add a professional.
-- [ ] - ✨ Establishments must be able to add a service.
-    - [ ] - 🧪 It should validate service as "Male".
-    - [ ] - 🧪 It should validate service as "Female".
-    - [ ] - 🧪 It should validate service as "Both".
+- [X] - ✨ Establishments must be able to add a service.
+    - [X] - 🧪 It should not be able to create service with nonexistent establishmentId.
+    - [X] - 🧪 It should validate service as "Male".
+    - [X] - 🧪 It should validate service as "Female".
+    - [X] - 🧪 It should validate service as "Both".
+- [X] - ✨ Establishments must be able to add a professional.
+    - [X] - 🧪 It should not be able to add professional with nonexistent establishmentId.
 - [ ] - ✨ Establishments must be able to confirm a service booked by a user.
     - [ ] - 🧪 It should allow establishment confirm for service date changes.
 - [ ] - ✨ Establishments must be able to cancel a service confirmed.
