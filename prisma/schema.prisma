@@ -37,24 +37,9 @@ model Establishment {
 
   service      Service[]
   Professional Professional[]
+  Schedule     Schedule[]
 
   @@map("establishments")
-}
-
-model Service {
-  id          String  @id @default(uuid())
-  name        String
-  price       Decimal @db.Decimal(10, 2)
-  genderFor   String
-  description String?
-  imageUrl    String?
-
-  establishment   Establishment @relation(fields: [establishmentId], references: [id])
-  establishmentId String
-
-  booking Booking[]
-
-  @@map("services")
 }
 
 model Professional {
@@ -68,6 +53,47 @@ model Professional {
   booking Booking[]
 
   @@map("professionals")
+}
+
+model Schedule {
+  id             String  @id @default(uuid())
+  MonOpeningTime String? // Opening time for Monday
+  TueOpeningTime String? // Opening time for Tuesday
+  WedOpeningTime String? // Opening time for Wednesday
+  ThuOpeningTime String? // Opening time for Thursday
+  FriOpeningTime String? // Opening time for Friday
+  SatOpeningTime String? // Opening time for Saturday
+  SunOpeningTime String? // Opening time for Sunday
+
+  MonClosingTime String? // Closing time for Monday
+  TueClosingTime String? // Closing time for Tuesday
+  WedClosingTime String? // Closing time for Wednesday
+  ThuClosingTime String? // Closing time for Thursday
+  FriClosingTime String? // Closing time for Friday
+  SatClosingTime String? // Closing time for Saturday
+  SunClosingTime String? // Closing time for Sunday
+
+  establishment   Establishment @relation(fields: [establishmentId], references: [id])
+  establishmentId String
+
+  @@map("schedules")
+}
+
+model Service {
+  id              String  @id @default(uuid())
+  name            String
+  price           Decimal @db.Decimal(10, 2)
+  genderFor       String
+  description     String?
+  imageUrl        String?
+  durationMinutes Int
+
+  establishment   Establishment @relation(fields: [establishmentId], references: [id])
+  establishmentId String
+
+  booking Booking[]
+
+  @@map("services")
 }
 
 model Booking {
