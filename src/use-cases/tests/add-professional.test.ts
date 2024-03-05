@@ -2,8 +2,8 @@ import { expect, describe, it, beforeEach } from 'vitest'
 import { InMemoryEstablishmentsRepository } from '@/repositories/in-memory/in-memory-establishments-repository'
 import { Decimal } from '@prisma/client/runtime/library'
 import { InMemoryProfessionalsRepository } from '@/repositories/in-memory/in-memory-professional-repository'
-import { ResourceNotFoundError } from '../errors/resource-not-found-error'
 import { AddProfessionalUseCase } from '../factories/add-professional'
+import { EstablishmentNotFoundError } from '../errors/establishment-not-found-error'
 
 let professionalsRepository: InMemoryProfessionalsRepository
 let establishmentsRepository: InMemoryEstablishmentsRepository
@@ -48,6 +48,6 @@ describe('Add Professional Use Case', () => {
         imageUrl: 'image.url',
         establishmentId: 'Barber-02',
       }),
-    ).rejects.toBeInstanceOf(ResourceNotFoundError)
+    ).rejects.toBeInstanceOf(EstablishmentNotFoundError)
   })
 })
