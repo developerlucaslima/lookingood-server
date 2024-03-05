@@ -3,8 +3,9 @@ import { InMemoryServicesRepository } from '@/repositories/in-memory/in-memory-s
 import { InMemoryEstablishmentsRepository } from '@/repositories/in-memory/in-memory-establishments-repository'
 import { Decimal } from '@prisma/client/runtime/library'
 import { InvalidServiceGenderError } from '../errors/invalid-service-gender-error'
-import { ResourceNotFoundError } from '../errors/resource-not-found-error'
 import { AddServiceUseCase } from '../factories/add-service'
+import { InvalidServiceDurationError } from '../errors/invalid-service-duration-error'
+import { EstablishmentNotFoundError } from '../errors/establishment-not-found-error'
 
 let servicesRepository: InMemoryServicesRepository
 let establishmentRepository: InMemoryEstablishmentsRepository
@@ -38,6 +39,7 @@ describe('Add Service Use Case', () => {
       description: 'Male hair cut',
       imageUrl: 'image.url',
       establishmentId: 'Barber-01',
+      durationMinutes: 15,
     })
     expect(service.id).toEqual(expect.any(String))
   })
@@ -51,8 +53,9 @@ describe('Add Service Use Case', () => {
         description: 'Trim your mustache',
         imageUrl: 'image.url',
         establishmentId: 'Barber-02',
+        durationMinutes: 15,
       }),
-    ).rejects.toBeInstanceOf(ResourceNotFoundError)
+    ).rejects.toBeInstanceOf(EstablishmentNotFoundError)
   })
 
   it('should validate serviceGender as "Both"', async () => {
@@ -63,6 +66,7 @@ describe('Add Service Use Case', () => {
       description: 'Hair cut',
       imageUrl: 'image.url',
       establishmentId: 'Barber-01',
+      durationMinutes: 15,
     })
     expect(service.id).toEqual(expect.any(String))
   })
@@ -75,6 +79,7 @@ describe('Add Service Use Case', () => {
       description: 'Do the nails',
       imageUrl: 'image.url',
       establishmentId: 'Barber-01',
+      durationMinutes: 15,
     })
     expect(service.id).toEqual(expect.any(String))
   })
@@ -87,6 +92,7 @@ describe('Add Service Use Case', () => {
       description: 'Trim your mustache',
       imageUrl: 'image.url',
       establishmentId: 'Barber-01',
+      durationMinutes: 15,
     })
     expect(service.id).toEqual(expect.any(String))
   })
@@ -100,6 +106,7 @@ describe('Add Service Use Case', () => {
         description: 'Trim your mustache',
         imageUrl: 'image.url',
         establishmentId: 'Barber-01',
+        durationMinutes: 15,
       }),
     ).rejects.toBeInstanceOf(InvalidServiceGenderError)
   })
@@ -113,7 +120,36 @@ describe('Add Service Use Case', () => {
         description: 'Trim your mustache',
         imageUrl: 'image.url',
         establishmentId: 'Barber-01',
+        durationMinutes: 15,
       }),
     ).rejects.toBeInstanceOf(InvalidServiceGenderError)
+  })
+
+  it('should not be allowed to register service with durations under 15 minutes', async () => {
+    await expect(() =>
+      sut.execute({
+        name: 'Moustache',
+        price: 40,
+        genderFor: '',
+        description: 'Trim your mustache',
+        imageUrl: 'image.url',
+        establishmentId: 'Barber-01',
+        durationMinutes: 0,
+      }),
+    ).rejects.toBeInstanceOf(InvalidServiceDurationError)
+  })
+
+  it('should not be allowed to register service with durations that are not multiples of 15 minutes', async () => {
+    await expect(() =>
+      sut.execute({
+        name: 'Moustache',
+        price: 40,
+        genderFor: '',
+        description: 'Trim your mustache',
+        imageUrl: 'image.url',
+        establishmentId: 'Barber-01',
+        durationMinutes: 31,
+      }),
+    ).rejects.toBeInstanceOf(InvalidServiceDurationError)
   })
 })

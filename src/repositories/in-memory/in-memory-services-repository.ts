@@ -35,6 +35,7 @@ export class InMemoryServicesRepository implements ServicesRepository {
       description: data.description ?? null,
       imageUrl: data.imageUrl ?? null,
       establishmentId: data.establishmentId,
+      durationMinutes: data.durationMinutes,
     }
 
     this.items.push(service)
