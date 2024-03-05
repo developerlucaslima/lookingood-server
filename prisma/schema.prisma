@@ -57,21 +57,21 @@ model Professional {
 
 model Schedule {
   id             String  @id @default(uuid())
-  MonOpeningTime String? // Opening time for Monday
-  TueOpeningTime String? // Opening time for Tuesday
-  WedOpeningTime String? // Opening time for Wednesday
-  ThuOpeningTime String? // Opening time for Thursday
-  FriOpeningTime String? // Opening time for Friday
-  SatOpeningTime String? // Opening time for Saturday
-  SunOpeningTime String? // Opening time for Sunday
+  monOpeningTime String? // Opening time for Monday
+  tueOpeningTime String? // Opening time for Tuesday
+  wedOpeningTime String? // Opening time for Wednesday
+  thuOpeningTime String? // Opening time for Thursday
+  friOpeningTime String? // Opening time for Friday
+  satOpeningTime String? // Opening time for Saturday
+  sunOpeningTime String? // Opening time for Sunday
 
-  MonClosingTime String? // Closing time for Monday
-  TueClosingTime String? // Closing time for Tuesday
-  WedClosingTime String? // Closing time for Wednesday
-  ThuClosingTime String? // Closing time for Thursday
-  FriClosingTime String? // Closing time for Friday
-  SatClosingTime String? // Closing time for Saturday
-  SunClosingTime String? // Closing time for Sunday
+  monClosingTime String? // Closing time for Monday
+  tueClosingTime String? // Closing time for Tuesday
+  wedClosingTime String? // Closing time for Wednesday
+  thuClosingTime String? // Closing time for Thursday
+  friClosingTime String? // Closing time for Friday
+  satClosingTime String? // Closing time for Saturday
+  sunClosingTime String? // Closing time for Sunday
 
   establishment   Establishment @relation(fields: [establishmentId], references: [id])
   establishmentId String
