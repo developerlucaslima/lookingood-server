@@ -1,7 +1,6 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 import { compare } from 'bcryptjs'
 import { EmailAlreadyExistsError } from '../errors/email-already-exists-error'
-import { InvalidServiceGenderError } from '../errors/invalid-service-gender-error'
 import { InMemoryEstablishmentsRepository } from '@/repositories/in-memory/in-memory-establishments-repository'
 import { EstablishmentRegisterUseCase } from '../factories/establishment-register'
 
