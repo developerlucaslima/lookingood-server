@@ -1,4 +1,4 @@
-# Use Cases
+# TODO: Use Cases and Tests
 
 ## Users
 - [X] - ✨ Users must be able *register via email*.
@@ -47,7 +47,11 @@
     - [X] - 🧪 It 'should not be allowed to register service with durations under 15 minutes.
 - [X] - ✨ Establishments must be able to *add a professional*.
     - [X] - 🧪 It should not be able to add professional with nonexistent establishmentId.
-    
+- [X] - ✨ Establishments must be able to *add a schedule*.
+    - [X] - 🧪 It should not be able to add schedule with nonexistent establishmentId.
+    - [X] - 🧪 It should not be able to create a schedule with invalid time format.
+    - [X] - 🧪 It 'should not be able to create a schedule with only null values.
+    - [X] - 🧪 It should not be able to create a schedule with opening time but without a corresponding closing time, and vice versa.
 - [ ] - ✨ Establishments must be able to confirm a service booked by a user.
     - [ ] - 🧪 It should allow establishment confirm for service date changes.
 - [ ] - ✨ Establishments must be able to cancel a service confirmed.
