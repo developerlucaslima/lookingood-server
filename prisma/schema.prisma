@@ -97,9 +97,10 @@ model Service {
 }
 
 model Booking {
-  id     String   @id @default(uuid())
-  date   DateTime
-  status String
+  id        String   @id @default(uuid())
+  status    String
+  startTime DateTime
+  endTime   DateTime
 
   Professional   Professional @relation(fields: [professionalId], references: [id])
   professionalId String
