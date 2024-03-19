@@ -8,9 +8,9 @@ export class InMemoryBookingsRepository implements BookingsRepository {
   async create(data: Prisma.BookingUncheckedCreateInput) {
     const booking = {
       id: randomUUID(),
-      status: data.status,
       startTime: new Date(data.startTime),
       endTime: new Date(data.endTime),
+      status: data.status,
       userId: data.userId,
       serviceId: data.serviceId,
       professionalId: data.professionalId,
@@ -31,29 +31,26 @@ export class InMemoryBookingsRepository implements BookingsRepository {
     return bookings
   }
 
-  async findManyByProfessionalAndDate(professionalId: string, date: Date) {
-    const bookings = this.items.filter(
-      (item) =>
-        item.professionalId === professionalId &&
-        item.startTime.toDateString().includes(date.toDateString()),
+  async isBookingConflict(
+    professionalId: string,
+    startTime: Date,
+    endTime: Date,
+  ) {
+    const professionalBookings = this.items.filter(
+      (item) => item.professionalId === professionalId,
     )
 
-    return bookings
-  }
+    const conflicts = professionalBookings.some((item) => {
+      const itemStartTime = new Date(item.startTime)
+      const itemEndTime = new Date(item.endTime)
 
-  async findByStartAndEndTime(startTime: Date, endTime: Date) {
-    const conflict = this.items.find(
-      (item) =>
-        (item.endTime >= startTime && item.endTime <= endTime) ||
-        (item.startTime >= startTime && item.startTime <= endTime),
-    )
+      return (
+        (startTime >= itemStartTime && startTime < itemEndTime) ||
+        (endTime > itemStartTime && endTime <= itemEndTime) ||
+        (startTime <= itemStartTime && endTime >= itemEndTime)
+      )
+    })
 
-    // Se não houver conflitos, retorna null
-    if (!conflict) {
-      return null
-    }
-
-    // Se houver conflitos, retorna o serviço que está em conflito
-    return conflict
+    return conflicts
   }
 }
