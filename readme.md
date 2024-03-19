@@ -18,8 +18,7 @@
     - [X] - 🧪 It should not be able to book a service with nonexistent userId.
     - [X] - 🧪 It should not be able to book a service with professional from different establishment.
     - [X] - 🧪 It should not be able to book a service with any other status than "Waiting for confirmation".
-    - [ ] - 🧪 It should not be able to book two services at the same time.
-    - [ ] - 🧪 It should not be able to schedule with the same professional at the same time twice.
+    - [X] - 🧪 It should not be able to book if the professional is already booked at the same time.
     - [ ] - 🧪 It should prevent booking a service outside of the establishment's operating hours.
     - [ ] - 🧪 It should allow users to book multiple services at the same time if offered by the establishment and time slots do not overlap.
 - [ ] - ✨ Users must be able to change a service date.
