@@ -5,20 +5,8 @@ import { SchedulesRepository } from '../schedule-repository'
 export class InMemorySchedulesRepository implements SchedulesRepository {
   public items: Schedule[] = []
 
-  async findByEstablishmentId(establishmentId: string) {
-    const schedule = this.items.find(
-      (item) => item.establishmentId === establishmentId,
-    )
-
-    if (!schedule) {
-      return null
-    }
-
-    return schedule
-  }
-
   async create(data: Prisma.ScheduleUncheckedCreateInput) {
-    const schedule = {
+    const schedule: Schedule = {
       id: randomUUID(),
       monOpeningTime: data.monOpeningTime || null,
       tueOpeningTime: data.tueOpeningTime || null,
@@ -38,6 +26,18 @@ export class InMemorySchedulesRepository implements SchedulesRepository {
     }
 
     this.items.push(schedule)
+
+    return schedule
+  }
+
+  async findByEstablishmentId(establishmentId: string) {
+    const schedule = this.items.find(
+      (item) => item.establishmentId === establishmentId,
+    )
+
+    if (!schedule) {
+      return null
+    }
 
     return schedule
   }

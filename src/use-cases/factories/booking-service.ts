@@ -2,17 +2,22 @@ import { UsersRepository } from '@/repositories/users-repository'
 import { Booking } from '@prisma/client'
 import { ResourceNotFoundError } from '../errors/resource-not-found-error'
 import { BookingsRepository } from '@/repositories/bookings-repository'
-import { ServicesRepository } from '@/repositories/services-repository'
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
 import { ProfessionalsRepository } from '@/repositories/professionals-repository'
 import { ProfessionalNotFoundError } from '../errors/professional-not-found-error'
 import { ServiceNotFoundError } from '../errors/service-not-found-error '
 import { UserNotFoundError } from '../errors/user-not-found-error '
 import { EstablishmentNotFoundError } from '../errors/establishment-not-found-error'
-import { InvalidBookingStatusError } from '../errors/invalid-booking-status-error'
+import { SchedulesRepository } from '@/repositories/schedule-repository'
+import { ServicesRepository } from '@/repositories/services-repository'
+import { InvalidTimetableError } from '../errors/invalid-timetable-error'
+import { checkOperatingHours } from '../utils/check-operating-hours'
+import { HourNotAvailable } from '../errors/hour-not-available'
+import { getDayOfWeekName } from '../utils/get-day-of-week-name'
 
 interface BookingServiceUseCaseRequest {
-  date: Date
+  startTime: Date
+  endTime: Date
   userId: string
   serviceId: string
   professionalId: string
@@ -27,12 +32,14 @@ export class BookingServiceUseCase {
     private establishmentsRepository: EstablishmentsRepository,
     private professionalsRepository: ProfessionalsRepository,
     private servicesRepository: ServicesRepository,
+    private schedulesRepository: SchedulesRepository,
     private bookingsRepository: BookingsRepository,
     private usersRepository: UsersRepository,
   ) {}
 
   async execute({
-    date,
+    startTime,
+    endTime,
     userId,
     serviceId,
     professionalId,
@@ -45,16 +52,12 @@ export class BookingServiceUseCase {
 
     const service = await this.servicesRepository.findById(serviceId)
     if (!service) {
-      throw new ServiceNotFoundError() // TODO: create specific error
+      throw new ServiceNotFoundError()
     }
 
     const user = await this.usersRepository.findById(userId)
     if (!user) {
       throw new UserNotFoundError()
-    }
-
-    if (service.establishmentId !== professional.establishmentId) {
-      throw new ResourceNotFoundError()
     }
 
     const establishment = await this.establishmentsRepository.findById(
@@ -64,17 +67,45 @@ export class BookingServiceUseCase {
       throw new EstablishmentNotFoundError()
     }
 
+    if (service.establishmentId !== professional.establishmentId) {
+      throw new ResourceNotFoundError()
+    }
+
+    const conflicts = await this.bookingsRepository.isBookingConflict(
+      professionalId,
+      startTime,
+      endTime,
+    )
+    if (conflicts) {
+      throw new InvalidTimetableError()
+    }
+
+    const schedule = await this.schedulesRepository.findByEstablishmentId(
+      service.establishmentId,
+    )
+    if (!schedule) {
+      throw new ServiceNotFoundError()
+    }
+
+    const dayOfWeek = getDayOfWeekName(startTime)
+    const isWithinOperatingHours = checkOperatingHours(
+      schedule,
+      dayOfWeek,
+      startTime,
+      endTime,
+    )
+    if (!isWithinOperatingHours) {
+      throw new HourNotAvailable()
+    }
+
     const booking = await this.bookingsRepository.create({
-      date,
+      startTime,
+      endTime,
       status: 'Waiting for confirmation',
       userId,
       serviceId,
       professionalId,
     })
-
-    if (booking.status !== 'Waiting for confirmation') {
-      throw new InvalidBookingStatusError()
-    }
 
     return {
       booking,
