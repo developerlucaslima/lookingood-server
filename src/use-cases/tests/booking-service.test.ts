@@ -1,4 +1,4 @@
-import { expect, describe, it, beforeEach, afterEach, vi } from 'vitest'
+import { expect, describe, it, beforeEach } from 'vitest'
 import { InMemoryProfessionalsRepository } from '@/repositories/in-memory/in-memory-professional-repository'
 import { InMemoryEstablishmentsRepository } from '@/repositories/in-memory/in-memory-establishments-repository'
 import { InMemoryServicesRepository } from '@/repositories/in-memory/in-memory-services-repository'
