@@ -1,20 +1,24 @@
-import { expect, describe, it, beforeEach } from 'vitest'
+import { expect, describe, it, beforeEach, afterEach, vi } from 'vitest'
 import { InMemoryProfessionalsRepository } from '@/repositories/in-memory/in-memory-professional-repository'
-import { InMemoryBookingsRepository } from '@/repositories/in-memory/in-memory-bookings-repository'
 import { InMemoryEstablishmentsRepository } from '@/repositories/in-memory/in-memory-establishments-repository'
 import { InMemoryServicesRepository } from '@/repositories/in-memory/in-memory-services-repository'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { BookingServiceUseCase } from '../factories/booking-service'
 import { Decimal } from '@prisma/client/runtime/library'
 import { ResourceNotFoundError } from '../errors/resource-not-found-error'
-import { InvalidServiceGenderError } from '../errors/invalid-service-gender-error'
-import { InvalidBookingStatusError } from '../errors/invalid-booking-status-error'
-import { rejects } from 'assert'
+import { ProfessionalNotFoundError } from '../errors/professional-not-found-error'
+import { ServiceNotFoundError } from '../errors/service-not-found-error '
+import { UserNotFoundError } from '../errors/user-not-found-error '
+import { InMemoryBookingsRepository } from '@/repositories/in-memory/in-memory-bookings-repository'
+import { InvalidTimetableError } from '../errors/invalid-timetable-error'
+import { InMemorySchedulesRepository } from '@/repositories/in-memory/in-memory-schedule-repository'
+import { HourNotAvailable } from '../errors/hour-not-available'
 
 let establishmentsRepository: InMemoryEstablishmentsRepository
 let professionalsRepository: InMemoryProfessionalsRepository
 let bookingsRepository: InMemoryBookingsRepository
 let servicesRepository: InMemoryServicesRepository
+let schedulesRepository: InMemorySchedulesRepository
 let usersRepository: InMemoryUsersRepository
 let sut: BookingServiceUseCase
 
@@ -24,11 +28,13 @@ describe('Booking Service Use Case', () => {
     professionalsRepository = new InMemoryProfessionalsRepository()
     servicesRepository = new InMemoryServicesRepository()
     bookingsRepository = new InMemoryBookingsRepository()
+    schedulesRepository = new InMemorySchedulesRepository()
     usersRepository = new InMemoryUsersRepository()
     sut = new BookingServiceUseCase(
       establishmentsRepository,
       professionalsRepository,
       servicesRepository,
+      schedulesRepository,
       bookingsRepository,
       usersRepository,
     )
@@ -61,6 +67,7 @@ describe('Booking Service Use Case', () => {
       description: 'Male hair cut',
       imageUrl: 'image.url',
       establishmentId: 'Barber-01',
+      durationMinutes: 15,
     })
 
     usersRepository.items.push({
@@ -71,11 +78,31 @@ describe('Booking Service Use Case', () => {
       passwordHash: '123456',
       createdAt: new Date(),
     })
+
+    schedulesRepository.items.push({
+      id: 'Schedule-01',
+      monOpeningTime: '08:00',
+      tueOpeningTime: '08:00',
+      wedOpeningTime: '08:00',
+      thuOpeningTime: '08:00',
+      friOpeningTime: '08:00',
+      satOpeningTime: '08:00',
+      sunOpeningTime: null,
+      monClosingTime: '20:00',
+      tueClosingTime: '20:00',
+      wedClosingTime: '20:00',
+      thuClosingTime: '20:00',
+      friClosingTime: '20:00',
+      satClosingTime: '17:00',
+      sunClosingTime: null,
+      establishmentId: 'Barber-01',
+    })
   })
 
   it('should be able to booking a service', async () => {
     const { booking } = await sut.execute({
-      date: new Date(2022, 1, 1),
+      startTime: new Date(2024, 1, 1, 9, 0, 0),
+      endTime: new Date(2024, 1, 1, 9, 30, 0),
       professionalId: 'Professional-01',
       serviceId: 'Service-01',
       userId: 'User-01',
@@ -87,34 +114,37 @@ describe('Booking Service Use Case', () => {
   it('should not be able to book a service with nonexistent professionalId', async () => {
     await expect(() =>
       sut.execute({
-        date: new Date(2022, 1, 1),
+        startTime: new Date(2024, 1, 1, 9, 0, 0),
+        endTime: new Date(2024, 1, 1, 9, 30, 0),
         professionalId: 'Professional-02',
         serviceId: 'Service-01',
         userId: 'User-01',
       }),
-    ).rejects.toBeInstanceOf(ResourceNotFoundError)
+    ).rejects.toBeInstanceOf(ProfessionalNotFoundError)
   })
 
   it('should not be able to book a service with nonexistent serviceId', async () => {
     await expect(() =>
       sut.execute({
-        date: new Date(2022, 1, 1),
+        startTime: new Date(2024, 1, 1, 9, 0, 0),
+        endTime: new Date(2024, 1, 1, 9, 30, 0),
         professionalId: 'Professional-01',
         serviceId: 'Service-02',
         userId: 'User-01',
       }),
-    ).rejects.toBeInstanceOf(ResourceNotFoundError)
+    ).rejects.toBeInstanceOf(ServiceNotFoundError)
   })
 
   it('should not be able to book a service with nonexistent userId', async () => {
     await expect(() =>
       sut.execute({
-        date: new Date(2022, 1, 1),
+        startTime: new Date(2024, 1, 1, 9, 0, 0),
+        endTime: new Date(2024, 1, 1, 9, 30, 0),
         professionalId: 'Professional-01',
         serviceId: 'Service-01',
         userId: 'User-02',
       }),
-    ).rejects.toBeInstanceOf(ResourceNotFoundError)
+    ).rejects.toBeInstanceOf(UserNotFoundError)
   })
 
   it('should not be able to book a service with professional from different establishment', async () => {
@@ -127,22 +157,69 @@ describe('Booking Service Use Case', () => {
 
     await expect(() =>
       sut.execute({
-        date: new Date(2022, 1, 1),
+        startTime: new Date(2024, 1, 1, 9, 0, 0),
+        endTime: new Date(2024, 1, 1, 9, 30, 0),
         professionalId: 'Professional-02',
         serviceId: 'Service-01',
-        userId: 'User-02',
+        userId: 'User-01',
       }),
     ).rejects.toBeInstanceOf(ResourceNotFoundError)
   })
 
   it('should not be able to book a service with any other status than "Waiting for confirmation"', async () => {
     const { booking } = await sut.execute({
-      date: new Date(2022, 1, 1),
+      startTime: new Date(2024, 1, 1, 9, 0, 0),
+      endTime: new Date(2024, 1, 1, 9, 30, 0),
       professionalId: 'Professional-01',
       serviceId: 'Service-01',
       userId: 'User-01',
     })
 
     expect(booking.status).toEqual('Waiting for confirmation')
+  })
+
+  it('should not be able to book if the professional is already booked at the same time', async () => {
+    const startTime = new Date(2024, 1, 1, 9, 0, 0)
+    const endTime = new Date(2024, 1, 1, 9, 30, 0)
+
+    await sut.execute({
+      startTime,
+      endTime,
+      professionalId: 'Professional-01',
+      serviceId: 'Service-01',
+      userId: 'User-01',
+    })
+
+    await expect(() =>
+      sut.execute({
+        startTime,
+        endTime,
+        professionalId: 'Professional-01',
+        serviceId: 'Service-01',
+        userId: 'User-01',
+      }),
+    ).rejects.toBeInstanceOf(InvalidTimetableError)
+  })
+
+  it("should not be able to book a service outside of the establishment's operating hours", async () => {
+    await expect(() =>
+      sut.execute({
+        startTime: new Date(2024, 1, 3, 7, 0, 0),
+        endTime: new Date(2024, 1, 3, 8, 0, 0),
+        professionalId: 'Professional-01',
+        serviceId: 'Service-01',
+        userId: 'User-01',
+      }),
+    ).rejects.toBeInstanceOf(HourNotAvailable)
+
+    await expect(() =>
+      sut.execute({
+        startTime: new Date(2024, 1, 4, 9, 0, 0),
+        endTime: new Date(2024, 1, 4, 10, 0, 0),
+        professionalId: 'Professional-01',
+        serviceId: 'Service-01',
+        userId: 'User-01',
+      }),
+    ).rejects.toBeInstanceOf(HourNotAvailable)
   })
 })
