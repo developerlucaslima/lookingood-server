@@ -21,6 +21,16 @@ export class InMemoryBookingsRepository implements BookingsRepository {
     return booking
   }
 
+  async update(booking: Booking) {
+    const bookingIndex = this.items.findIndex((item) => item.id === booking.id)
+
+    if (bookingIndex >= 0) {
+      this.items[bookingIndex] = booking
+    }
+
+    return booking
+  }
+
   async findManyByUserId(userId: string) {
     const bookings = this.items.filter((item) => item.userId === userId)
 
@@ -52,5 +62,25 @@ export class InMemoryBookingsRepository implements BookingsRepository {
     })
 
     return conflicts
+  }
+
+  async findManyByStatus(status: string) {
+    const bookings = this.items.filter((item) => item.status === status)
+
+    if (!bookings) {
+      return null
+    }
+
+    return bookings
+  }
+
+  async findById(id: string) {
+    const booking = this.items.find((item) => item.id === id)
+
+    if (!booking) {
+      return null
+    }
+
+    return booking
   }
 }
