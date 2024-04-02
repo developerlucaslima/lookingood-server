@@ -19,7 +19,7 @@
     - [X] - 🧪 It should not be able to book a service with professional from different establishment.
     - [X] - 🧪 It should not be able to book a service with any other status than "Waiting for confirmation".
     - [X] - 🧪 It should not be able to book if the professional is already booked at the same time.
-    - [ ] - 🧪 It should prevent booking a service outside of the establishment's operating hours.
+    - [X] - 🧪 It should not be able to book a service outside of the establishment's operating hours.
     - [ ] - 🧪 It should allow users to book multiple services at the same time if offered by the establishment and time slots do not overlap.
 - [ ] - ✨ Users must be able to change a service date.
 - [ ] - ✨ Users must be able to cancel a booked service or confirmed service.
