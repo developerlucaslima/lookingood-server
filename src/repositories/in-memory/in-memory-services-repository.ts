@@ -34,6 +34,7 @@ export class InMemoryServicesRepository implements ServicesRepository {
       genderFor: data.genderFor,
       description: data.description ?? null,
       imageUrl: data.imageUrl ?? null,
+      modificationDeadlineMinutes: data.modificationDeadlineMinutes,
       establishmentId: data.establishmentId,
       durationMinutes: data.durationMinutes,
     }
