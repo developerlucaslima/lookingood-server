@@ -80,13 +80,14 @@ model Schedule {
 }
 
 model Service {
-  id              String  @id @default(uuid())
-  name            String
-  price           Decimal @db.Decimal(10, 2)
-  genderFor       String
-  description     String?
-  imageUrl        String?
-  durationMinutes Int
+  id                          String  @id @default(uuid())
+  name                        String
+  price                       Decimal @db.Decimal(10, 2)
+  genderFor                   String
+  description                 String?
+  imageUrl                    String?
+  durationMinutes             Int
+  modificationDeadlineMinutes Int
 
   establishment   Establishment @relation(fields: [establishmentId], references: [id])
   establishmentId String
