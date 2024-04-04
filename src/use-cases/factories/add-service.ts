@@ -12,6 +12,7 @@ interface AddServiceUseCaseRequest {
   genderFor: string
   description: string | null
   imageUrl: string | null
+  modificationDeadlineMinutes: number
   establishmentId: string
   durationMinutes: number
 }
@@ -32,6 +33,7 @@ export class AddServiceUseCase {
     genderFor,
     description,
     imageUrl,
+    modificationDeadlineMinutes,
     establishmentId,
     durationMinutes,
   }: AddServiceUseCaseRequest): Promise<AddServiceUseCaseResponse> {
@@ -57,6 +59,7 @@ export class AddServiceUseCase {
       genderFor,
       description,
       imageUrl,
+      modificationDeadlineMinutes,
       establishmentId,
       durationMinutes,
     })
