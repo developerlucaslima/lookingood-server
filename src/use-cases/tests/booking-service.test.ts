@@ -66,6 +66,7 @@ describe('Booking Service Use Case', () => {
       genderFor: 'Male',
       description: 'Male hair cut',
       imageUrl: 'image.url',
+      modificationDeadlineMinutes: 60,
       establishmentId: 'Barber-01',
       durationMinutes: 15,
     })
@@ -102,7 +103,6 @@ describe('Booking Service Use Case', () => {
   it('should be able to booking a service', async () => {
     const { booking } = await sut.execute({
       startTime: new Date(2024, 1, 1, 9, 0, 0),
-      endTime: new Date(2024, 1, 1, 9, 30, 0),
       professionalId: 'Professional-01',
       serviceId: 'Service-01',
       userId: 'User-01',
@@ -115,7 +115,6 @@ describe('Booking Service Use Case', () => {
     await expect(() =>
       sut.execute({
         startTime: new Date(2024, 1, 1, 9, 0, 0),
-        endTime: new Date(2024, 1, 1, 9, 30, 0),
         professionalId: 'Professional-02',
         serviceId: 'Service-01',
         userId: 'User-01',
@@ -127,7 +126,6 @@ describe('Booking Service Use Case', () => {
     await expect(() =>
       sut.execute({
         startTime: new Date(2024, 1, 1, 9, 0, 0),
-        endTime: new Date(2024, 1, 1, 9, 30, 0),
         professionalId: 'Professional-01',
         serviceId: 'Service-02',
         userId: 'User-01',
@@ -139,7 +137,6 @@ describe('Booking Service Use Case', () => {
     await expect(() =>
       sut.execute({
         startTime: new Date(2024, 1, 1, 9, 0, 0),
-        endTime: new Date(2024, 1, 1, 9, 30, 0),
         professionalId: 'Professional-01',
         serviceId: 'Service-01',
         userId: 'User-02',
@@ -158,7 +155,6 @@ describe('Booking Service Use Case', () => {
     await expect(() =>
       sut.execute({
         startTime: new Date(2024, 1, 1, 9, 0, 0),
-        endTime: new Date(2024, 1, 1, 9, 30, 0),
         professionalId: 'Professional-02',
         serviceId: 'Service-01',
         userId: 'User-01',
@@ -169,7 +165,6 @@ describe('Booking Service Use Case', () => {
   it('should not be able to book a service with any other status than "Waiting for confirmation"', async () => {
     const { booking } = await sut.execute({
       startTime: new Date(2024, 1, 1, 9, 0, 0),
-      endTime: new Date(2024, 1, 1, 9, 30, 0),
       professionalId: 'Professional-01',
       serviceId: 'Service-01',
       userId: 'User-01',
@@ -180,11 +175,9 @@ describe('Booking Service Use Case', () => {
 
   it('should not be able to book if the professional is already booked at the same time', async () => {
     const startTime = new Date(2024, 1, 1, 9, 0, 0)
-    const endTime = new Date(2024, 1, 1, 9, 30, 0)
 
     await sut.execute({
       startTime,
-      endTime,
       professionalId: 'Professional-01',
       serviceId: 'Service-01',
       userId: 'User-01',
@@ -193,7 +186,6 @@ describe('Booking Service Use Case', () => {
     await expect(() =>
       sut.execute({
         startTime,
-        endTime,
         professionalId: 'Professional-01',
         serviceId: 'Service-01',
         userId: 'User-01',
@@ -205,7 +197,6 @@ describe('Booking Service Use Case', () => {
     await expect(() =>
       sut.execute({
         startTime: new Date(2024, 1, 3, 7, 0, 0),
-        endTime: new Date(2024, 1, 3, 8, 0, 0),
         professionalId: 'Professional-01',
         serviceId: 'Service-01',
         userId: 'User-01',
@@ -215,7 +206,6 @@ describe('Booking Service Use Case', () => {
     await expect(() =>
       sut.execute({
         startTime: new Date(2024, 1, 4, 9, 0, 0),
-        endTime: new Date(2024, 1, 4, 10, 0, 0),
         professionalId: 'Professional-01',
         serviceId: 'Service-01',
         userId: 'User-01',

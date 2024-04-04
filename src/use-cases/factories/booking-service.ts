@@ -14,10 +14,10 @@ import { InvalidTimetableError } from '../errors/invalid-timetable-error'
 import { checkOperatingHours } from '../utils/check-operating-hours'
 import { HourNotAvailable } from '../errors/hour-not-available'
 import { getDayOfWeekName } from '../utils/get-day-of-week-name'
+import { getEndTimeByStartTime } from '../utils/get-end-time-by-start-time'
 
 interface BookingServiceUseCaseRequest {
   startTime: Date
-  endTime: Date
   userId: string
   serviceId: string
   professionalId: string
@@ -39,11 +39,12 @@ export class BookingServiceUseCase {
 
   async execute({
     startTime,
-    endTime,
     userId,
     serviceId,
     professionalId,
   }: BookingServiceUseCaseRequest): Promise<BookingServicesUseCaseResponse> {
+    let endTime = null
+
     const professional =
       await this.professionalsRepository.findById(professionalId)
     if (!professional) {
@@ -54,6 +55,7 @@ export class BookingServiceUseCase {
     if (!service) {
       throw new ServiceNotFoundError()
     }
+    endTime = getEndTimeByStartTime(startTime, service.durationMinutes)
 
     const user = await this.usersRepository.findById(userId)
     if (!user) {
