@@ -51,8 +51,8 @@
     - [X] - 🧪 It should not be able to create a schedule with invalid time format.
     - [X] - 🧪 It 'should not be able to create a schedule with only null values.
     - [X] - 🧪 It should not be able to create a schedule with opening time but without a corresponding closing time, and vice versa.
-- [ ] - ✨ Establishments must be able to confirm a service booked by a user.
-    - [ ] - 🧪 It should allow establishment confirm for service date changes.
+- [X] - ✨ Establishments must be able to confirm a service booked by a user.
+    - [X] - 🧪 It should allow establishment confirm for service date changes.
 - [ ] - ✨ Establishments must be able to cancel a service confirmed.
     - [ ] - 🧪 For each service offered, establishments must specify the gender served (female, male, or both).
 - [ ] - ✨ Establishments must be able to check in a user for a confirmed service booked.
