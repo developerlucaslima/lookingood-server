@@ -1,6 +1,6 @@
 import { Schedule, Prisma } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
-import { SchedulesRepository } from '../schedule-repository'
+import { SchedulesRepository } from '../schedules-repository'
 
 export class InMemorySchedulesRepository implements SchedulesRepository {
   public items: Schedule[] = []

@@ -1,4 +1,4 @@
-import { expect, describe, it, beforeEach } from 'vitest'
+import { expect, describe, it, beforeEach, vi, afterEach } from 'vitest'
 import { InMemoryProfessionalsRepository } from '@/repositories/in-memory/in-memory-professional-repository'
 import { InMemoryEstablishmentsRepository } from '@/repositories/in-memory/in-memory-establishments-repository'
 import { InMemoryServicesRepository } from '@/repositories/in-memory/in-memory-services-repository'
@@ -46,12 +46,13 @@ describe('Booking Service Use Case', () => {
       createdAt: new Date(),
     })
 
-    professionalsRepository.items.push({
+    const barber = {
       id: 'Professional-01',
       name: 'John Doe',
       imageUrl: 'image.url',
       establishmentId: 'Barber-01',
-    })
+    }
+    professionalsRepository.items.set(barber.id, barber)
 
     servicesRepository.items.push({
       id: 'Service-01',
@@ -98,15 +99,23 @@ describe('Booking Service Use Case', () => {
       status: 'Waiting for confirmation',
       startTime: new Date(2024, 1, 1, 9, 0, 0),
       endTime: new Date(2024, 1, 1, 9, 30, 0),
-      professionalId: 'Professional-02',
+      professionalId: 'Professional-01',
       serviceId: 'Service-01',
       userId: 'User-01',
     })
+
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   it('should be able to confirm a booked service', async () => {
+    vi.setSystemTime(new Date(2024, 1, 1, 0, 0, 0))
+
     const { booking } = await sut.execute({
-      startTime: new Date(2024, 1, 1, 9, 0, 0),
+      startTime: new Date(2024, 1, 1, 13, 0, 0),
       bookingId: 'Booking-01',
       serviceId: 'Service-01',
     })

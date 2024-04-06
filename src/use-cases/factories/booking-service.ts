@@ -8,7 +8,7 @@ import { ProfessionalNotFoundError } from '../errors/professional-not-found-erro
 import { ServiceNotFoundError } from '../errors/service-not-found-error '
 import { UserNotFoundError } from '../errors/user-not-found-error '
 import { EstablishmentNotFoundError } from '../errors/establishment-not-found-error'
-import { SchedulesRepository } from '@/repositories/schedule-repository'
+import { SchedulesRepository } from '@/repositories/schedules-repository'
 import { ServicesRepository } from '@/repositories/services-repository'
 import { InvalidTimetableError } from '../errors/invalid-timetable-error'
 import { checkOperatingHours } from '../utils/check-operating-hours'
