@@ -5,10 +5,10 @@ import { ProfessionalsRepository } from '../professionals-repository'
 export class InMemoryProfessionalsRepository
   implements ProfessionalsRepository
 {
-  public items: Professional[] = []
+  public items: Map<Professional['id'], Professional> = new Map()
 
   async findById(id: string) {
-    const barber = this.items.find((item) => item.id === id)
+    const barber = this.items.get(id)
 
     if (!barber) {
       return null
@@ -25,8 +25,18 @@ export class InMemoryProfessionalsRepository
       establishmentId: data.establishmentId,
     }
 
-    this.items.push(barber)
+    this.items.set(barber.id, barber)
 
     return barber
   }
+
+  // //e se tiver mais de milhões de entries? como que o banco de dados lida c/ isso?
+  // async list(data: Prisma.ProfessionalUncheckedList) {
+  //   const barbers = this.items.values()
+  //   const results = []
+  //   for(const b of barbers){
+  //     //apply logic to filter
+  //   }
+  //   return results;
+  // }
 }
