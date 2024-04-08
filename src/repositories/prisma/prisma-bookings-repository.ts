@@ -1,13 +1,24 @@
 import { prisma } from '@/lib/prisma'
-import { Booking, Prisma } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 
 import { BookingsRepository } from '../bookings-repository'
-import { string } from 'zod'
+import { InvalidTimetableError } from '@/use-cases/errors/invalid-timetable-error'
 
 export class PrismaBookingsRepository implements BookingsRepository {
   async create(data: Prisma.BookingUncheckedCreateInput) {
-    const booking = await prisma.booking.create({
-      data,
+    const booking = await prisma.$transaction(async (prisma) => {
+      const isConflict = await this.isBookingConflict(
+        data.professionalId,
+        new Date(data.startTime),
+        new Date(data.endTime),
+      )
+      if (isConflict) {
+        throw new InvalidTimetableError()
+      }
+
+      return await prisma.booking.create({
+        data,
+      })
     })
 
     return booking
@@ -59,12 +70,34 @@ export class PrismaBookingsRepository implements BookingsRepository {
     startTime: Date,
     endTime: Date,
   ) {
-    const booking = await prisma.booking.findMany({
+    const professionalBookings = await prisma.booking.findMany({
       where: {
-        status,
+        professionalId,
+        OR: [
+          {
+            startTime: {
+              lte: endTime,
+              gte: startTime,
+            },
+          },
+          {
+            endTime: {
+              lte: endTime,
+              gte: startTime,
+            },
+          },
+          {
+            startTime: {
+              lte: startTime,
+            },
+            endTime: {
+              gte: endTime,
+            },
+          },
+        ],
       },
     })
 
-    return booking
+    return professionalBookings.length > 0
   }
 }
