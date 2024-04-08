@@ -16,16 +16,6 @@ export class InMemoryServicesRepository implements ServicesRepository {
     return service
   }
 
-  async findByGender(genderFor: string) {
-    const service = this.items.find((item) => item.genderFor === genderFor)
-
-    if (!service) {
-      return null
-    }
-
-    return service
-  }
-
   async create(data: Prisma.ServiceUncheckedCreateInput) {
     const service = {
       id: randomUUID(),
