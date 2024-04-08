@@ -41,6 +41,9 @@ export class InMemoryBookingsRepository implements BookingsRepository {
     return bookings
   }
 
+  // write skew + double booking https://medium.com/@pulkitent/system-design-database-transactions-isolation-levels-concurrency-control-contd-part-2-78db036f6971
+  // Designing Data Intensive Applications
+
   async isBookingConflict(
     professionalId: string,
     startTime: Date,
