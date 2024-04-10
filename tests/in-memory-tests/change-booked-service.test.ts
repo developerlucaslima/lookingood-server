@@ -6,7 +6,7 @@ import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-user
 import { Decimal } from '@prisma/client/runtime/library'
 import { InMemoryBookingsRepository } from '@/repositories/in-memory/in-memory-bookings-repository'
 import { InMemorySchedulesRepository } from '@/repositories/in-memory/in-memory-schedule-repository'
-import { ChangeBookedServiceUseCase } from '../factories/change-booked-service'
+import { ChangeBookedServiceUseCase } from '@/use-cases/change-booked-service'
 
 let establishmentsRepository: InMemoryEstablishmentsRepository
 let professionalsRepository: InMemoryProfessionalsRepository

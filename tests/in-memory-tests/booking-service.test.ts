@@ -3,16 +3,16 @@ import { InMemoryProfessionalsRepository } from '@/repositories/in-memory/in-mem
 import { InMemoryEstablishmentsRepository } from '@/repositories/in-memory/in-memory-establishments-repository'
 import { InMemoryServicesRepository } from '@/repositories/in-memory/in-memory-services-repository'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { BookingServiceUseCase } from '../factories/booking-service'
 import { Decimal } from '@prisma/client/runtime/library'
-import { ResourceNotFoundError } from '../errors/resource-not-found-error'
-import { ProfessionalNotFoundError } from '../errors/professional-not-found-error'
-import { ServiceNotFoundError } from '../errors/service-not-found-error '
-import { UserNotFoundError } from '../errors/user-not-found-error '
 import { InMemoryBookingsRepository } from '@/repositories/in-memory/in-memory-bookings-repository'
-import { InvalidTimetableError } from '../errors/invalid-timetable-error'
 import { InMemorySchedulesRepository } from '@/repositories/in-memory/in-memory-schedule-repository'
-import { HourNotAvailable } from '../errors/hour-not-available'
+import { BookingServiceUseCase } from '@/use-cases/booking-service'
+import { HourNotAvailable } from '@/use-cases/errors/hour-not-available'
+import { InvalidTimetableError } from '@/use-cases/errors/invalid-timetable-error'
+import { ProfessionalNotFoundError } from '@/use-cases/errors/professional-not-found-error'
+import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found-error'
+import { ServiceNotFoundError } from '@/use-cases/errors/service-not-found-error '
+import { UserNotFoundError } from '@/use-cases/errors/user-not-found-error '
 
 let establishmentsRepository: InMemoryEstablishmentsRepository
 let professionalsRepository: InMemoryProfessionalsRepository
@@ -52,12 +52,13 @@ describe('Booking Service Use Case', () => {
       createdAt: new Date(),
     })
 
-    professionalsRepository.items.push({
+    const professionalData = {
       id: 'Professional-01',
       name: 'John Doe',
       imageUrl: 'image.url',
       establishmentId: 'Barber-01',
-    })
+    }
+    professionalsRepository.items.set(professionalData.id, professionalData)
 
     servicesRepository.items.push({
       id: 'Service-01',
@@ -145,12 +146,13 @@ describe('Booking Service Use Case', () => {
   })
 
   it('should not be able to book a service with professional from different establishment', async () => {
-    professionalsRepository.items.push({
+    const professionalData = {
       id: 'Professional-02',
       name: 'John Doe',
       imageUrl: 'image.url',
       establishmentId: 'Barber-02',
-    })
+    }
+    professionalsRepository.items.set(professionalData.id, professionalData)
 
     await expect(() =>
       sut.execute({

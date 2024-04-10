@@ -2,8 +2,8 @@ import { expect, describe, it, beforeEach } from 'vitest'
 import { InMemoryEstablishmentsRepository } from '@/repositories/in-memory/in-memory-establishments-repository'
 import { Decimal } from '@prisma/client/runtime/library'
 import { InMemoryProfessionalsRepository } from '@/repositories/in-memory/in-memory-professional-repository'
-import { AddProfessionalUseCase } from '../factories/add-professional'
-import { EstablishmentNotFoundError } from '../errors/establishment-not-found-error'
+import { AddProfessionalUseCase } from '@/use-cases/add-professional'
+import { EstablishmentNotFoundError } from '@/use-cases/errors/establishment-not-found-error'
 
 let professionalsRepository: InMemoryProfessionalsRepository
 let establishmentsRepository: InMemoryEstablishmentsRepository

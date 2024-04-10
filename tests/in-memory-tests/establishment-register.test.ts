@@ -1,8 +1,8 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 import { compare } from 'bcryptjs'
-import { EmailAlreadyExistsError } from '../errors/email-already-exists-error'
 import { InMemoryEstablishmentsRepository } from '@/repositories/in-memory/in-memory-establishments-repository'
-import { EstablishmentRegisterUseCase } from '../factories/establishment-register'
+import { EstablishmentRegisterUseCase } from '@/use-cases/establishment-register'
+import { EmailAlreadyExistsError } from '@/use-cases/errors/email-already-exists-error'
 
 let establishmentsRepository: InMemoryEstablishmentsRepository
 let sut: EstablishmentRegisterUseCase

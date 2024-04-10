@@ -1,9 +1,9 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 import { compare } from 'bcryptjs'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { EmailAlreadyExistsError } from '../errors/email-already-exists-error'
-import { UserRegisterUseCase } from '../factories/user-register'
-import { InvalidServiceGenderError } from '../errors/invalid-service-gender-error'
+import { UserRegisterUseCase } from '@/use-cases/user-register'
+import { EmailAlreadyExistsError } from '@/use-cases/errors/email-already-exists-error'
+import { InvalidServiceGenderError } from '@/use-cases/errors/invalid-service-gender-error'
 
 let usersRepository: InMemoryUsersRepository
 let sut: UserRegisterUseCase

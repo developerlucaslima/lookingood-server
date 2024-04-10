@@ -2,10 +2,10 @@ import { expect, describe, it, beforeEach } from 'vitest'
 import { InMemoryServicesRepository } from '@/repositories/in-memory/in-memory-services-repository'
 import { InMemoryEstablishmentsRepository } from '@/repositories/in-memory/in-memory-establishments-repository'
 import { Decimal } from '@prisma/client/runtime/library'
-import { InvalidServiceGenderError } from '../errors/invalid-service-gender-error'
-import { AddServiceUseCase } from '../factories/add-service'
-import { InvalidServiceDurationError } from '../errors/invalid-service-duration-error'
-import { EstablishmentNotFoundError } from '../errors/establishment-not-found-error'
+import { AddServiceUseCase } from '@/use-cases/add-service'
+import { EstablishmentNotFoundError } from '@/use-cases/errors/establishment-not-found-error'
+import { InvalidServiceDurationError } from '@/use-cases/errors/invalid-service-duration-error'
+import { InvalidServiceGenderError } from '@/use-cases/errors/invalid-service-gender-error'
 
 let servicesRepository: InMemoryServicesRepository
 let establishmentRepository: InMemoryEstablishmentsRepository

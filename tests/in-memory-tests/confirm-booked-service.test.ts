@@ -6,7 +6,7 @@ import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-user
 import { Decimal } from '@prisma/client/runtime/library'
 import { InMemoryBookingsRepository } from '@/repositories/in-memory/in-memory-bookings-repository'
 import { InMemorySchedulesRepository } from '@/repositories/in-memory/in-memory-schedule-repository'
-import { ConfirmBookedServiceUseCase } from '../factories/confirm-booked-service'
+import { ConfirmBookedServiceUseCase } from '@/use-cases/confirm-booked-service'
 
 let establishmentsRepository: InMemoryEstablishmentsRepository
 let professionalsRepository: InMemoryProfessionalsRepository
@@ -39,12 +39,13 @@ describe('Booking Service Use Case', () => {
       createdAt: new Date(),
     })
 
-    professionalsRepository.items.push({
+    const professionalData = {
       id: 'Professional-01',
       name: 'John Doe',
       imageUrl: 'image.url',
       establishmentId: 'Barber-01',
-    })
+    }
+    professionalsRepository.items.set(professionalData.id, professionalData)
 
     servicesRepository.items.push({
       id: 'Service-01',

@@ -1,12 +1,12 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 import { InMemoryEstablishmentsRepository } from '@/repositories/in-memory/in-memory-establishments-repository'
 import { Decimal } from '@prisma/client/runtime/library'
-import { AddScheduleUseCase } from '../factories/add-schedule'
 import { InMemorySchedulesRepository } from '@/repositories/in-memory/in-memory-schedule-repository'
-import { EstablishmentNotFoundError } from '../errors/establishment-not-found-error'
-import { InvalidTimeFormatError } from '../errors/invalid-time-format-error'
-import { OpeningOrClosingNotFoundError } from '../errors/opening-or-closing-not-found-error'
-import { ScheduleTimesNotFoundError } from '../errors/schedule-times-not-found-error'
+import { AddScheduleUseCase } from '@/use-cases/add-schedule'
+import { EstablishmentNotFoundError } from '@/use-cases/errors/establishment-not-found-error'
+import { InvalidTimeFormatError } from '@/use-cases/errors/invalid-time-format-error'
+import { OpeningOrClosingNotFoundError } from '@/use-cases/errors/opening-or-closing-not-found-error'
+import { ScheduleTimesNotFoundError } from '@/use-cases/errors/schedule-times-not-found-error'
 
 let schedulesRepository: InMemorySchedulesRepository
 let establishmentsRepository: InMemoryEstablishmentsRepository
