@@ -1,7 +1,7 @@
 import { hash } from 'bcryptjs'
 import { Establishment } from '@prisma/client'
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
-import { EmailAlreadyExistsError } from '../errors/email-already-exists-error'
+import { EmailAlreadyExistsError } from './errors/email-already-exists-error'
 
 interface EstablishmentRegisterUseCaseRequest {
   name: string

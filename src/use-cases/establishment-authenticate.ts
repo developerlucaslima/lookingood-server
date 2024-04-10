@@ -1,7 +1,7 @@
 import { compare } from 'bcryptjs'
 import { Establishment } from '@prisma/client'
-import { InvalidCredentialsError } from '../errors/invalid-credentials-error'
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
+import { InvalidCredentialsError } from './errors/invalid-credentials-error'
 interface EstablishmentAuthenticateUseCaseRequest {
   email: string
   password: string

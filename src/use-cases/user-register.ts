@@ -1,8 +1,8 @@
 import { UsersRepository } from '@/repositories/users-repository'
 import { hash } from 'bcryptjs'
 import { User } from '@prisma/client'
-import { EmailAlreadyExistsError } from '../errors/email-already-exists-error'
-import { InvalidServiceGenderError } from '../errors/invalid-service-gender-error'
+import { EmailAlreadyExistsError } from './errors/email-already-exists-error'
+import { InvalidServiceGenderError } from './errors/invalid-service-gender-error'
 
 interface UserRegisterUseCaseRequest {
   name: string
