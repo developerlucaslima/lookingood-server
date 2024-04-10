@@ -7,16 +7,6 @@ export class InMemoryProfessionalsRepository
 {
   public items: Map<Professional['id'], Professional> = new Map()
 
-  async findById(id: string) {
-    const barber = this.items.get(id)
-
-    if (!barber) {
-      return null
-    }
-
-    return barber
-  }
-
   async create(data: Prisma.ProfessionalUncheckedCreateInput) {
     const barber = {
       id: randomUUID(),
@@ -26,6 +16,16 @@ export class InMemoryProfessionalsRepository
     }
 
     this.items.set(barber.id, barber)
+
+    return barber
+  }
+
+  async findById(id: string) {
+    const barber = this.items.get(id)
+
+    if (!barber) {
+      return null
+    }
 
     return barber
   }
