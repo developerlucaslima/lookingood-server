@@ -2,9 +2,9 @@ import { ServicesRepository } from '@/repositories/services-repository'
 import { Service } from '@prisma/client'
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
 import { validateServiceDuration } from '@/utils/validate-service-duration'
-import { EstablishmentNotFoundError } from './errors/establishment-not-found-error'
-import { InvalidServiceDurationError } from './errors/invalid-service-duration-error'
-import { InvalidServiceGenderError } from './errors/invalid-service-gender-error'
+import { EstablishmentNotFoundError } from '@/use-cases/errors/establishment-not-found-error'
+import { InvalidServiceDurationError } from '@/use-cases/errors/invalid-service-duration-error'
+import { InvalidServiceGenderError } from '@/use-cases/errors/invalid-service-gender-error'
 
 interface AddServiceUseCaseRequest {
   name: string

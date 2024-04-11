@@ -1,7 +1,7 @@
 import { ProfessionalsRepository } from '@/repositories/professionals-repository'
 import { Professional } from '@prisma/client'
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
-import { EstablishmentNotFoundError } from './errors/establishment-not-found-error'
+import { EstablishmentNotFoundError } from '@/use-cases/errors/establishment-not-found-error'
 
 interface AddProfessionalUseCaseRequest {
   name: string

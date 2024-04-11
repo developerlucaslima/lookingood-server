@@ -2,10 +2,10 @@ import { Schedule } from '@prisma/client'
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
 import { SchedulesRepository } from '@/repositories/schedules-repository'
 import { validateTimeFormat } from '@/utils/validate-timetable-format'
-import { EstablishmentNotFoundError } from './errors/establishment-not-found-error'
-import { InvalidTimeFormatError } from './errors/invalid-time-format-error'
-import { OpeningOrClosingNotFoundError } from './errors/opening-or-closing-not-found-error'
-import { ScheduleTimesNotFoundError } from './errors/schedule-times-not-found-error'
+import { EstablishmentNotFoundError } from '@/use-cases/errors/establishment-not-found-error'
+import { InvalidTimeFormatError } from '@/use-cases/errors/invalid-time-format-error'
+import { OpeningOrClosingNotFoundError } from '@/use-cases/errors/opening-or-closing-not-found-error'
+import { ScheduleTimesNotFoundError } from '@/use-cases/errors/schedule-times-not-found-error'
 
 interface AddScheduleUseCaseRequest {
   monOpeningTime: string | null

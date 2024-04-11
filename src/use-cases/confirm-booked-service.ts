@@ -1,6 +1,6 @@
 import { Booking } from '@prisma/client'
 import { BookingsRepository } from '@/repositories/bookings-repository'
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found-error'
 
 interface ConfirmBookedServiceUseCaseRequest {
   bookingId: string
