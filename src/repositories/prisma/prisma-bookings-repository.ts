@@ -1,6 +1,5 @@
-import { prisma } from '@/lib/prisma'
 import { Prisma } from '@prisma/client'
-
+import { prisma } from '@/prisma'
 import { BookingsRepository } from '../bookings-repository'
 import { InvalidTimetableError } from '@/use-cases/errors/invalid-timetable-error'
 
