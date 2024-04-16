@@ -10,13 +10,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Gender {
+  Both
+  Male
+  Female
+}
+
+enum Role {
+  User
+  Establishment
+}
+
 model User {
   id            String   @id @default(uuid())
   name          String
-  serviceGender String
+  serviceGender Gender   @default(Both)
   email         String   @unique
   passwordHash  String
   createdAt     DateTime @default(now())
+  role          Role     @default(User)
 
   booking Booking[]
 
@@ -34,6 +46,7 @@ model Establishment {
   createdAt    DateTime @default(now())
   latitude     Decimal
   longitude    Decimal
+  role         Role     @default(Establishment)
 
   service      Service[]
   Professional Professional[]
@@ -83,7 +96,7 @@ model Service {
   id                          String  @id @default(uuid())
   name                        String
   price                       Decimal @db.Decimal(10, 2)
-  genderFor                   String
+  genderFor                   Gender
   description                 String?
   imageUrl                    String?
   durationMinutes             Int
