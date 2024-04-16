@@ -3,18 +3,14 @@ import { makeUserRegisterUseCase } from '@/use-cases/factories/make-user-registe
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { z } from 'zod'
 
-export async function userAuthenticate(
+export async function userRegister(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
   const { name, serviceGender, email, password } = z
     .object({
       name: z.string(),
-      serviceGender: z
-        .string()
-        .refine((value) => ['Male', 'Female', 'Both'].includes(value), {
-          message: 'Service gender must be either "Male", "Female", or "Both"',
-        }),
+      serviceGender: z.enum(['Male', 'Female', 'Both']),
       email: z.string().email(),
       password: z.string().min(6),
     })
