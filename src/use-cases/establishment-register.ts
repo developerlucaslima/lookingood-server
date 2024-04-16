@@ -7,7 +7,7 @@ interface EstablishmentRegisterUseCaseRequest {
   name: string
   description: string | null
   phone: string | null
-  imageUrl: string
+  imageUrl: string | null
   email: string
   password: string
   latitude: number
