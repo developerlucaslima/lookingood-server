@@ -8,7 +8,6 @@ import { SchedulesRepository } from '@/repositories/schedules-repository'
 import { checkOperatingHours } from '@/utils/check-operating-hours'
 import { getDayOfWeekName } from '@/utils/get-day-of-week-name'
 import { getEndTimeByStartTime } from '@/utils/get-end-time-by-start-time'
-import { isAvailableToChange } from '@/utils/minutes-later'
 import { BookingNotFoundError } from '@/use-cases/errors/booking-not-found-error'
 import { EstablishmentNotFoundError } from '@/use-cases/errors/establishment-not-found-error'
 import { HourNotAvailable } from '@/use-cases/errors/hour-not-available'
@@ -18,6 +17,7 @@ import { ProfessionalNotFoundError } from '@/use-cases/errors/professional-not-f
 import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found-error'
 import { ServiceNotFoundError } from '@/use-cases/errors/service-not-found-error '
 import { UserNotFoundError } from '@/use-cases/errors/user-not-found-error '
+import { isAvailableToChange } from '@/utils/is-available-to-change'
 
 interface ChangeBookedServiceUseCaseRequest {
   startTime: Date
