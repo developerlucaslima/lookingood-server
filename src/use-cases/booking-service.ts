@@ -21,6 +21,7 @@ interface BookingServiceUseCaseRequest {
   userId: string
   serviceId: string
   professionalId: string
+  establishmentId: string
 }
 
 interface BookingServicesUseCaseResponse {
@@ -42,6 +43,7 @@ export class BookingServiceUseCase {
     userId,
     serviceId,
     professionalId,
+    establishmentId,
   }: BookingServiceUseCaseRequest): Promise<BookingServicesUseCaseResponse> {
     let endTime = null
 
@@ -62,14 +64,16 @@ export class BookingServiceUseCase {
       throw new UserNotFoundError()
     }
 
-    const establishment = await this.establishmentsRepository.findById(
-      service.establishmentId,
-    )
+    const establishment =
+      await this.establishmentsRepository.findById(establishmentId)
     if (!establishment) {
       throw new EstablishmentNotFoundError()
     }
 
-    if (service.establishmentId !== professional.establishmentId) {
+    if (
+      establishmentId !== service.establishmentId &&
+      establishmentId !== professional.establishmentId
+    ) {
       throw new ResourceNotFoundError()
     }
 
@@ -107,6 +111,7 @@ export class BookingServiceUseCase {
       userId,
       serviceId,
       professionalId,
+      establishmentId,
     })
 
     return {

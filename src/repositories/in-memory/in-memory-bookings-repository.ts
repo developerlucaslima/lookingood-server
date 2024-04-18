@@ -14,6 +14,7 @@ export class InMemoryBookingsRepository implements BookingsRepository {
       userId: data.userId,
       serviceId: data.serviceId,
       professionalId: data.professionalId,
+      establishmentId: data.establishmentId,
     }
 
     this.items.push(booking)
