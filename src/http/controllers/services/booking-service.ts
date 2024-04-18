@@ -2,14 +2,18 @@ import { makeBookingServiceUseCase } from '@/use-cases/factories/make-booking-se
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
-export async function create(request: FastifyRequest, reply: FastifyReply) {
-  const { startTime, serviceId, professionalId } = z
+export async function bookingService(
+  request: FastifyRequest,
+  reply: FastifyReply,
+) {
+  const { startTime, serviceId, professionalId, establishmentId } = z
     .object({
       startTime: z.date().min(new Date(), {
         message: "That date has passed, we don't have a time machine. 😑",
       }),
       serviceId: z.string().uuid(),
       professionalId: z.string().uuid(),
+      establishmentId: z.string().uuid(),
     })
     .parse(request.body)
 
@@ -20,6 +24,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
     userId: request.user.sub,
     serviceId,
     professionalId,
+    establishmentId,
   })
 
   return reply.status(201).send()
