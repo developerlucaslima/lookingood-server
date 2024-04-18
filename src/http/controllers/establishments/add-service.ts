@@ -3,10 +3,7 @@ import { makeAddServiceUseCase } from '@/use-cases/factories/make-add-service-us
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { z } from 'zod'
 
-export async function addProfessional(
-  request: FastifyRequest,
-  reply: FastifyReply,
-) {
+export async function addService(request: FastifyRequest, reply: FastifyReply) {
   const {
     name,
     price,

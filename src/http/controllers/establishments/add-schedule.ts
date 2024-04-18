@@ -3,7 +3,7 @@ import { makeAddScheduleUseCase } from '@/use-cases/factories/make-add-schedule-
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { z } from 'zod'
 
-export async function addProfessional(
+export async function addSchedule(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
