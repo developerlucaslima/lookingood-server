@@ -21,6 +21,7 @@ import { isAvailableToChange } from '@/utils/is-available-to-change'
 
 interface ChangeBookedServiceUseCaseRequest {
   startTime: Date
+  userId: string
   serviceId: string
   bookingId: string
 }
@@ -41,6 +42,7 @@ export class ChangeBookedServiceUseCase {
 
   async execute({
     startTime,
+    userId,
     serviceId,
     bookingId,
   }: ChangeBookedServiceUseCaseRequest): Promise<ChangeBookedServicesUseCaseResponse> {
@@ -51,8 +53,12 @@ export class ChangeBookedServiceUseCase {
       throw new BookingNotFoundError()
     }
 
-    const user = await this.usersRepository.findById(booking.userId)
+    const user = await this.usersRepository.findById(userId)
     if (!user) {
+      throw new UserNotFoundError()
+    }
+
+    if (userId !== booking.userId) {
       throw new UserNotFoundError()
     }
 
