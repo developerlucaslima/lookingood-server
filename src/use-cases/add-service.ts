@@ -1,5 +1,5 @@
 import { ServicesRepository } from '@/repositories/services-repository'
-import { Service } from '@prisma/client'
+import { $Enums, Service } from '@prisma/client'
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
 import { validateServiceDuration } from '@/utils/validate-service-duration'
 import { EstablishmentNotFoundError } from '@/use-cases/errors/establishment-not-found-error'
@@ -9,7 +9,7 @@ import { InvalidServiceGenderError } from '@/use-cases/errors/invalid-service-ge
 interface AddServiceUseCaseRequest {
   name: string
   price: number
-  genderFor: string
+  genderFor: $Enums.Gender
   description: string | null
   imageUrl: string | null
   modificationDeadlineMinutes: number
@@ -37,22 +37,25 @@ export class AddServiceUseCase {
     establishmentId,
     durationMinutes,
   }: AddServiceUseCaseRequest): Promise<AddServiceUseCaseResponse> {
+    // it shouldn't be possible to add a service if the establishment doesn't exist
     const establishment =
       await this.establishmentRepository.findById(establishmentId)
-
     if (!establishment) {
       throw new EstablishmentNotFoundError()
     }
 
+    // it should validate the duration of the service
     const isValidServiceDuration = validateServiceDuration(durationMinutes)
     if (!isValidServiceDuration) {
       throw new InvalidServiceDurationError()
     }
 
-    if (!['Male', 'Female', 'Both'].includes(genderFor)) {
+    // it should validate the gender specification for the service
+    if (!['MALE', 'FEMALE', 'BOTH'].includes(genderFor)) {
       throw new InvalidServiceGenderError()
     }
 
+    // it should be possible to add a service
     const service = await this.servicesRepository.create({
       name,
       price,
@@ -64,6 +67,7 @@ export class AddServiceUseCase {
       durationMinutes,
     })
 
+    // it should return the added service
     return {
       service,
     }

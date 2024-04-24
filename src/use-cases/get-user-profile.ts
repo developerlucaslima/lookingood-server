@@ -16,12 +16,15 @@ export class GetUserProfileUseCase {
   async execute({
     userId,
   }: GetUserProfileUseCaseRequest): Promise<GetUserProfileUseCaseResponse> {
+    // it should find the user by their ID
     const user = await this.usersRepository.findById(userId)
 
+    // it should throw an error if the user is not found
     if (!user) {
       throw new ResourceNotFoundError()
     }
 
+    // it should return the profile of the user
     return {
       user,
     }

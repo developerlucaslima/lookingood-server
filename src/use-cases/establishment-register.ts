@@ -1,7 +1,7 @@
 import { hash } from 'bcryptjs'
 import { Establishment } from '@prisma/client'
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
-import { EmailAlreadyExistsError } from '@/use-cases/errors/email-already-exists-error'
+import { EmailNotAvailableError } from './errors/email-not-available-error'
 
 interface EstablishmentRegisterUseCaseRequest {
   name: string
@@ -31,14 +31,17 @@ export class EstablishmentRegisterUseCase {
     latitude,
     longitude,
   }: EstablishmentRegisterUseCaseRequest): Promise<EstablishmentRegisterUseCaseResponse> {
+    // it should check if an establishment with the same email already exists
     const userWithSameEmail =
       await this.establishmentsRepository.findByEmail(email)
     if (userWithSameEmail) {
-      throw new EmailAlreadyExistsError()
+      throw new EmailNotAvailableError(email)
     }
 
+    // it should hash the provided password
     const passwordHash = await hash(password, 6)
 
+    // it should create a new establishment with the provided data
     const establishment = await this.establishmentsRepository.create({
       name,
       description,
@@ -50,6 +53,7 @@ export class EstablishmentRegisterUseCase {
       longitude,
     })
 
+    // it should return the newly created establishment
     return {
       establishment,
     }
