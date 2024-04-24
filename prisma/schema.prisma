@@ -1,6 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
+// ----------- Config ----------- 
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,26 +8,46 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ----------- Enums ----------- 
 enum Gender {
-  Both
-  Male
-  Female
+  BOTH
+  MALE
+  FEMALE
 }
 
 enum Role {
-  User
-  Establishment
+  USER
+  ESTABLISHMENT
 }
 
+enum WeekDay {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+enum Status {
+  WAITING_FOR_CONFIRMATION
+  CONFIRMED
+  CHECK_OUT
+  NO_SHOW
+}
+
+// ----------- Models ----------- 
 model User {
   id            String   @id @default(uuid())
   name          String
-  serviceGender Gender   @default(Both)
+  serviceGender Gender   @default(BOTH)
   email         String   @unique
   passwordHash  String
   createdAt     DateTime @default(now())
-  role          Role     @default(User)
+  role          Role     @default(USER)
 
+  // --- Relationship ---
   booking Booking[]
 
   @@map("users")
@@ -46,14 +64,30 @@ model Establishment {
   createdAt    DateTime @default(now())
   latitude     Decimal
   longitude    Decimal
-  role         Role     @default(Establishment)
+  role         Role     @default(ESTABLISHMENT)
 
-  service      Service[]
-  Professional Professional[]
-  Schedule     Schedule[]
-  Booking      Booking[]
+  // --- Relationship ---
+  service               Service[]
+  Professional          Professional[]
+  Booking               Booking[]
+  EstablishmentSchedule EstablishmentSchedule[]
 
   @@map("establishments")
+}
+
+model EstablishmentSchedule {
+  id             String  @id @default(uuid())
+  startTime      String
+  minutesWorking Int
+  breakTime      String?
+  minutesBreak   Int?
+  weekDay        WeekDay
+
+  // --- Foreign Key ---
+  establishment   Establishment @relation(fields: [establishmentId], references: [id])
+  establishmentId String
+
+  @@map("establishmentSchedule")
 }
 
 model Professional {
@@ -61,36 +95,30 @@ model Professional {
   name     String
   imageUrl String?
 
+  // --- Foreign Key ---
   establishment   Establishment @relation(fields: [establishmentId], references: [id])
   establishmentId String
 
-  booking Booking[]
+  // --- Relationship ---
+  booking              Booking[]
+  ProfessionalSchedule ProfessionalSchedule[]
 
   @@map("professionals")
 }
 
-model Schedule {
+model ProfessionalSchedule {
   id             String  @id @default(uuid())
-  monOpeningTime String? // Opening time for Monday
-  tueOpeningTime String? // Opening time for Tuesday
-  wedOpeningTime String? // Opening time for Wednesday
-  thuOpeningTime String? // Opening time for Thursday
-  friOpeningTime String? // Opening time for Friday
-  satOpeningTime String? // Opening time for Saturday
-  sunOpeningTime String? // Opening time for Sunday
+  startTime      String
+  minutesWorking Int
+  breakTime      String?
+  minutesBreak   Int?
+  weekDay        WeekDay
 
-  monClosingTime String? // Closing time for Monday
-  tueClosingTime String? // Closing time for Tuesday
-  wedClosingTime String? // Closing time for Wednesday
-  thuClosingTime String? // Closing time for Thursday
-  friClosingTime String? // Closing time for Friday
-  satClosingTime String? // Closing time for Saturday
-  sunClosingTime String? // Closing time for Sunday
+  // --- Foreign Key ---
+  professional   Professional @relation(fields: [professionalId], references: [id])
+  professionalId String
 
-  establishment   Establishment @relation(fields: [establishmentId], references: [id])
-  establishmentId String
-
-  @@map("schedules")
+  @@map("professionalSchedule")
 }
 
 model Service {
@@ -103,9 +131,11 @@ model Service {
   durationMinutes             Int
   modificationDeadlineMinutes Int
 
+  // --- Foreign Key ---
   establishment   Establishment @relation(fields: [establishmentId], references: [id])
   establishmentId String
 
+  // --- Relationship ---
   booking Booking[]
 
   @@map("services")
@@ -117,6 +147,7 @@ model Booking {
   startTime DateTime
   endTime   DateTime
 
+  // --- Foreign Key ---
   Professional    Professional  @relation(fields: [professionalId], references: [id])
   professionalId  String
   service         Service       @relation(fields: [serviceId], references: [id])
