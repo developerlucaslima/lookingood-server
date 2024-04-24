@@ -1,13 +1,14 @@
 import { verifyJwt } from '@/http/middlewares/verify-jwt'
 import { FastifyInstance } from 'fastify'
 import { addProfessional } from './add-professional'
-import { addSchedule } from './add-schedule'
 import { addService } from './add-service'
 import { establishmentAuthenticate } from './establishment-authenticate'
 import { establishmentProfile } from './establishment-profile'
 import { establishmentRefresh } from './establishment-refresh'
 import { establishmentRegister } from './establishment-register'
 import { verifyUserRole } from '@/http/middlewares/verify-user-role'
+import { addProfessionalSchedule } from './add-professional-schedule'
+import { addEstablishmentSchedule } from './add-establishment-schedule'
 
 export async function appEstablishment(app: FastifyInstance) {
   app.post('/establishmentRegister', establishmentRegister)
@@ -23,9 +24,14 @@ export async function appEstablishment(app: FastifyInstance) {
     addProfessional,
   )
   app.post(
-    '/schedule',
+    '/professionalSchedule',
     { onRequest: [verifyJwt, verifyUserRole('Establishment')] },
-    addSchedule,
+    addProfessionalSchedule,
+  )
+  app.post(
+    '/establishmentSchedule',
+    { onRequest: [verifyJwt, verifyUserRole('Establishment')] },
+    addEstablishmentSchedule,
   )
   app.post(
     '/service',
