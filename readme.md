@@ -1,25 +1,25 @@
 # TODO: Use Cases and Tests
 
 ## Users
-- [X] - ✨ Users must be able *register via email*.
-    - [X] - 🧪 It should not be able to register with same email twice.
-    - [X] - 🧪 It should hash user password upon registration.
-    - [X] - 🧪 It should validate serviceGender as "Male".
-    - [X] - 🧪 It should validate serviceGender as "Female".
-    - [X] - 🧪 It should validate serviceGender as "Both".
-    - [X] - 🧪 It should not be allowed to register service gender unless specified as "Male", "Female" or "Both".
-    - [X] - 🧪 It should not be allowed to register service gender as blank.
-- [X] - ✨ Users must be able *authenticate via email*.
-    - [X] - 🧪 It should not be able to authenticate with wrong email.
-    - [X] - 🧪 It should not be able to authenticate with wrong password. 
-- [X] - ✨ Users must be able to *book services* by selecting an establishment, professional (optional), date, time, and desired service.
-    - [X] - 🧪 It should not be able to book a service with nonexistent professionalId.
-    - [X] - 🧪 It should not be able to book a service with nonexistent serviceId.
-    - [X] - 🧪 It should not be able to book a service with nonexistent userId.
-    - [X] - 🧪 It should not be able to book a service with professional from different establishment.
-    - [X] - 🧪 It should not be able to book a service with any other status than "Waiting for confirmation".
-    - [X] - 🧪 It should not be able to book if the professional is already booked at the same time.
-    - [X] - 🧪 It should not be able to book a service outside of the establishment's operating hours.
+- [ ] - ✨ Users must be able *register via email*.
+    - [ ] - 🧪 It should not be able to register with same email twice.
+    - [ ] - 🧪 It should hash user password upon registration.
+    - [ ] - 🧪 It should validate serviceGender as "Male".
+    - [ ] - 🧪 It should validate serviceGender as "Female".
+    - [ ] - 🧪 It should validate serviceGender as "Both".
+    - [ ] - 🧪 It should not be allowed to register service gender unless specified as "Male", "Female" or "Both".
+    - [ ] - 🧪 It should not be allowed to register service gender as blank.
+- [ ] - ✨ Users must be able *authenticate via email*.
+    - [ ] - 🧪 It should not be able to authenticate with wrong email.
+    - [ ] - 🧪 It should not be able to authenticate with wrong password. 
+- [ ] - ✨ Users must be able to *book services* by selecting an establishment, professional (optional), date, time, and desired service.
+    - [ ] - 🧪 It should not be able to book a service with nonexistent professionalId.
+    - [ ] - 🧪 It should not be able to book a service with nonexistent serviceId.
+    - [ ] - 🧪 It should not be able to book a service with nonexistent userId.
+    - [ ] - 🧪 It should not be able to book a service with professional from different establishment.
+    - [ ] - 🧪 It should not be able to book a service with any other status than "Waiting for confirmation".
+    - [ ] - 🧪 It should not be able to book if the professional is already booked at the same time.
+    - [ ] - 🧪 It should not be able to book a service outside of the establishment's operating hours.
     - [ ] - 🧪 It should allow users to book multiple services at the same time if offered by the establishment and time slots do not overlap.
 - [ ] - ✨ Users must be able to change a service date.
 - [ ] - ✨ Users must be able to cancel a booked service or confirmed service.
@@ -27,32 +27,32 @@
 - [ ] - ✨ Users must receive booking confirmation via email or app notification.
 
 ## Establishments
-- [X] - ✨ Establishments must be able *register via email*.
-    - [X] - 🧪 It should not be able to register with same email twice.
-    - [X] - 🧪 It should hash user password upon registration.
-    - [X] - 🧪 It should not be allowed to register service gender unless specified as "Male", "Female" or "Both".
-    - [X] - 🧪 It should not be allowed to register service gender as blank.
-- [X] - ✨ Establishments must be able *authenticate via email*.
-    - [X] - 🧪 It should not be able to authenticate with wrong email.
-    - [X] - 🧪 It should not be able to authenticate with wrong password.
-- [X] - ✨ Establishments must be able to *add a service*.
-    - [X] - 🧪 It should not be able to create service with nonexistent establishmentId.
-    - [X] - 🧪 It should validate service as "Male".
-    - [X] - 🧪 It should validate service as "Female".
-    - [X] - 🧪 It should validate service as "Both".
-    - [X] - 🧪 It should not be allowed to register service gender unless specified as "Male", "Female" or "Both".
-    - [X] - 🧪 It should not be allowed to register service gender as blank.
-    - [X] - 🧪 It should not be allowed to register service with durations that are not multiples of 15 minutes.
-    - [X] - 🧪 It 'should not be allowed to register service with durations under 15 minutes.
-- [X] - ✨ Establishments must be able to *add a professional*.
-    - [X] - 🧪 It should not be able to add professional with nonexistent establishmentId.
-- [X] - ✨ Establishments must be able to *add a schedule*.
-    - [X] - 🧪 It should not be able to add schedule with nonexistent establishmentId.
-    - [X] - 🧪 It should not be able to create a schedule with invalid time format.
-    - [X] - 🧪 It 'should not be able to create a schedule with only null values.
-    - [X] - 🧪 It should not be able to create a schedule with opening time but without a corresponding closing time, and vice versa.
-- [X] - ✨ Establishments must be able to confirm a service booked by a user.
-    - [X] - 🧪 It should allow establishment confirm for service date changes.
+- [ ] - ✨ Establishments must be able *register via email*.
+    - [ ] - 🧪 It should not be able to register with same email twice.
+    - [ ] - 🧪 It should hash user password upon registration.
+    - [ ] - 🧪 It should not be allowed to register service gender unless specified as "Male", "Female" or "Both".
+    - [ ] - 🧪 It should not be allowed to register service gender as blank.
+- [ ] - ✨ Establishments must be able *authenticate via email*.
+    - [ ] - 🧪 It should not be able to authenticate with wrong email.
+    - [ ] - 🧪 It should not be able to authenticate with wrong password.
+- [ ] - ✨ Establishments must be able to *add a service*.
+    - [ ] - 🧪 It should not be able to create service with nonexistent establishmentId.
+    - [ ] - 🧪 It should validate service as "Male".
+    - [ ] - 🧪 It should validate service as "Female".
+    - [ ] - 🧪 It should validate service as "Both".
+    - [ ] - 🧪 It should not be allowed to register service gender unless specified as "Male", "Female" or "Both".
+    - [ ] - 🧪 It should not be allowed to register service gender as blank.
+    - [ ] - 🧪 It should not be allowed to register service with durations that are not multiples of 15 minutes.
+    - [ ] - 🧪 It 'should not be allowed to register service with durations under 15 minutes.
+- [ ] - ✨ Establishments must be able to *add a professional*.
+    - [ ] - 🧪 It should not be able to add professional with nonexistent establishmentId.
+- [ ] - ✨ Establishments must be able to *add a schedule*.
+    - [ ] - 🧪 It should not be able to add schedule with nonexistent establishmentId.
+    - [ ] - 🧪 It should not be able to create a schedule with invalid time format.
+    - [ ] - 🧪 It 'should not be able to create a schedule with only null values.
+    - [ ] - 🧪 It should not be able to create a schedule with opening time but without a corresponding closing time, and vice versa.
+- [ ] - ✨ Establishments must be able to confirm a service booked by a user.
+    - [ ] - 🧪 It should allow establishment confirm for service date changes.
 - [ ] - ✨ Establishments must be able to cancel a service confirmed.
     - [ ] - 🧪 For each service offered, establishments must specify the gender served (female, male, or both).
 - [ ] - ✨ Establishments must be able to check in a user for a confirmed service booked.
