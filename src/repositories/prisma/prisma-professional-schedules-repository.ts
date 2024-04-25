@@ -1,5 +1,5 @@
 import { prisma } from '@/prisma'
-import { Prisma } from '@prisma/client'
+import { $Enums, Prisma } from '@prisma/client'
 import { ProfessionalSchedulesRepository } from '../professional-schedules-repository'
 
 export class PrismaProfessionalSchedulesRepository
@@ -17,6 +17,20 @@ export class PrismaProfessionalSchedulesRepository
     const schedule = await prisma.professionalSchedule.findFirst({
       where: {
         professionalId,
+      },
+    })
+
+    return schedule
+  }
+
+  async findByProfessionalIdAndWeekDay(
+    professionalId: string,
+    weekDay: $Enums.WeekDay,
+  ) {
+    const schedule = await prisma.professionalSchedule.findFirst({
+      where: {
+        professionalId,
+        weekDay,
       },
     })
 
