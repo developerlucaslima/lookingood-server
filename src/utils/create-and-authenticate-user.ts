@@ -9,7 +9,7 @@ export async function createAndAuthenticateUser(app: FastifyInstance) {
       name: 'John Doe',
       email: 'john.doe@gmail.com',
       passwordHash: await hash('123456', 6),
-      serviceGender: 'Male',
+      serviceGender: 'MALE',
     },
   })
 
