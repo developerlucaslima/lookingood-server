@@ -1,0 +1,17 @@
+// Status code 404 (Not Found) - Not Found: The requested resource could not be found but may be available in the future. Subsequent requests by the client are permissible.
+const NOT_FOUND_ERROR_CODE = 404
+
+export class ReservationNotFoundException extends Error {
+  public readonly code: number
+
+  constructor(reason?: string) {
+    let errorMessage =
+      "Sorry, we couldn't find the reservation you're looking for."
+    if (reason) {
+      errorMessage += ` ${reason}`
+    }
+    super(errorMessage)
+    this.name = 'ReservationNotFoundException'
+    this.code = NOT_FOUND_ERROR_CODE
+  }
+}
