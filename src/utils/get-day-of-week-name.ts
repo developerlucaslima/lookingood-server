@@ -1,5 +1,7 @@
-export function getDayOfWeekName(date: Date): string {
-  const days = [
+import { WeekDay } from '@prisma/client'
+
+export function getDayOfWeekName(date: Date): WeekDay {
+  const days: WeekDay[] = [
     'SUNDAY',
     'MONDAY',
     'TUESDAY',
@@ -8,5 +10,5 @@ export function getDayOfWeekName(date: Date): string {
     'FRIDAY',
     'SATURDAY',
   ]
-  return days[date.getDay()]
+  return days[date.getDay()] as WeekDay
 }
