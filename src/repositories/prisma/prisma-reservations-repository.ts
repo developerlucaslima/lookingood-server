@@ -14,8 +14,8 @@ export class PrismaReservationsRepository implements ReservationsRepository {
 
       if (isConflict) {
         throw new TimetableNotAvailableException(
-          data.startTime.toString(),
-          data.endTime.toString(),
+          data.startTime.toLocaleString(),
+          data.endTime.toLocaleString(),
           'Transaction failed to create reservation.',
         )
       }
