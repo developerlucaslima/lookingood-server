@@ -1,4 +1,4 @@
-export function isAvailableToChange(
+export function isAvailableToUpdate(
   startTime: Date,
   modificationDeadlineMinutes: number,
 ): boolean {
