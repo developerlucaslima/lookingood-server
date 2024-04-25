@@ -1,6 +1,6 @@
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
 import { Establishment } from '@prisma/client'
-import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found-error'
+import { EstablishmentNotFoundException } from './errors/404-establishment-not-found-exception'
 
 interface GetEstablishmentProfileUseCaseRequest {
   establishmentId: string
@@ -22,7 +22,7 @@ export class GetEstablishmentProfileUseCase {
 
     // it should throw an error if the establishment is not found
     if (!establishment) {
-      throw new ResourceNotFoundError()
+      throw new EstablishmentNotFoundException()
     }
 
     // it should return the profile of the establishment

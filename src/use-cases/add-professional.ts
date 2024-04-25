@@ -1,7 +1,7 @@
 import { ProfessionalsRepository } from '@/repositories/professionals-repository'
 import { Professional } from '@prisma/client'
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
-import { EstablishmentNotFoundError } from '@/use-cases/errors/establishment-not-found-error'
+import { EstablishmentNotFoundException } from './errors/404-establishment-not-found-exception'
 
 interface AddProfessionalUseCaseRequest {
   name: string
@@ -28,7 +28,7 @@ export class AddProfessionalUseCase {
     const establishment =
       await this.establishmentRepository.findById(establishmentId)
     if (!establishment) {
-      throw new EstablishmentNotFoundError()
+      throw new EstablishmentNotFoundException()
     }
 
     // it should be possible to add a professional

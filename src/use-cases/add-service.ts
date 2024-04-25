@@ -1,10 +1,10 @@
 import { ServicesRepository } from '@/repositories/services-repository'
 import { $Enums, Service } from '@prisma/client'
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
-import { validateServiceDuration } from '@/utils/validate-service-duration'
-import { EstablishmentNotFoundError } from '@/use-cases/errors/establishment-not-found-error'
-import { InvalidServiceDurationError } from '@/use-cases/errors/invalid-service-duration-error'
-import { InvalidServiceGenderError } from '@/use-cases/errors/invalid-service-gender-error'
+import { EstablishmentNotFoundException } from './errors/404-establishment-not-found-exception'
+import { InvalidServiceDurationException } from './errors/422-invalid-service-duration-exception'
+import { InvalidGenderException } from './errors/422-invalid-gender-exception'
+import { isValidServiceDuration } from '@/utils/is-valid-service-duration'
 
 interface AddServiceUseCaseRequest {
   name: string
@@ -41,18 +41,17 @@ export class AddServiceUseCase {
     const establishment =
       await this.establishmentRepository.findById(establishmentId)
     if (!establishment) {
-      throw new EstablishmentNotFoundError()
+      throw new EstablishmentNotFoundException()
     }
 
     // it should validate the duration of the service
-    const isValidServiceDuration = validateServiceDuration(durationMinutes)
-    if (!isValidServiceDuration) {
-      throw new InvalidServiceDurationError()
+    if (!isValidServiceDuration(durationMinutes)) {
+      throw new InvalidServiceDurationException()
     }
 
     // it should validate the gender specification for the service
     if (!['MALE', 'FEMALE', 'BOTH'].includes(genderFor)) {
-      throw new InvalidServiceGenderError()
+      throw new InvalidGenderException()
     }
 
     // it should be possible to add a service

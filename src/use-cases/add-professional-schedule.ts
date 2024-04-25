@@ -1,14 +1,14 @@
 import { ProfessionalSchedulesRepository } from '@/repositories/professional-schedules-repository'
 import { ProfessionalsRepository } from '@/repositories/professionals-repository'
 import { $Enums, ProfessionalSchedule } from '@prisma/client'
-import { ProfessionalNotFoundError } from './errors/professional-not-found-error'
-import { EstablishmentNotFoundError } from './errors/establishment-not-found-error'
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
 import { EstablishmentSchedulesRepository } from '@/repositories/establishment-schedules-repository'
 import { compareSchedules } from '@/utils/compare-schedules'
-import { UnavailableOpeningHoursError } from './errors/unavailable-opening-hours-error'
-import { InvalidEmployeeScheduleError } from './errors/invalid-employee-schedule-error'
-import { InvalidInputParametersError } from './errors/invalid-input-parameters-error'
+import { ProfessionalNotFoundException } from './errors/404-professional-not-found-exception'
+import { EstablishmentNotFoundException } from './errors/404-establishment-not-found-exception'
+import { InvalidInputParametersException } from './errors/400-invalid-input-parameters-exception'
+import { ScheduleNotFoundException } from './errors/404-schedule-not-found-exception'
+import { InvalidEmployeeScheduleException } from './errors/422-invalid-employee-schedule-exception'
 
 interface AddProfessionalScheduleUseCaseRequest {
   startTime: string
@@ -43,7 +43,7 @@ export class AddProfessionalScheduleUseCase {
     const professional =
       await this.professionalsRepository.findById(professionalId)
     if (!professional) {
-      throw new ProfessionalNotFoundError()
+      throw new ProfessionalNotFoundException()
     }
 
     // it shouldn't be possible to create a schedule if the establishment doesn't exist
@@ -51,12 +51,12 @@ export class AddProfessionalScheduleUseCase {
       professional.establishmentId,
     )
     if (!establishment) {
-      throw new EstablishmentNotFoundError()
+      throw new EstablishmentNotFoundException()
     }
 
     // it shouldn't be possible to create a schedule with negative time parameters
     if (minutesWorking < 0 || (breakTime && minutesBreak && minutesBreak < 0)) {
-      throw new InvalidInputParametersError('Minutes cannot be negative.')
+      throw new InvalidInputParametersException('Minutes cannot be negative.')
     }
 
     // it shouldn't be possible to create a schedule if the establishment doesn't have opening hours for the given weekday
@@ -66,7 +66,7 @@ export class AddProfessionalScheduleUseCase {
         weekDay,
       )
     if (!establishmentSchedule) {
-      throw new UnavailableOpeningHoursError(weekDay)
+      throw new ScheduleNotFoundException(weekDay)
     }
 
     // it shouldn't be possible to create a schedule if the professional's schedule conflicts with the establishment's schedule
@@ -82,7 +82,7 @@ export class AddProfessionalScheduleUseCase {
         establishmentSchedule.minutesBreak,
       )
       if (!isCompatibleSchedules) {
-        throw new InvalidEmployeeScheduleError(weekDay)
+        throw new InvalidEmployeeScheduleException(weekDay)
       }
     }
 

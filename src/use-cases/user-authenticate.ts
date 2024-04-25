@@ -1,7 +1,7 @@
 import { UsersRepository } from '@/repositories/users-repository'
 import { compare } from 'bcryptjs'
 import { User } from '@prisma/client'
-import { InvalidCredentialsError } from '@/use-cases/errors/invalid-credentials-error'
+import { InvalidCredentialsException } from './errors/401-invalid-credentials-exception'
 
 interface UserAuthenticateUseCaseRequest {
   email: string
@@ -24,7 +24,7 @@ export class UserAuthenticateUseCase {
 
     // it should throw an error if the user is not found
     if (!user) {
-      throw new InvalidCredentialsError()
+      throw new InvalidCredentialsException()
     }
 
     // it should compare the provided password with the user's password hash
@@ -32,7 +32,7 @@ export class UserAuthenticateUseCase {
 
     // it should throw an error if the passwords don't match
     if (!doesPasswordsMatch) {
-      throw new InvalidCredentialsError()
+      throw new InvalidCredentialsException()
     }
 
     // it should return the authenticated user

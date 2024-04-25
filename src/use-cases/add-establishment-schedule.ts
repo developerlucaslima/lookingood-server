@@ -1,7 +1,7 @@
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
-import { EstablishmentNotFoundError } from '@/use-cases/errors/establishment-not-found-error'
 import { $Enums, EstablishmentSchedule } from '@prisma/client'
 import { EstablishmentSchedulesRepository } from '@/repositories/establishment-schedules-repository'
+import { EstablishmentNotFoundException } from './errors/404-establishment-not-found-exception'
 
 interface AddEstablishmentScheduleUseCaseRequest {
   startTime: string
@@ -19,7 +19,7 @@ interface AddEstablishmentScheduleUseCaseResponse {
 export class AddEstablishmentScheduleUseCase {
   constructor(
     private establishmentsRepository: EstablishmentsRepository,
-    private schedulesRepository: EstablishmentSchedulesRepository,
+    private establishmentSchedulesRepository: EstablishmentSchedulesRepository,
   ) {}
 
   async execute({
@@ -34,7 +34,7 @@ export class AddEstablishmentScheduleUseCase {
     const establishment =
       await this.establishmentsRepository.findById(establishmentId)
     if (!establishment) {
-      throw new EstablishmentNotFoundError()
+      throw new EstablishmentNotFoundException()
     }
 
     // it should be possible to create an establishment schedule

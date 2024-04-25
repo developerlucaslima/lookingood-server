@@ -1,7 +1,7 @@
 import { compare } from 'bcryptjs'
 import { Establishment } from '@prisma/client'
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
-import { InvalidCredentialsError } from '@/use-cases/errors/invalid-credentials-error'
+import { InvalidCredentialsException } from './errors/401-invalid-credentials-exception'
 
 interface EstablishmentAuthenticateUseCaseRequest {
   email: string
@@ -24,7 +24,7 @@ export class EstablishmentAuthenticateUseCase {
 
     // it should throw an error if the establishment doesn't exist
     if (!establishment) {
-      throw new InvalidCredentialsError()
+      throw new InvalidCredentialsException()
     }
 
     // it should compare the provided password with the establishment's password hash
@@ -35,7 +35,7 @@ export class EstablishmentAuthenticateUseCase {
 
     // it should throw an error if the passwords don't match
     if (!doesPasswordsMatch) {
-      throw new InvalidCredentialsError()
+      throw new InvalidCredentialsException()
     }
 
     // it should return the authenticated establishment

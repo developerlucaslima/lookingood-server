@@ -1,6 +1,6 @@
 import { UsersRepository } from '@/repositories/users-repository'
 import { User } from '@prisma/client'
-import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found-error'
+import { UserNotFoundException } from './errors/404-user-not-found-exception'
 
 interface GetUserProfileUseCaseRequest {
   userId: string
@@ -21,7 +21,7 @@ export class GetUserProfileUseCase {
 
     // it should throw an error if the user is not found
     if (!user) {
-      throw new ResourceNotFoundError()
+      throw new UserNotFoundException()
     }
 
     // it should return the profile of the user

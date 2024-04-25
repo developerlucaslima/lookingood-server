@@ -1,7 +1,7 @@
 import { hash } from 'bcryptjs'
 import { Establishment } from '@prisma/client'
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
-import { EmailNotAvailableError } from './errors/email-not-available-error'
+import { EmailNotAvailableException } from './errors/409-email-not-available-exception.ts'
 
 interface EstablishmentRegisterUseCaseRequest {
   name: string
@@ -35,7 +35,7 @@ export class EstablishmentRegisterUseCase {
     const userWithSameEmail =
       await this.establishmentsRepository.findByEmail(email)
     if (userWithSameEmail) {
-      throw new EmailNotAvailableError(email)
+      throw new EmailNotAvailableException(email)
     }
 
     // it should hash the provided password
