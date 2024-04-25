@@ -106,3 +106,7 @@
 - ⚡ The application be tested on different devices and operating systems for compatibility and responsiveness.
 - ⚡ The application follow accessibility guidelines to ensure usability for users with disabilities.
 - ⚡ The application implement data encryption for user information and secure communication protocols.
+
+
+  // write skew + double booking https://medium.com/@pulkitent/system-design-database-transactions-isolation-levels-concurrency-control-contd-part-2-78db036f6971
+  // Designing Data Intensive Applications
