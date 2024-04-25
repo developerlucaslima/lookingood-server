@@ -5,7 +5,6 @@ import { EstablishmentsRepository } from '@/repositories/establishments-reposito
 import { ProfessionalsRepository } from '@/repositories/professionals-repository'
 import { ServicesRepository } from '@/repositories/services-repository'
 import { getEndTimeByStartTime } from '@/utils/get-end-time-by-start-time'
-import { ProfessionalSchedulesRepository } from '@/repositories/professional-schedules-repository'
 import { EstablishmentNotFoundException } from './errors/404-establishment-not-found-exception'
 import { ProfessionalNotFoundException } from './errors/404-professional-not-found-exception'
 import { ResourceNotFoundException } from './errors/404-resource-not-found-exception'
@@ -14,6 +13,7 @@ import { UserNotFoundException } from './errors/404-user-not-found-exception'
 import { TimetableNotAvailableException } from './errors/409-timetable-not-available-exception'
 import { isWithinProfessionalsSchedule } from '@/utils/is-within-with-professionals-schedule'
 import { getDayNameOfWeek } from '@/utils/get-day-name-of-week'
+import { ProfessionalsSchedulesRepository } from '@/repositories/professionals-schedules-repository'
 
 interface ServiceReservationUseCaseRequest {
   startTime: Date
@@ -31,7 +31,7 @@ export class ServiceReservationUseCase {
   constructor(
     private establishmentsRepository: EstablishmentsRepository,
     private professionalsRepository: ProfessionalsRepository,
-    private professionalSchedulesRepository: ProfessionalSchedulesRepository,
+    private professionalSchedulesRepository: ProfessionalsSchedulesRepository,
     private servicesRepository: ServicesRepository,
     private reservationsRepository: ReservationsRepository,
     private usersRepository: UsersRepository,
@@ -44,9 +44,6 @@ export class ServiceReservationUseCase {
     professionalId,
     establishmentId,
   }: ServiceReservationUseCaseRequest): Promise<ServiceReservationsUseCaseResponse> {
-    // It should retrieve the end time based on the start time and service duration
-    const dayOfWeek = getDayNameOfWeek(startTime)
-
     // It should check if a professional with the given ID exists
     const professional =
       await this.professionalsRepository.findById(professionalId)
@@ -97,6 +94,7 @@ export class ServiceReservationUseCase {
     }
 
     // It should check if the professional has operating hours for the given time
+    const dayOfWeek = getDayNameOfWeek(startTime)
     const professionalSchedule =
       await this.professionalSchedulesRepository.findByProfessionalIdAndWeekDay(
         professionalId,
