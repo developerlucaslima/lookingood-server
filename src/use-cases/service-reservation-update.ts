@@ -11,16 +11,18 @@ import { ReservationNotFoundException } from './errors/404-reservation-not-found
 import { ResourceNotFoundException } from './errors/404-resource-not-found-exception'
 import { ServiceNotFoundException } from './errors/404-service-not-found-exception'
 import { UserNotFoundException } from './errors/404-user-not-found-exception'
-import { ProfessionalSchedulesRepository } from '@/repositories/professional-schedules-repository'
 import { isAvailableToUpdate } from '@/utils/is-available-to-change'
 import { ModificationDeadlineExceededError } from './errors/422-modification-deadline-exceeded-exception'
 import { TimetableNotAvailableException } from './errors/409-timetable-not-available-exception'
 import { isWithinProfessionalsSchedule } from '@/utils/is-within-with-professionals-schedule'
+import { ProfessionalsSchedulesRepository } from '@/repositories/professionals-schedules-repository'
+import { getDayNameOfWeek } from '@/utils/get-day-name-of-week'
 
 interface ServiceReservationUpdateUseCaseRequest {
   startTime: Date
   userId: string
   serviceId: string
+  professionalId: string
   reservationId: string
 }
 
@@ -32,7 +34,7 @@ export class ServiceReservationUpdateUseCase {
   constructor(
     private establishmentsRepository: EstablishmentsRepository,
     private professionalsRepository: ProfessionalsRepository,
-    private professionalSchedulesRepository: ProfessionalSchedulesRepository,
+    private professionalSchedulesRepository: ProfessionalsSchedulesRepository,
     private servicesRepository: ServicesRepository,
     private reservationsRepository: ReservationsRepository,
     private usersRepository: UsersRepository,
@@ -42,6 +44,7 @@ export class ServiceReservationUpdateUseCase {
     startTime,
     userId,
     serviceId,
+    professionalId,
     reservationId,
   }: ServiceReservationUpdateUseCaseRequest): Promise<ServiceReservationUpdatesUseCaseResponse> {
     // It shouldn't be possible to update a reservation if the reservation doesn't exist
@@ -83,9 +86,8 @@ export class ServiceReservationUpdateUseCase {
     }
 
     // It shouldn't be possible to update a reservation if the professional doesn't exist
-    const professional = await this.professionalsRepository.findById(
-      reservation.professionalId,
-    )
+    const professional =
+      await this.professionalsRepository.findById(professionalId)
     if (!professional) {
       throw new ProfessionalNotFoundException()
     }
@@ -106,7 +108,7 @@ export class ServiceReservationUpdateUseCase {
     // It shouldn't be possible to update a reservation if there's a conflict in the professional's schedule
     const endTime = getEndTimeByStartTime(startTime, service.durationMinutes)
     const conflicts = await this.reservationsRepository.isReservationConflict(
-      reservation.professionalId,
+      professionalId,
       startTime,
       endTime,
     )
@@ -114,13 +116,19 @@ export class ServiceReservationUpdateUseCase {
       throw new TimetableNotAvailableException()
     }
 
-    // It shouldn't be possible to update a reservation if the establishment doesn't have operating hours for the given time
+    // It should check if the professional has operating hours for the given time
+    const dayOfWeek = getDayNameOfWeek(startTime)
     const professionalSchedule =
-      await this.professionalSchedulesRepository.findByProfessionalId(
-        reservation.professionalId,
+      await this.professionalSchedulesRepository.findByProfessionalIdAndWeekDay(
+        professionalId,
+        dayOfWeek,
       )
     if (!professionalSchedule) {
-      throw new ServiceNotFoundException()
+      throw new TimetableNotAvailableException(
+        undefined,
+        undefined,
+        `Selected professional does not work on ${dayOfWeek.toLowerCase()}.`,
+      )
     } else if (
       !isWithinProfessionalsSchedule(professionalSchedule, startTime, endTime)
     ) {
@@ -134,8 +142,9 @@ export class ServiceReservationUpdateUseCase {
     // It should update the reservation
     reservation.startTime = startTime
     reservation.endTime = endTime
-    reservation.status = 'WAITING_FOR_CONFIRMATION'
+    reservation.professionalId = professionalId
     reservation.serviceId = serviceId
+    reservation.status = 'WAITING_FOR_CONFIRMATION'
 
     await this.reservationsRepository.update(reservation)
 
