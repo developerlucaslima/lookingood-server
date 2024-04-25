@@ -12,12 +12,12 @@ export function makeAddProfessionalScheduleUseCase() {
   const establishmentSchedulesRepository =
     new PrismaEstablishmentSchedulesRepository()
 
-  const professionalScheduleUseCase = new AddProfessionalScheduleUseCase(
+  const addProfessionalScheduleUseCase = new AddProfessionalScheduleUseCase(
     professionalsRepository,
     professionalSchedulesRepository,
     establishmentsRepository,
     establishmentSchedulesRepository,
   )
 
-  return professionalScheduleUseCase
+  return addProfessionalScheduleUseCase
 }
