@@ -48,7 +48,7 @@ model User {
   role          Role     @default(USER)
 
   // --- Relationship ---
-  booking Booking[]
+  reservation Reservation[]
 
   @@map("users")
 }
@@ -69,7 +69,7 @@ model Establishment {
   // --- Relationship ---
   service               Service[]
   Professional          Professional[]
-  Booking               Booking[]
+  Reservation           Reservation[]
   EstablishmentSchedule EstablishmentSchedule[]
 
   @@map("establishments")
@@ -100,7 +100,7 @@ model Professional {
   establishmentId String
 
   // --- Relationship ---
-  booking              Booking[]
+  reservation          Reservation[]
   ProfessionalSchedule ProfessionalSchedule[]
 
   @@map("professionals")
@@ -136,14 +136,14 @@ model Service {
   establishmentId String
 
   // --- Relationship ---
-  booking Booking[]
+  reservation Reservation[]
 
   @@map("services")
 }
 
-model Booking {
+model Reservation {
   id        String   @id @default(uuid())
-  status    String
+  status    Status   @default(WAITING_FOR_CONFIRMATION)
   startTime DateTime
   endTime   DateTime
 
@@ -157,5 +157,5 @@ model Booking {
   establishment   Establishment @relation(fields: [establishmentId], references: [id])
   establishmentId String
 
-  @@map("bookings")
+  @@map("reservations")
 }
