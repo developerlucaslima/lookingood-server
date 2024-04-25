@@ -1,51 +1,36 @@
-import { Prisma, User } from '@prisma/client'
+import { Gender, Prisma, Role, User } from '@prisma/client'
 import { UsersRepository } from '../users-repository'
 import { randomUUID } from 'node:crypto'
 
 export class InMemoryUsersRepository implements UsersRepository {
-  public items: User[] = []
+  public items: Map<User['id'], User> = new Map()
 
-  async findById(id: string) {
-    const user = this.items.find((item) => item.id === id)
-
-    if (!user) {
-      return null
-    }
-    return user
-  }
-
-  async findByEmail(email: string) {
-    const user = this.items.find((item) => item.email === email)
-
-    if (!user) {
-      return null
-    }
-
-    return user
-  }
-
-  // async findByGender(serviceGender: string) {
-  //   const user = this.items.find((item) => item.serviceGender === serviceGender)
-
-  //   if (!user) {
-  //     return null
-  //   }
-
-  //   return user
-  // }
-
-  async create(data: Prisma.UserCreateInput) {
-    const user = {
+  async create(data: Prisma.UserUncheckedCreateInput) {
+    const user: User = {
       id: randomUUID(),
       name: data.name,
-      serviceGender: data.serviceGender,
+      serviceGender: data.serviceGender as Gender,
       email: data.email,
       passwordHash: data.passwordHash,
       createdAt: new Date(),
+      role: data.role as Role,
     }
 
-    this.items.push(user)
+    this.items.set(user.id, user)
 
     return user
+  }
+
+  async findById(id: string) {
+    return this.items.get(id) || null
+  }
+
+  async findByEmail(email: string) {
+    for (const user of this.items.values()) {
+      if (user.email === email) {
+        return user
+      }
+    }
+    return null
   }
 }
