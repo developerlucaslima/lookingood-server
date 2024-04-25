@@ -5,7 +5,7 @@ export class InvalidGenderException extends Error {
   public readonly code: number
 
   constructor(reason?: string) {
-    let errorMessage = 'Oops! This gender is not valid.'
+    let errorMessage = "The only accepted genders are 'MALE', 'FEMALE', 'BOTH'."
     if (reason) {
       errorMessage += ` ${reason}`
     }
