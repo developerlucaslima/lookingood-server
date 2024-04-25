@@ -1,34 +1,14 @@
-import { Establishment, Prisma } from '@prisma/client'
+import { Prisma, Role, Establishment } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
 import { EstablishmentsRepository } from '../establishments-repository'
 
 export class InMemoryEstablishmentsRepository
   implements EstablishmentsRepository
 {
-  public items: Establishment[] = []
+  public items: Map<Establishment['id'], Establishment> = new Map()
 
-  async findById(id: string) {
-    const establishment = this.items.find((item) => item.id === id)
-
-    if (!establishment) {
-      return null
-    }
-
-    return establishment
-  }
-
-  async findByEmail(email: string) {
-    const establishment = this.items.find((item) => item.email === email)
-
-    if (!establishment) {
-      return null
-    }
-
-    return establishment
-  }
-
-  async create(data: Prisma.EstablishmentCreateInput) {
-    const establishment = {
+  async create(data: Prisma.EstablishmentUncheckedCreateInput) {
+    const establishment: Establishment = {
       id: randomUUID(),
       name: data.name,
       description: data.description ?? null,
@@ -39,10 +19,25 @@ export class InMemoryEstablishmentsRepository
       createdAt: new Date(),
       latitude: new Prisma.Decimal(data.latitude.toString()),
       longitude: new Prisma.Decimal(data.longitude.toString()),
+      role: data.role as Role,
     }
 
-    this.items.push(establishment)
+    this.items.set(establishment.id, establishment)
 
     return establishment
+  }
+
+  async findById(id: string) {
+    return this.items.get(id) || null
+  }
+
+  async findByEmail(email: string) {
+    for (const establishment of this.items.values()) {
+      if (establishment.email === email) {
+        return establishment
+      }
+    }
+
+    return null
   }
 }
