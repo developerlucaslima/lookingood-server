@@ -1,8 +1,8 @@
 import { UsersRepository } from '@/repositories/users-repository'
 import { hash } from 'bcryptjs'
 import { $Enums, User } from '@prisma/client'
-import { InvalidServiceGenderError } from '@/use-cases/errors/invalid-service-gender-error'
-import { EmailNotAvailableError } from './errors/email-not-available-error'
+import { EmailNotAvailableException } from './errors/409-email-not-available-exception.ts'
+import { InvalidGenderException } from './errors/422-invalid-gender-exception.js'
 
 interface UserRegisterUseCaseRequest {
   name: string
@@ -27,12 +27,12 @@ export class UserRegisterUseCase {
     // it should check if a user with the same email already exists
     const userWithSameEmail = await this.usersRepository.findByEmail(email)
     if (userWithSameEmail) {
-      throw new EmailNotAvailableError(email)
+      throw new EmailNotAvailableException(email)
     }
 
     // it should validate the service gender provided
     if (!['MALE', 'FEMALE', 'BOTH'].includes(serviceGender)) {
-      throw new InvalidServiceGenderError()
+      throw new InvalidGenderException(`${serviceGender} is not valid.`)
     }
 
     // it should hash the provided password
