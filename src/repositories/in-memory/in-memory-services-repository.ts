@@ -1,35 +1,30 @@
 import { Prisma, Service } from '@prisma/client'
-import { randomUUID } from 'node:crypto'
 import { ServicesRepository } from '../services-repository'
+import { randomUUID } from 'node:crypto'
 
 export class InMemoryServicesRepository implements ServicesRepository {
-  public items: Service[] = []
-
-  async findById(id: string) {
-    const service = this.items.find((item) => item.id === id)
-
-    if (!service) {
-      return null
-    }
-
-    return service
-  }
+  public items: Map<Service['id'], Service> = new Map()
 
   async create(data: Prisma.ServiceUncheckedCreateInput) {
-    const service = {
-      id: randomUUID(),
+    const id = randomUUID()
+    const service: Service = {
+      id,
       name: data.name,
       price: new Prisma.Decimal(data.price.toString()),
       genderFor: data.genderFor,
       description: data.description ?? null,
       imageUrl: data.imageUrl ?? null,
+      durationMinutes: data.durationMinutes,
       modificationDeadlineMinutes: data.modificationDeadlineMinutes,
       establishmentId: data.establishmentId,
-      durationMinutes: data.durationMinutes,
     }
 
-    this.items.push(service)
+    this.items.set(id, service)
 
     return service
+  }
+
+  async findById(id: string) {
+    return this.items.get(id) || null
   }
 }
