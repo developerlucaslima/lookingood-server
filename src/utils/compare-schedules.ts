@@ -1,4 +1,4 @@
-import { convertTimeToMinutes } from './convert-time-to-minutes'
+import { getMinutesByTime } from './get-minutes-by-time'
 
 export function compareSchedules(
   startTime: string,
@@ -11,9 +11,9 @@ export function compareSchedules(
   establishmentMinutesBreak: number | null,
 ): boolean {
   // Convert the times to minutes
-  const start = convertTimeToMinutes(startTime)
+  const start = getMinutesByTime(startTime)
   const end = start + minutesWorking
-  const establishmentStart = convertTimeToMinutes(establishmentStartMinutes)
+  const establishmentStart = getMinutesByTime(establishmentStartMinutes)
   const establishmentEnd = establishmentStart + establishmentMinutesWorking
 
   // Check if the professional's start time is within the establishment's working hours
@@ -33,14 +33,14 @@ export function compareSchedules(
     breakTime &&
     minutesBreak
   ) {
-    const establishmentBreakStart = convertTimeToMinutes(establishmentBreakTime)
+    const establishmentBreakStart = getMinutesByTime(establishmentBreakTime)
     const establishmentBreakEnd =
       establishmentBreakStart + establishmentMinutesBreak
 
     if (
       (start < establishmentBreakEnd && end > establishmentBreakStart) ||
-      (convertTimeToMinutes(breakTime) < establishmentEnd &&
-        convertTimeToMinutes(breakTime) >= establishmentStart)
+      (getMinutesByTime(breakTime) < establishmentEnd &&
+        getMinutesByTime(breakTime) >= establishmentStart)
     ) {
       return false
     }
