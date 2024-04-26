@@ -24,21 +24,21 @@ export class UserRegisterUseCase {
     email,
     password,
   }: UserRegisterUseCaseRequest): Promise<UserRegisterUseCaseResponse> {
-    // it should check if a user with the same email already exists
+    // It should hash user password upon registration
+    const passwordHash = await hash(password, 6)
+
+    // It should prevent a user register with a duplicate email
     const userWithSameEmail = await this.usersRepository.findByEmail(email)
     if (userWithSameEmail) {
       throw new EmailNotAvailableException(email)
     }
 
-    // it should validate the service gender provided
+    // It should prevent a user register with an invalid service gender
     if (!['MALE', 'FEMALE', 'BOTH'].includes(serviceGender)) {
       throw new InvalidGenderException(`${serviceGender} is not valid.`)
     }
 
-    // it should hash the provided password
-    const passwordHash = await hash(password, 6)
-
-    // it should create a new user
+    // It should allow to register a user
     const user = await this.usersRepository.create({
       name,
       serviceGender,
@@ -46,7 +46,6 @@ export class UserRegisterUseCase {
       passwordHash,
     })
 
-    // it should return the created user
     return {
       user,
     }
