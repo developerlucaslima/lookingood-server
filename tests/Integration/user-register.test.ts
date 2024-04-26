@@ -2,8 +2,9 @@ import { expect, describe, it, beforeEach } from 'vitest'
 import { compare } from 'bcryptjs'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { UserRegisterUseCase } from '@/use-cases/user-register'
-import { EmailAlreadyExistsError } from '@/use-cases/errors/email-already-exists-error'
-import { InvalidServiceGenderError } from '@/use-cases/errors/invalid-service-gender-error'
+import { InvalidGenderException } from '@/use-cases/errors/422-invalid-gender-exception'
+import { EmailNotAvailableException } from '@/use-cases/errors/409-email-not-available-exception.ts'
+import { usersSetup } from 'tests/setup/users-setup'
 
 let usersRepository: InMemoryUsersRepository
 let sut: UserRegisterUseCase
@@ -12,12 +13,14 @@ describe('User Register Use Case', () => {
   beforeEach(() => {
     usersRepository = new InMemoryUsersRepository()
     sut = new UserRegisterUseCase(usersRepository)
+
+    usersSetup(usersRepository)
   })
 
-  it('should be able to register', async () => {
+  it('should allow to register a user', async () => {
     const { user } = await sut.execute({
       name: 'John Doe',
-      serviceGender: 'Male',
+      serviceGender: 'MALE',
       email: 'johndoe@example.com',
       password: '123456',
     })
@@ -27,9 +30,9 @@ describe('User Register Use Case', () => {
 
   it('should hash user password upon registration', async () => {
     const { user } = await sut.execute({
-      name: 'John Doe',
-      serviceGender: 'Male',
-      email: 'johndoe@example.com',
+      name: 'Dev Lucas Lima',
+      serviceGender: 'MALE',
+      email: 'devlucaslima@example.com',
       password: '123456',
     })
 
@@ -38,75 +41,66 @@ describe('User Register Use Case', () => {
     expect(isPasswordCorrectlyHashed).toBe(true)
   })
 
-  it('should not be able to register with same email twice', async () => {
-    const email = 'johndoe@example.com'
-
-    await sut.execute({
-      name: 'John Doe',
-      serviceGender: 'Male',
-      email,
-      password: '123456',
-    })
-
+  it('should prevent a user register with a duplicate email', async () => {
     await expect(() =>
       sut.execute({
         name: 'John Doe',
-        serviceGender: 'Male',
-        email,
+        serviceGender: 'BOTH',
+        email: 'john@example.com',
         password: '123456',
       }),
-    ).rejects.toBeInstanceOf(EmailAlreadyExistsError)
+    ).rejects.toBeInstanceOf(EmailNotAvailableException)
   })
 
-  it('should validate serviceGender as "Male"', async () => {
+  it('should validate serviceGender as "MALE"', async () => {
     const { user } = await sut.execute({
-      name: 'John Doe',
-      serviceGender: 'Male',
-      email: 'johndoe@example.com',
+      name: 'Dev Lucas Lima',
+      serviceGender: 'MALE',
+      email: 'devlucaslima@example.com',
       password: '123456',
     })
     expect(user.id).toEqual(expect.any(String))
   })
 
-  it('should validate serviceGender as "Female"', async () => {
+  it('should validate serviceGender as "FEMALE"', async () => {
     const { user } = await sut.execute({
-      name: 'John Doe',
-      serviceGender: 'Female',
-      email: 'johndoe@example.com',
+      name: 'Dev Lucas Lima',
+      serviceGender: 'FEMALE',
+      email: 'devlucaslima@example.com',
       password: '123456',
     })
     expect(user.id).toEqual(expect.any(String))
   })
 
-  it('should validate serviceGender as "Both"', async () => {
+  it('should validate serviceGender as "BOTH"', async () => {
     const { user } = await sut.execute({
-      name: 'John Doe',
-      serviceGender: 'Both',
-      email: 'johndoe@example.com',
+      name: 'Dev Lucas Lima',
+      serviceGender: 'MALE',
+      email: 'devlucaslima@example.com',
       password: '123456',
     })
     expect(user.id).toEqual(expect.any(String))
   })
 
-  it('should not be allowed to register service gender unless specified as "Male", "Female" or "Both"', async () => {
+  it('It should prevent a user register with an invalid service gender', async () => {
     await expect(() =>
       sut.execute({
-        name: 'John Doe',
-        serviceGender: 'Invalid',
-        email: 'johndoe@example.com',
+        name: 'Dev Lucas Lima',
+        serviceGender: 'INVALID_GENDER' as 'BOTH',
+        email: 'devlucaslima@example.com',
         password: '123456',
       }),
-    ).rejects.toBeInstanceOf(InvalidServiceGenderError)
+    ).rejects.toBeInstanceOf(InvalidGenderException)
   })
 
-  it('should not be allowed to register service gender as blank', async () => {
+  it('should prevent a user register with service gender as blank', async () => {
     await expect(() =>
       sut.execute({
-        name: 'John Doe',
-        serviceGender: '',
-        email: 'johndoe@example.com',
+        name: 'Dev Lucas Lima',
+        serviceGender: '' as 'BOTH',
+        email: 'devlucaslima@example.com',
         password: '123456',
       }),
-    ).rejects.toBeInstanceOf(InvalidServiceGenderError)
+    ).rejects.toBeInstanceOf(InvalidGenderException)
   })
 })
