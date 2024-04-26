@@ -19,23 +19,19 @@ export class UserAuthenticateUseCase {
     email,
     password,
   }: UserAuthenticateUseCaseRequest): Promise<UserAuthenticateUseCaseResponse> {
-    // it should find the user by their email
+    // It should prevent user authenticate with wrong email
     const user = await this.usersRepository.findByEmail(email)
-
-    // it should throw an error if the user is not found
     if (!user) {
       throw new InvalidCredentialsException()
     }
 
-    // it should compare the provided password with the user's password hash
+    // It should prevent user authenticate with wrong password
     const doesPasswordsMatch = await compare(password, user.passwordHash)
-
-    // it should throw an error if the passwords don't match
     if (!doesPasswordsMatch) {
       throw new InvalidCredentialsException()
     }
 
-    // it should return the authenticated user
+    // It should allow to authenticate
     return {
       user,
     }
