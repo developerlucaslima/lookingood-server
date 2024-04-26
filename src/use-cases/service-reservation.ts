@@ -44,34 +44,34 @@ export class ServiceReservationUseCase {
     professionalId,
     establishmentId,
   }: ServiceReservationUseCaseRequest): Promise<ServiceReservationsUseCaseResponse> {
-    // It should check if a professional with the given ID exists
+    // It should prevent service reservation if professional does not exist
     const professional =
       await this.professionalsRepository.findById(professionalId)
     if (!professional) {
       throw new ProfessionalNotFoundException()
     }
 
-    // It should check if a service with the given ID exists
+    // It should prevent service reservation if service does not exist
     const service = await this.servicesRepository.findById(serviceId)
     if (!service) {
       throw new ServiceNotFoundException()
     }
     const endTime = getEndTimeByStartTime(startTime, service.durationMinutes)
 
-    // It should check if a user with the given ID exists
+    // It should prevent service reservation if user does not exist
     const user = await this.usersRepository.findById(userId)
     if (!user) {
       throw new UserNotFoundException()
     }
 
-    // It should check if an establishment with the given ID exists
+    // It should prevent service reservation if establishment does not exist
     const establishment =
       await this.establishmentsRepository.findById(establishmentId)
     if (!establishment) {
       throw new EstablishmentNotFoundException()
     }
 
-    // It should check if the establishment or professional matches the service
+    // It should prevent service reservation if the establishment or professional does not match the service
     if (
       establishmentId !== service.establishmentId &&
       establishmentId !== professional.establishmentId
@@ -79,7 +79,7 @@ export class ServiceReservationUseCase {
       throw new ResourceNotFoundException()
     }
 
-    // It should check for conflicts in the professional's schedule
+    // It should prevent service reservation if there are conflicts in the professional's schedule
     const conflicts = await this.reservationsRepository.isReservationConflict(
       professionalId,
       startTime,
@@ -93,7 +93,7 @@ export class ServiceReservationUseCase {
       )
     }
 
-    // It should check if the professional has operating hours for the given time
+    // It should prevent service reservation if the professional does not have operating hours for the given time
     const dayOfWeek = getDayNameOfWeek(startTime)
     const professionalSchedule =
       await this.professionalSchedulesRepository.findByProfessionalIdAndWeekDay(
@@ -116,7 +116,7 @@ export class ServiceReservationUseCase {
       )
     }
 
-    // It should create a reservation
+    // should allow service reservation
     const reservation = await this.reservationsRepository.create({
       startTime,
       endTime,
@@ -126,8 +126,6 @@ export class ServiceReservationUseCase {
       professionalId,
       establishmentId,
     })
-
-    // It should return the created reservation
     return {
       reservation,
     }
