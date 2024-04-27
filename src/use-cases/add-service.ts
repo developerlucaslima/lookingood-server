@@ -37,24 +37,24 @@ export class AddServiceUseCase {
     establishmentId,
     durationMinutes,
   }: AddServiceUseCaseRequest): Promise<AddServiceUseCaseResponse> {
-    // it shouldn't be possible to add a service if the establishment doesn't exist
+    // It should prevent add service if the establishment does not exist
     const establishment =
       await this.establishmentRepository.findById(establishmentId)
     if (!establishment) {
       throw new EstablishmentNotFoundException()
     }
 
-    // it should validate the duration of the service
+    // It should prevent adding a service if the duration is not a multiple of 15 minutes
     if (!isValidServiceDuration(durationMinutes)) {
       throw new InvalidServiceDurationException()
     }
 
-    // it should validate the gender specification for the service
+    // It should prevent add service if gender is not valid
     if (!['MALE', 'FEMALE', 'BOTH'].includes(genderFor)) {
       throw new InvalidGenderException()
     }
 
-    // it should be possible to add a service
+    // It should allow add service
     const service = await this.servicesRepository.create({
       name,
       price,
@@ -65,8 +65,6 @@ export class AddServiceUseCase {
       establishmentId,
       durationMinutes,
     })
-
-    // it should return the added service
     return {
       service,
     }
