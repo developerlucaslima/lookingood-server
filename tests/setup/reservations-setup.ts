@@ -6,7 +6,7 @@ export const reservationsSetup = async (
   const haircutReservationId = 'Reservation-01'
   reservationsRepository.items.set(haircutReservationId, {
     id: haircutReservationId,
-    status: 'WAITING_FOR_CONFIRMATION',
+    status: 'CONFIRMED',
     startTime: new Date(2024, 1, 1, 9, 0, 0),
     endTime: new Date(2024, 1, 1, 9, 45, 0),
     professionalId: 'Professional-01',
@@ -23,7 +23,7 @@ export const reservationsSetup = async (
     endTime: new Date(2024, 1, 1, 9, 45, 0),
     professionalId: 'Professional-02',
     serviceId: 'Service-02',
-    userId: 'User-01',
+    userId: 'User-02',
     establishmentId: 'Establishment-01',
   })
 }
