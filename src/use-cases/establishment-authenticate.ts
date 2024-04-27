@@ -19,26 +19,22 @@ export class EstablishmentAuthenticateUseCase {
     email,
     password,
   }: EstablishmentAuthenticateUseCaseRequest): Promise<EstablishmentAuthenticateUseCaseResponse> {
-    // it should retrieve the establishment by email
+    // It should prevent establishment authenticate with wrong email
     const establishment = await this.establishmentsRepository.findByEmail(email)
-
-    // it should throw an error if the establishment doesn't exist
     if (!establishment) {
       throw new InvalidCredentialsException()
     }
 
-    // it should compare the provided password with the establishment's password hash
+    // It should prevent establishment authenticate with wrong password
     const doesPasswordsMatch = await compare(
       password,
       establishment.passwordHash,
     )
-
-    // it should throw an error if the passwords don't match
     if (!doesPasswordsMatch) {
       throw new InvalidCredentialsException()
     }
 
-    // it should return the authenticated establishment
+    // It should allow establishment authenticate
     return {
       establishment,
     }
