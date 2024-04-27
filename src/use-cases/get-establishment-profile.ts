@@ -16,16 +16,14 @@ export class GetEstablishmentProfileUseCase {
   async execute({
     establishmentId,
   }: GetEstablishmentProfileUseCaseRequest): Promise<GetEstablishmentProfileUseCaseResponse> {
-    // it should find the establishment by its ID
+    // It prevent get establishment profile if establishment does not exist
     const establishment =
       await this.establishmentsRepository.findById(establishmentId)
-
-    // it should throw an error if the establishment is not found
     if (!establishment) {
       throw new EstablishmentNotFoundException()
     }
 
-    // it should return the profile of the establishment
+    // It should allow establishment authenticate
     return {
       establishment,
     }
