@@ -1,7 +1,8 @@
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
 import { $Enums, EstablishmentSchedule } from '@prisma/client'
-import { EstablishmentSchedulesRepository } from '@/repositories/establishment-schedules-repository'
 import { EstablishmentNotFoundException } from './errors/404-establishment-not-found-exception'
+import { EstablishmentsSchedulesRepository } from '@/repositories/establishments-schedules-repository'
+import { InvalidInputParametersException } from './errors/400-invalid-input-parameters-exception'
 
 interface AddEstablishmentScheduleUseCaseRequest {
   startTime: string
@@ -19,7 +20,7 @@ interface AddEstablishmentScheduleUseCaseResponse {
 export class AddEstablishmentScheduleUseCase {
   constructor(
     private establishmentsRepository: EstablishmentsRepository,
-    private establishmentSchedulesRepository: EstablishmentSchedulesRepository,
+    private establishmentsSchedulesRepository: EstablishmentsSchedulesRepository,
   ) {}
 
   async execute({
@@ -30,15 +31,20 @@ export class AddEstablishmentScheduleUseCase {
     weekDay,
     establishmentId,
   }: AddEstablishmentScheduleUseCaseRequest): Promise<AddEstablishmentScheduleUseCaseResponse> {
-    // it shouldn't be possible to create a schedule if the establishment doesn't exist
+    // it should prevent to add establishment schedule if the establishment does not exist
     const establishment =
       await this.establishmentsRepository.findById(establishmentId)
     if (!establishment) {
       throw new EstablishmentNotFoundException()
     }
 
-    // it should be possible to create an establishment schedule
-    const schedule = await this.schedulesRepository.create({
+    // It should prevent add establishment schedule with negative time parameters
+    if (minutesWorking < 0 || (breakTime && minutesBreak && minutesBreak < 0)) {
+      throw new InvalidInputParametersException('Minutes cannot be negative.')
+    }
+
+    // it should allow add a establishment schedule
+    const schedule = await this.establishmentsSchedulesRepository.create({
       startTime,
       minutesWorking,
       breakTime,
@@ -46,8 +52,6 @@ export class AddEstablishmentScheduleUseCase {
       weekDay,
       establishmentId,
     })
-
-    // it should return the created establishment schedule
     return {
       schedule,
     }
