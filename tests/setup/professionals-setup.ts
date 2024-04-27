@@ -11,11 +11,19 @@ export const professionalsSetup = async (
     establishmentId: 'Establishment-01',
   })
 
-  const janeId = 'User-02'
+  const janeId = 'Professional-02'
   professionalsRepository.items.set(janeId, {
     id: janeId,
     name: 'Jane Smith',
     imageUrl: 'image.url',
     establishmentId: 'Establishment-01',
+  })
+
+  const jackId = 'Professional-03'
+  professionalsRepository.items.set(jackId, {
+    id: jackId,
+    name: 'Jane Smith',
+    imageUrl: 'image.url',
+    establishmentId: 'Establishment-03',
   })
 }
