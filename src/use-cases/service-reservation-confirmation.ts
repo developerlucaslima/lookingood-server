@@ -23,29 +23,23 @@ export class ServiceReservationConfirmationUseCase {
     reservationId,
     establishmentId,
   }: ServiceReservationConfirmationUseCaseRequest): Promise<ServiceReservationConfirmationsUseCaseResponse> {
-    // it should retrieve the reservation by its ID
+    // It should prevent service reservation confirmation if the reservation doesn't exist
     const reservation =
       await this.reservationsRepository.findById(reservationId)
-
-    // it shouldn't be possible to confirm a reservation if the reservation doesn't exist
     if (!reservation) {
       throw new ReservationNotFoundException()
     }
 
-    // it shouldn't be possible to confirm a reservation if the establishment doesn't exist or doesn't match the reservation's establishment
+    // It should prevent service reservation confirmation if the establishment doesn't exist or doesn't match the reservation's establishment
     const establishment =
       await this.establishmentsRepository.findById(establishmentId)
     if (!establishment || establishment.id !== reservation.establishmentId) {
       throw new EstablishmentNotFoundException()
     }
 
-    // it should confirm the reservation
+    // It should allow service reservation confirmation
     reservation.status = `CONFIRMED`
-
-    // it should update the reservation status
     await this.reservationsRepository.update(reservation)
-
-    // it should return the confirmed reservation
     return {
       reservation,
     }
