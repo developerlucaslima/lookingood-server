@@ -31,7 +31,7 @@ export class UserAuthenticateUseCase {
       throw new InvalidCredentialsException()
     }
 
-    // It should allow to authenticate
+    // It should allow user authenticate
     return {
       user,
     }
