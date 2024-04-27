@@ -24,21 +24,19 @@ export class AddProfessionalUseCase {
     imageUrl,
     establishmentId,
   }: AddProfessionalUseCaseRequest): Promise<AddProfessionalUseCaseResponse> {
-    // it shouldn't be possible to add a professional if the establishment doesn't exist
+    // It should prevent add professional if the establishment does not exist
     const establishment =
       await this.establishmentRepository.findById(establishmentId)
     if (!establishment) {
       throw new EstablishmentNotFoundException()
     }
 
-    // it should be possible to add a professional
+    // It should allow add professional
     const professional = await this.professionalsRepository.create({
       name,
       imageUrl,
       establishmentId,
     })
-
-    // it should return the added professional
     return {
       professional,
     }
