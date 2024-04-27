@@ -47,33 +47,33 @@ export class ServiceReservationUpdateUseCase {
     professionalId,
     reservationId,
   }: ServiceReservationUpdateUseCaseRequest): Promise<ServiceReservationUpdatesUseCaseResponse> {
-    // It shouldn't be possible to update a reservation if the reservation doesn't exist
+    // It should prevent service reservation update if the reservation  does not exist
     const reservation =
       await this.reservationsRepository.findById(reservationId)
     if (!reservation) {
       throw new ReservationNotFoundException()
     }
 
-    // It shouldn't be possible to update a reservation if the user doesn't exist
+    // It should prevent service reservation update if the user  does not exist
     const user = await this.usersRepository.findById(userId)
     if (!user) {
       throw new UserNotFoundException()
     }
 
-    // It shouldn't be possible to update a reservation if the user doesn't match the reservation
+    // It should prevent service reservation update if the user  does not match the reservation
     if (userId !== reservation.userId) {
       throw new UserNotFoundException(
         "You can't modify reservations that aren't yours.",
       )
     }
 
-    // It shouldn't be possible to update a reservation if the service doesn't exist
+    // It should prevent service reservation update if the service  does not exist
     const service = await this.servicesRepository.findById(serviceId)
     if (!service) {
       throw new ServiceNotFoundException()
     }
 
-    // It shouldn't be possible to update a reservation if it's not within the modification deadline
+    // It should prevent service reservation update if it's not within the modification deadline
     const modificationDeadlineMinutes = service.modificationDeadlineMinutes
     if (
       !isAvailableToUpdate(reservation.startTime, modificationDeadlineMinutes)
@@ -85,14 +85,14 @@ export class ServiceReservationUpdateUseCase {
       )
     }
 
-    // It shouldn't be possible to update a reservation if the professional doesn't exist
+    // It should prevent service reservation update if the professional  does not exist
     const professional =
       await this.professionalsRepository.findById(professionalId)
     if (!professional) {
       throw new ProfessionalNotFoundException()
     }
 
-    // It shouldn't be possible to update a reservation if the establishment doesn't exist
+    // It should prevent service reservation update if the establishment  does not exist
     const establishment = await this.establishmentsRepository.findById(
       service.establishmentId,
     )
@@ -100,12 +100,12 @@ export class ServiceReservationUpdateUseCase {
       throw new EstablishmentNotFoundException()
     }
 
-    // It shouldn't be possible to update a reservation if the service's establishment doesn't match the professional's
+    // It should prevent service reservation update if the service's establishment  does not match the professional's
     if (service.establishmentId !== professional.establishmentId) {
       throw new ResourceNotFoundException()
     }
 
-    // It shouldn't be possible to update a reservation if there's a conflict in the professional's schedule
+    // It should prevent service reservation update if there's a conflict in the professional's schedule
     const endTime = getEndTimeByStartTime(startTime, service.durationMinutes)
     const conflicts = await this.reservationsRepository.isReservationConflict(
       professionalId,
@@ -116,7 +116,7 @@ export class ServiceReservationUpdateUseCase {
       throw new TimetableNotAvailableException()
     }
 
-    // It should check if the professional has operating hours for the given time
+    // It should prevent service reservation update if the professional hasn't operating hours for the given time
     const dayOfWeek = getDayNameOfWeek(startTime)
     const professionalSchedule =
       await this.professionalSchedulesRepository.findByProfessionalIdAndWeekDay(
@@ -139,7 +139,7 @@ export class ServiceReservationUpdateUseCase {
       )
     }
 
-    // It should update the reservation
+    // It should allow service reservation update
     reservation.startTime = startTime
     reservation.endTime = endTime
     reservation.professionalId = professionalId
@@ -148,7 +148,6 @@ export class ServiceReservationUpdateUseCase {
 
     await this.reservationsRepository.update(reservation)
 
-    // It should return the updated reservation
     return {
       reservation,
     }
