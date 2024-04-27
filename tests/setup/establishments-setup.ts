@@ -12,7 +12,7 @@ export const establishmentsSetup = async (
     description: 'Best barber of the city',
     phone: '55 555-5555',
     imageUrl: 'image.url',
-    email: 'barber01@example.com',
+    email: 'barber@example.com',
     passwordHash: await hash('123456', 6),
     createdAt: new Date(),
     latitude: new Decimal(-27.2092052),
