@@ -1,14 +1,14 @@
-import { ProfessionalSchedulesRepository } from '@/repositories/professional-schedules-repository'
 import { ProfessionalsRepository } from '@/repositories/professionals-repository'
 import { $Enums, ProfessionalSchedule } from '@prisma/client'
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
-import { EstablishmentSchedulesRepository } from '@/repositories/establishment-schedules-repository'
 import { compareSchedules } from '@/utils/compare-schedules'
 import { ProfessionalNotFoundException } from './errors/404-professional-not-found-exception'
 import { EstablishmentNotFoundException } from './errors/404-establishment-not-found-exception'
 import { InvalidInputParametersException } from './errors/400-invalid-input-parameters-exception'
 import { ScheduleNotFoundException } from './errors/404-schedule-not-found-exception'
 import { InvalidEmployeeScheduleException } from './errors/422-invalid-employee-schedule-exception'
+import { EstablishmentsSchedulesRepository } from '@/repositories/establishments-schedules-repository'
+import { ProfessionalsSchedulesRepository } from '@/repositories/professionals-schedules-repository'
 
 interface AddProfessionalScheduleUseCaseRequest {
   startTime: string
@@ -26,9 +26,9 @@ interface AddProfessionalScheduleUseCaseResponse {
 export class AddProfessionalScheduleUseCase {
   constructor(
     private professionalsRepository: ProfessionalsRepository,
-    private professionalSchedulesRepository: ProfessionalSchedulesRepository,
+    private professionalSchedulesRepository: ProfessionalsSchedulesRepository,
     private establishmentsRepository: EstablishmentsRepository,
-    private establishmentSchedulesRepository: EstablishmentSchedulesRepository,
+    private establishmentSchedulesRepository: EstablishmentsSchedulesRepository,
   ) {}
 
   async execute({
@@ -39,14 +39,14 @@ export class AddProfessionalScheduleUseCase {
     weekDay,
     professionalId,
   }: AddProfessionalScheduleUseCaseRequest): Promise<AddProfessionalScheduleUseCaseResponse> {
-    // it shouldn't be possible to create a schedule if the professional doesn't exist
+    // It should prevent add professional schedule if the professional does not exist
     const professional =
       await this.professionalsRepository.findById(professionalId)
     if (!professional) {
       throw new ProfessionalNotFoundException()
     }
 
-    // it shouldn't be possible to create a schedule if the establishment doesn't exist
+    // It should prevent add professional schedule if the establishment does not exist
     const establishment = await this.establishmentsRepository.findById(
       professional.establishmentId,
     )
@@ -54,12 +54,12 @@ export class AddProfessionalScheduleUseCase {
       throw new EstablishmentNotFoundException()
     }
 
-    // it shouldn't be possible to create a schedule with negative time parameters
+    // It should prevent add professional schedule with negative time parameters
     if (minutesWorking < 0 || (breakTime && minutesBreak && minutesBreak < 0)) {
       throw new InvalidInputParametersException('Minutes cannot be negative.')
     }
 
-    // it shouldn't be possible to create a schedule if the establishment doesn't have opening hours for the given weekday
+    // It should prevent add professional schedule if the establishment does not have opening hours for the given weekday
     const establishmentSchedule =
       await this.establishmentSchedulesRepository.findByEstablishmentIdAndWeekDay(
         establishment.id,
@@ -69,7 +69,7 @@ export class AddProfessionalScheduleUseCase {
       throw new ScheduleNotFoundException(weekDay)
     }
 
-    // it shouldn't be possible to create a schedule if the professional's schedule conflicts with the establishment's schedule
+    // It should prevent add professional schedule if the professional's schedule conflicts with the establishment's schedule
     if (weekDay === establishmentSchedule.weekDay) {
       const isCompatibleSchedules = compareSchedules(
         startTime,
@@ -86,7 +86,7 @@ export class AddProfessionalScheduleUseCase {
       }
     }
 
-    // it should be possible to create a professional schedule
+    // It should allow add professional schedule
     const schedule = await this.professionalSchedulesRepository.create({
       startTime,
       minutesWorking,
@@ -95,8 +95,6 @@ export class AddProfessionalScheduleUseCase {
       weekDay,
       professionalId,
     })
-
-    // it should return the created professional schedule
     return { schedule }
   }
 }
