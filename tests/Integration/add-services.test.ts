@@ -4,23 +4,37 @@ import { AddServiceUseCase } from '@/use-cases/add-service'
 import { EstablishmentNotFoundException } from '@/use-cases/errors/404-establishment-not-found-exception'
 import { InvalidGenderException } from '@/use-cases/errors/422-invalid-gender-exception'
 import { InvalidServiceDurationException } from '@/use-cases/errors/422-invalid-service-duration-exception'
-import { establishmentsSetup } from 'tests/setup/establishments-setup'
+import { Decimal } from '@prisma/client/runtime/library'
+import { hash } from 'bcryptjs'
 import { describe, beforeEach, it, expect } from 'vitest'
 
-let establishmentRepository: InMemoryEstablishmentsRepository
+let establishmentsRepository: InMemoryEstablishmentsRepository
 let servicesRepository: InMemoryServicesRepository
 let sut: AddServiceUseCase
 
 describe('Add Service Use Case', () => {
-  beforeEach(() => {
-    establishmentRepository = new InMemoryEstablishmentsRepository()
+  beforeEach(async () => {
+    establishmentsRepository = new InMemoryEstablishmentsRepository()
     servicesRepository = new InMemoryServicesRepository()
-    sut = new AddServiceUseCase(establishmentRepository, servicesRepository)
+    sut = new AddServiceUseCase(establishmentsRepository, servicesRepository)
 
-    establishmentsSetup(establishmentRepository)
+    const establishmentId = 'Establishment-01'
+    establishmentsRepository.items.set(establishmentId, {
+      id: establishmentId,
+      name: 'Registered Establishment',
+      description: 'Registered establishment...',
+      phone: '55 555-5555',
+      imageUrl: 'image.url',
+      email: 'registered_establishment@example.com',
+      passwordHash: await hash('123456', 6),
+      createdAt: new Date(),
+      latitude: new Decimal(-27.2092052),
+      longitude: new Decimal(-49.6401091),
+      role: 'ESTABLISHMENT',
+    })
   })
 
-  it('should allow adding a service', async () => {
+  it('should allow add service', async () => {
     const { service } = await sut.execute({
       name: 'Haircut',
       price: 20,
