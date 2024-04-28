@@ -3,7 +3,8 @@ import { InMemoryEstablishmentsSchedulesRepository } from '@/repositories/in-mem
 import { AddEstablishmentScheduleUseCase } from '@/use-cases/add-establishment-schedule'
 import { InvalidInputParametersException } from '@/use-cases/errors/400-invalid-input-parameters-exception'
 import { EstablishmentNotFoundException } from '@/use-cases/errors/404-establishment-not-found-exception'
-import { establishmentsSetup } from 'tests/setup/establishments-setup'
+import { Decimal } from '@prisma/client/runtime/library'
+import { hash } from 'bcryptjs'
 import { beforeEach, it, expect, describe } from 'vitest'
 
 let establishmentsRepository: InMemoryEstablishmentsRepository
@@ -11,7 +12,7 @@ let establishmentSchedulesRepository: InMemoryEstablishmentsSchedulesRepository
 let sut: AddEstablishmentScheduleUseCase
 
 describe('Add Establishment Schedule Use Case', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     establishmentsRepository = new InMemoryEstablishmentsRepository()
     establishmentSchedulesRepository =
       new InMemoryEstablishmentsSchedulesRepository()
@@ -20,7 +21,21 @@ describe('Add Establishment Schedule Use Case', () => {
       establishmentSchedulesRepository,
     )
 
-    establishmentsSetup(establishmentsRepository)
+    // Establishment 01 -------------------
+    const establishmentId = 'Establishment-01'
+    establishmentsRepository.items.set(establishmentId, {
+      id: establishmentId,
+      name: 'Registered Establishment',
+      description: 'Registered establishment...',
+      phone: '55 555-5555',
+      imageUrl: 'image.url',
+      email: 'registered_establishment@example.com',
+      passwordHash: await hash('123456', 6),
+      createdAt: new Date(),
+      latitude: new Decimal(-27.2092052),
+      longitude: new Decimal(-49.6401091),
+      role: 'ESTABLISHMENT',
+    })
   })
 
   it('should allow add a establishment schedule', async () => {
