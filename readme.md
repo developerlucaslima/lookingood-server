@@ -1,70 +1,90 @@
 # TODO: Use Cases and Tests
 
 ## Users
-- [ ] - ✨ Users must be able *register via email*.
-    - [ ] - 🧪 It should not be able to register with same email twice.
-    - [ ] - 🧪 It should hash user password upon registration.
-    - [ ] - 🧪 It should validate serviceGender as "Male".
-    - [ ] - 🧪 It should validate serviceGender as "Female".
-    - [ ] - 🧪 It should validate serviceGender as "Both".
-    - [ ] - 🧪 It should not be allowed to register service gender unless specified as "Male", "Female" or "Both".
-    - [ ] - 🧪 It should not be allowed to register service gender as blank.
-- [ ] - ✨ Users must be able *authenticate via email*.
-    - [ ] - 🧪 It should not be able to authenticate with wrong email.
-    - [ ] - 🧪 It should not be able to authenticate with wrong password. 
-- [ ] - ✨ Users must be able to *book services* by selecting an establishment, professional (optional), date, time, and desired service.
-    - [ ] - 🧪 It should not be able to book a service with nonexistent professionalId.
-    - [ ] - 🧪 It should not be able to book a service with nonexistent serviceId.
-    - [ ] - 🧪 It should not be able to book a service with nonexistent userId.
-    - [ ] - 🧪 It should not be able to book a service with professional from different establishment.
-    - [ ] - 🧪 It should not be able to book a service with any other status than "Waiting for confirmation".
-    - [ ] - 🧪 It should not be able to book if the professional is already booked at the same time.
-    - [ ] - 🧪 It should not be able to book a service outside of the establishment's operating hours.
-    - [ ] - 🧪 It should allow users to book multiple services at the same time if offered by the establishment and time slots do not overlap.
-- [ ] - ✨ Users must be able to change a service date.
-- [ ] - ✨ Users must be able to cancel a booked service or confirmed service.
-- [ ] - ✨ Users must be able to view a list of services with information about whether it is Confirmed, Checked-out, or Waiting for confirmation.
-- [ ] - ✨ Users must receive booking confirmation via email or app notification.
+- 🧪 *User Register*
+    - [X] - It should allow to register a user.
+    - [X] - It should hash user password upon registration.
+    - [X] - It should prevent a user register with a duplicate email.
+    - [X] - It should prevent a user register with an invalid service gender.
+    - [X] - It should prevent a user register with service gender as blank.
+    - [X] - It should validate serviceGender as "MALE".
+    - [X] - It should validate serviceGender as "FEMALE".
+    - [X] - It should validate serviceGender as "BOTH".
+- 🧪 *User Authenticate*
+    - [X] - It should allow user authenticate.
+    - [X] - It should prevent user authenticate with wrong email.
+    - [X] - It should prevent user authenticate with wrong password.
+- 🧪 *Get User Profile*
+    - [X] - It should allow get user profile.
+    - [X] - It should prevent get user profile if user does not exist.
 
 ## Establishments
-- [ ] - ✨ Establishments must be able *register via email*.
-    - [ ] - 🧪 It should not be able to register with same email twice.
-    - [ ] - 🧪 It should hash user password upon registration.
-    - [ ] - 🧪 It should not be allowed to register service gender unless specified as "Male", "Female" or "Both".
-    - [ ] - 🧪 It should not be allowed to register service gender as blank.
-- [ ] - ✨ Establishments must be able *authenticate via email*.
-    - [ ] - 🧪 It should not be able to authenticate with wrong email.
-    - [ ] - 🧪 It should not be able to authenticate with wrong password.
-- [ ] - ✨ Establishments must be able to *add a service*.
-    - [ ] - 🧪 It should not be able to create service with nonexistent establishmentId.
-    - [ ] - 🧪 It should validate service as "Male".
-    - [ ] - 🧪 It should validate service as "Female".
-    - [ ] - 🧪 It should validate service as "Both".
-    - [ ] - 🧪 It should not be allowed to register service gender unless specified as "Male", "Female" or "Both".
-    - [ ] - 🧪 It should not be allowed to register service gender as blank.
-    - [ ] - 🧪 It should not be allowed to register service with durations that are not multiples of 15 minutes.
-    - [ ] - 🧪 It 'should not be allowed to register service with durations under 15 minutes.
-- [ ] - ✨ Establishments must be able to *add a professional*.
-    - [ ] - 🧪 It should not be able to add professional with nonexistent establishmentId.
-- [ ] - ✨ Establishments must be able to *add a schedule*.
-    - [ ] - 🧪 It should not be able to add schedule with nonexistent establishmentId.
-    - [ ] - 🧪 It should not be able to create a schedule with invalid time format.
-    - [ ] - 🧪 It 'should not be able to create a schedule with only null values.
-    - [ ] - 🧪 It should not be able to create a schedule with opening time but without a corresponding closing time, and vice versa.
-- [ ] - ✨ Establishments must be able to confirm a service booked by a user.
-    - [ ] - 🧪 It should allow establishment confirm for service date changes.
-- [ ] - ✨ Establishments must be able to cancel a service confirmed.
-    - [ ] - 🧪 For each service offered, establishments must specify the gender served (female, male, or both).
-- [ ] - ✨ Establishments must be able to check in a user for a confirmed service booked.
-- [ ] - ✨ Establishments must be able to check out a user who has paid for and used a booked service.
+- 🧪 *Establishment Register*
+    - [X] - It should allow to register a establishment.
+    - [X] - It should hash user password upon registration.
+    - [X] - It should prevent a establishment register with a duplicate email.
+- 🧪 *Establishment Authenticate*
+    - [X] - It should allow establishment authenticate.
+    - [X] - It should prevent establishment authenticate with wrong email.
+    - [X] - It should prevent establishment authenticate with wrong password.
+- 🧪 *Get Establishment Profile*
+    - [X] - It should allow get establishment profile.
+    - [X] - It should prevent get establishment profile if establishment does not exist.
+- 🧪 *Add Establishment Schedule*
+    - [X] - It should allow add establishment schedule.
+    - [X] - It should prevent to add establishment schedule if the establishment does not exist.
+    - [X] - It should prevent add establishment schedule with break if it have not break start or end time.
+    - [X] - It should prevent add establishment schedule with negative time parameters.
+- 🧪 *Add Professional*
+    - [X] - It should allow add professional.
+    - [X] - It should prevent add professional if the establishment does not exist.
+- 🧪 *Add Professional Schedule*
+    - [X] - It should allow add professional schedule.
+    - [X] - It should prevent add professional schedule if the professional does not exist.
+    - [X] - It should prevent add professional schedule if the establishment does not exist.
+    - [X] - It should prevent add professional schedule with break if it have not break start or end time.
+    - [X] - It should prevent add professional schedule with negative time parameters.
+    - [X] - It should prevent add professional schedule if the establishment does not have opening hours for the given weekday.
+    - [X] - It should prevent add professional schedule if the professional's schedule conflicts with the establishment's schedule.
+- 🧪 *Add Service*
+    - [X] - It should allow add service.
+    - [X] - It should prevent add service if the establishment does not exist.
+    - [X] - It should prevent adding a service if the duration is not a multiple of 15 minutes.
+    - [X] - It should prevent add service if gender is not valid.
 
-## Application
-- [ ] - ✨ The application must display available establishments appointment times for scheduling.
-    - [ ] - 🧪 It should display available time slots based on establishment and professional schedules.
-    - [ ] - 🧪 It should prevent booking a service outside of the establishment's operating hours.
-    - [ ] - 🧪 It should allow users to book multiple services at the same time if offered by the establishment and time slots do not overlap.
+## Service Reservations
+- 🧪 *Service Reservation*
+    - [X] - It should allow service reservation.
+    - [X] - It should prevent service reservation if professional does not exist.
+    - [X] - It should prevent service reservation if service does not exist.
+    - [X] - It should prevent service reservation if user does not exist.
+    - [X] - It should prevent service reservation if establishment does not exist.
+    - [X] - It should prevent service reservation if the establishment, professional and service does not match.
+    - [X] - It should prevent service reservation if there are conflicts in the professional's schedule.
+    - [X] - It should prevent service reservation if the professional does not have operating hours for the given time.
+- 🧪 *Service Reservation Update*
+    - [X] - It should allow service reservation update.
+    - [X] - It should prevent service reservation update if the reservation does not exist.
+    - [X] - It should prevent service reservation update if the user does not exist.
+    - [X] - It should prevent service reservation update if the user does not match the reservation.
+    - [X] - It should prevent service reservation update if the service does not exist.
+    - [X] - It should prevent service reservation update if it's not within the modification deadline.
+    - [X] - It should prevent service reservation update if the professional does not exist.
+    - [X] - It should prevent service reservation update if the establishment, professional and service does not match.
+    - [X] - It should prevent service reservation update if there are conflicts in the professional's schedule.
+    - [X] - It should prevent service reservation update if the professional hasn't operating hours for the given time.
+- 🧪 *Service Reservation Confirmation*
+    - [X] - It should allow service reservation confirmation.
+    - [X] - It should prevent service reservation confirmation if the reservation does not exist.
+    - [X] - It should prevent service confirmation update if the establishment does not exist.
+    - [X] - It should prevent service reservation confirmation if the establishment does not match the reservation.
 
 ## Additional Ideas
+- 🔜 It should display available time slots based on establishment and professional schedules.
+- 🔜 It should prevent service reservation if user already has reservation at the same time
+- 🔜 Users must be able to cancel a booked service or confirmed service.
+- 🔜 Users must be able to view a list of services with information about whether it is Confirmed, Checked-out, or Waiting for confirmation.
+- 🔜 Users must receive booking confirmation via email or app notification.
 - 🔜 Users can rate and leave comments about establishments and professionals after the service. (Moved from functionality list)
 - 🔜 Implement two-factor authentication for added security.
 - 🔜 Allow users to share their reservations and experiences on social networks.
@@ -106,7 +126,3 @@
 - ⚡ The application be tested on different devices and operating systems for compatibility and responsiveness.
 - ⚡ The application follow accessibility guidelines to ensure usability for users with disabilities.
 - ⚡ The application implement data encryption for user information and secure communication protocols.
-
-
-  // write skew + double booking https://medium.com/@pulkitent/system-design-database-transactions-isolation-levels-concurrency-control-contd-part-2-78db036f6971
-  // Designing Data Intensive Applications
