@@ -1,9 +1,9 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 import { InMemoryEstablishmentsRepository } from '@/repositories/in-memory/in-memory-establishments-repository'
 import { EstablishmentAuthenticateUseCase } from '@/use-cases/establishment-authenticate'
-import { InvalidCredentialsException } from '@/use-cases/errors/401-invalid-credentials-exception'
 import { Decimal } from '@prisma/client/runtime/library'
 import { hash } from 'bcryptjs'
+import { UnauthorizedCredentialsException } from '@/use-cases/errors/401-unauthorized-credentials-exception'
 
 let establishmentsRepository: InMemoryEstablishmentsRepository
 let sut: EstablishmentAuthenticateUseCase
@@ -13,6 +13,7 @@ describe('Establishment Authenticate Use Case', () => {
     establishmentsRepository = new InMemoryEstablishmentsRepository()
     sut = new EstablishmentAuthenticateUseCase(establishmentsRepository)
 
+    // Establishment 01 -------------------
     const establishmentId = 'Establishment-01'
     establishmentsRepository.items.set(establishmentId, {
       id: establishmentId,
@@ -43,7 +44,7 @@ describe('Establishment Authenticate Use Case', () => {
         email: 'wrong_email@example.com', // invalid email
         password: '123456',
       }),
-    ).rejects.toBeInstanceOf(InvalidCredentialsException)
+    ).rejects.toBeInstanceOf(UnauthorizedCredentialsException)
   })
 
   it('should prevent establishment authenticate with wrong password', async () => {
@@ -52,6 +53,6 @@ describe('Establishment Authenticate Use Case', () => {
         email: 'registered_establishment@example.com', // invalid password
         password: '123123',
       }),
-    ).rejects.toBeInstanceOf(InvalidCredentialsException)
+    ).rejects.toBeInstanceOf(UnauthorizedCredentialsException)
   })
 })
