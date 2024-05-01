@@ -1,8 +1,8 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { UserAuthenticateUseCase } from '@/use-cases/user-authenticate'
-import { InvalidCredentialsException } from '@/use-cases/errors/401-invalid-credentials-exception'
 import { hash } from 'bcryptjs'
+import { UnauthorizedCredentialsException } from '@/use-cases/errors/401-unauthorized-credentials-exception'
 
 let usersRepository: InMemoryUsersRepository
 let sut: UserAuthenticateUseCase
@@ -12,6 +12,7 @@ describe('User Authenticate Use Case', () => {
     usersRepository = new InMemoryUsersRepository()
     sut = new UserAuthenticateUseCase(usersRepository)
 
+    // User 01 -------------------
     const userId = 'User-01'
     usersRepository.items.set(userId, {
       id: userId,
@@ -38,7 +39,7 @@ describe('User Authenticate Use Case', () => {
         email: 'wrong_email@example.com', // invalid email
         password: '123456',
       }),
-    ).rejects.toBeInstanceOf(InvalidCredentialsException)
+    ).rejects.toBeInstanceOf(UnauthorizedCredentialsException)
   })
 
   it('should prevent user authenticate with wrong password', async () => {
@@ -47,6 +48,6 @@ describe('User Authenticate Use Case', () => {
         email: 'registered_user@example.com',
         password: '123123', // invalid password
       }),
-    ).rejects.toBeInstanceOf(InvalidCredentialsException)
+    ).rejects.toBeInstanceOf(UnauthorizedCredentialsException)
   })
 })
