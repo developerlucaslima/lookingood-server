@@ -2,7 +2,8 @@ import { InMemoryEstablishmentsRepository } from '@/repositories/in-memory/in-me
 import { InMemoryEstablishmentsSchedulesRepository } from '@/repositories/in-memory/in-memory-establishments-schedules-repository'
 import { AddEstablishmentScheduleUseCase } from '@/use-cases/add-establishment-schedule'
 import { InvalidInputParametersException } from '@/use-cases/errors/400-invalid-input-parameters-exception'
-import { EstablishmentNotFoundException } from '@/use-cases/errors/404-establishment-not-found-exception'
+import { UnauthorizedEstablishmentException } from '@/use-cases/errors/401-unauthorized-establishment-exception'
+import { InvalidScheduleException } from '@/use-cases/errors/422-invalid-schedule-exception'
 import { Decimal } from '@prisma/client/runtime/library'
 import { hash } from 'bcryptjs'
 import { beforeEach, it, expect, describe } from 'vitest'
@@ -38,7 +39,7 @@ describe('Add Establishment Schedule Use Case', () => {
     })
   })
 
-  it('should allow add a establishment schedule', async () => {
+  it('should allow add establishment schedule', async () => {
     const { schedule } = await sut.execute({
       startTime: '08:00',
       minutesWorking: 480,
@@ -49,6 +50,32 @@ describe('Add Establishment Schedule Use Case', () => {
     })
 
     expect(schedule.id).toEqual(expect.any(String))
+  })
+
+  it('should prevent to add establishment schedule if the establishment does not exist', async () => {
+    await expect(() =>
+      sut.execute({
+        startTime: '08:00',
+        minutesWorking: 480,
+        breakTime: '12:00',
+        minutesBreak: 90,
+        weekDay: 'MONDAY',
+        establishmentId: 'Nonexistent-Establishment-01', // invalid establishment
+      }),
+    ).rejects.toBeInstanceOf(UnauthorizedEstablishmentException)
+  })
+
+  it('should prevent add professional schedule with break if it have not break start or end time.', async () => {
+    await expect(() =>
+      sut.execute({
+        startTime: '08:00',
+        minutesWorking: 480,
+        breakTime: null, // invalid break
+        minutesBreak: 90,
+        weekDay: 'MONDAY',
+        establishmentId: 'Establishment-01',
+      }),
+    ).rejects.toBeInstanceOf(InvalidScheduleException)
   })
 
   it('should prevent add professional schedule with negative time parameters', async () => {
@@ -62,18 +89,5 @@ describe('Add Establishment Schedule Use Case', () => {
         establishmentId: 'Establishment-01',
       }),
     ).rejects.toBeInstanceOf(InvalidInputParametersException)
-  })
-
-  it('should prevent to add establishment schedule if the establishment does not exist', async () => {
-    await expect(() =>
-      sut.execute({
-        startTime: '08:00',
-        minutesWorking: 480,
-        breakTime: '12:00',
-        minutesBreak: 90,
-        weekDay: 'MONDAY',
-        establishmentId: 'Nonexistent-Establishment-01', // invalid establishment
-      }),
-    ).rejects.toBeInstanceOf(EstablishmentNotFoundException)
   })
 })
