@@ -4,12 +4,9 @@ const NOT_FOUND_ERROR_CODE = 404
 export class UserNotFoundException extends Error {
   public readonly code: number
 
-  constructor(reason?: string) {
-    let errorMessage = "Sorry, we couldn't find a valid user for this action."
-    if (reason) {
-      errorMessage += ` ${reason}`
-    }
-    super(errorMessage)
+  constructor() {
+    super("We couldn't find the user you're looking for.")
+
     this.name = 'UserNotFoundException'
     this.code = NOT_FOUND_ERROR_CODE
   }

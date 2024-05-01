@@ -4,12 +4,9 @@ const UNPROCESSABLE_ENTITY_ERROR_CODE = 422
 export class InvalidTimeFormatException extends Error {
   public readonly code: number
 
-  constructor(reason?: string) {
-    let errorMessage = 'Oops! This time format is not valid.'
-    if (reason) {
-      errorMessage += ` ${reason}`
-    }
-    super(errorMessage)
+  constructor() {
+    super('This time format is not valid.')
+
     this.name = 'InvalidTimeFormatException'
     this.code = UNPROCESSABLE_ENTITY_ERROR_CODE
   }

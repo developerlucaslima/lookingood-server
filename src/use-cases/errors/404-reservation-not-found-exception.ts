@@ -4,13 +4,9 @@ const NOT_FOUND_ERROR_CODE = 404
 export class ReservationNotFoundException extends Error {
   public readonly code: number
 
-  constructor(reason?: string) {
-    let errorMessage =
-      "Sorry, we couldn't find the reservation you're looking for."
-    if (reason) {
-      errorMessage += ` ${reason}`
-    }
-    super(errorMessage)
+  constructor() {
+    super("We couldn't find the reservation you're looking for.")
+
     this.name = 'ReservationNotFoundException'
     this.code = NOT_FOUND_ERROR_CODE
   }

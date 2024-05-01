@@ -4,13 +4,9 @@ const NOT_FOUND_ERROR_CODE = 404
 export class ProfessionalNotFoundException extends Error {
   public readonly code: number
 
-  constructor(reason?: string) {
-    let errorMessage =
-      "Oops! We couldn't find the professional you're looking for."
-    if (reason) {
-      errorMessage += ` ${reason}`
-    }
-    super(errorMessage)
+  constructor() {
+    super("We couldn't find the professional you're looking for.")
+
     this.name = 'ProfessionalNotFoundException'
     this.code = NOT_FOUND_ERROR_CODE
   }

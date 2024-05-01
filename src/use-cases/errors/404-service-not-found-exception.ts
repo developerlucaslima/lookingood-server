@@ -4,13 +4,9 @@ const NOT_FOUND_ERROR_CODE = 404
 export class ServiceNotFoundException extends Error {
   public readonly code: number
 
-  constructor(reason?: string) {
-    let errorMessage =
-      "You can't access a service that doesn't exist or has already been used."
-    if (reason) {
-      errorMessage += ` ${reason}`
-    }
-    super(errorMessage)
+  constructor() {
+    super("We couldn't find the service you're looking for.")
+
     this.name = 'ServiceNotFoundException'
     this.code = NOT_FOUND_ERROR_CODE
   }

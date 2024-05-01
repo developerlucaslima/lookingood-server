@@ -4,12 +4,9 @@ const UNPROCESSABLE_ENTITY_ERROR_CODE = 422
 export class InvalidServiceDurationException extends Error {
   public readonly code: number
 
-  constructor(reason?: string) {
-    let errorMessage = 'Oops! This service duration is not valid.'
-    if (reason) {
-      errorMessage += ` ${reason}`
-    }
-    super(errorMessage)
+  constructor() {
+    super('Service duration must be a multiple of 15 minutes.')
+
     this.name = 'InvalidServiceDurationException'
     this.code = UNPROCESSABLE_ENTITY_ERROR_CODE
   }

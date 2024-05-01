@@ -4,12 +4,9 @@ const UNPROCESSABLE_ENTITY_ERROR_CODE = 422
 export class InvalidGenderException extends Error {
   public readonly code: number
 
-  constructor(reason?: string) {
-    let errorMessage = "The only accepted genders are 'MALE', 'FEMALE', 'BOTH'."
-    if (reason) {
-      errorMessage += ` ${reason}`
-    }
-    super(errorMessage)
+  constructor() {
+    super("The only accepted genders are 'MALE', 'FEMALE', 'BOTH'.")
+
     this.name = 'InvalidGenderException'
     this.code = UNPROCESSABLE_ENTITY_ERROR_CODE
   }

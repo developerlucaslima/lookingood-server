@@ -4,13 +4,9 @@ const NOT_FOUND_ERROR_CODE = 404
 export class EstablishmentNotFoundException extends Error {
   public readonly code: number
 
-  constructor(reason?: string) {
-    let errorMessage =
-      "Oops! We couldn't find the establishment you're looking for."
-    if (reason) {
-      errorMessage += ` ${reason}`
-    }
-    super(errorMessage)
+  constructor() {
+    super("We couldn't find the establishment you're looking for.")
+
     this.name = 'EstablishmentNotFoundException'
     this.code = NOT_FOUND_ERROR_CODE
   }
