@@ -31,17 +31,17 @@ export class EstablishmentRegisterUseCase {
     latitude,
     longitude,
   }: EstablishmentRegisterUseCaseRequest): Promise<EstablishmentRegisterUseCaseResponse> {
-    // It should hash establishment password upon registration
+    // It should hash establishment password upon registration.
     const passwordHash = await hash(password, 6)
 
-    // It should prevent a establishment register with a duplicate email
+    // It should prevent a establishment register with a duplicate email.
     const userWithSameEmail =
       await this.establishmentsRepository.findByEmail(email)
     if (userWithSameEmail) {
-      throw new EmailNotAvailableException(email)
+      throw new EmailNotAvailableException()
     }
 
-    // It should allow to register a establishment
+    // It should allow to register a establishment.
     const establishment = await this.establishmentsRepository.create({
       name,
       description,
