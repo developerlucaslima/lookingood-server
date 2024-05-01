@@ -81,11 +81,11 @@
 
 ## Additional Ideas
 - 🔜 It should display available time slots based on establishment and professional schedules.
-- 🔜 It should prevent service reservation if user already has reservation at the same time
+- 🔜 It should prevent service reservation if user already has reservation at the same time.
 - 🔜 Users must be able to cancel a booked service or confirmed service.
 - 🔜 Users must be able to view a list of services with information about whether it is Confirmed, Checked-out, or Waiting for confirmation.
 - 🔜 Users must receive booking confirmation via email or app notification.
-- 🔜 Users can rate and leave comments about establishments and professionals after the service. (Moved from functionality list)
+- 🔜 Users can rate and leave comments about establishments and professionals after the service.
 - 🔜 Implement two-factor authentication for added security.
 - 🔜 Allow users to share their reservations and experiences on social networks.
 - 🔜 Establishments can offer promotional discounts or packages.
