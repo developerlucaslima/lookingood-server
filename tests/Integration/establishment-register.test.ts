@@ -13,6 +13,7 @@ describe('Establishment Register Use Case', () => {
     establishmentsRepository = new InMemoryEstablishmentsRepository()
     sut = new EstablishmentRegisterUseCase(establishmentsRepository)
 
+    // Establishment 01 -------------------
     const establishmentId = 'Establishment-01'
     establishmentsRepository.items.set(establishmentId, {
       id: establishmentId,
