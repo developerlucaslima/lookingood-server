@@ -1,7 +1,7 @@
 import { InMemoryEstablishmentsRepository } from '@/repositories/in-memory/in-memory-establishments-repository'
 import { InMemoryServicesRepository } from '@/repositories/in-memory/in-memory-services-repository'
 import { AddServiceUseCase } from '@/use-cases/add-service'
-import { EstablishmentNotFoundException } from '@/use-cases/errors/404-establishment-not-found-exception'
+import { UnauthorizedEstablishmentException } from '@/use-cases/errors/401-unauthorized-establishment-exception'
 import { InvalidGenderException } from '@/use-cases/errors/422-invalid-gender-exception'
 import { InvalidServiceDurationException } from '@/use-cases/errors/422-invalid-service-duration-exception'
 import { Decimal } from '@prisma/client/runtime/library'
@@ -18,6 +18,7 @@ describe('Add Service Use Case', () => {
     servicesRepository = new InMemoryServicesRepository()
     sut = new AddServiceUseCase(establishmentsRepository, servicesRepository)
 
+    // Establishment 01 -------------------
     const establishmentId = 'Establishment-01'
     establishmentsRepository.items.set(establishmentId, {
       id: establishmentId,
@@ -38,7 +39,7 @@ describe('Add Service Use Case', () => {
     const { service } = await sut.execute({
       name: 'Haircut',
       price: 20,
-      genderFor: 'MALE',
+      genderFor: 'BOTH',
       description: 'Standard haircut',
       imageUrl: 'haircut.jpg',
       modificationDeadlineMinutes: 60,
@@ -61,7 +62,7 @@ describe('Add Service Use Case', () => {
         establishmentId: 'Nonexistent-Establishment-01', // invalid establishment
         durationMinutes: 30,
       }),
-    ).rejects.toBeInstanceOf(EstablishmentNotFoundException)
+    ).rejects.toBeInstanceOf(UnauthorizedEstablishmentException)
   })
 
   it('should prevent adding a service if the duration is not a multiple of 15 minutes', async () => {
@@ -69,7 +70,7 @@ describe('Add Service Use Case', () => {
       sut.execute({
         name: 'Haircut',
         price: 20,
-        genderFor: 'MALE',
+        genderFor: 'FEMALE',
         description: 'Standard haircut',
         imageUrl: 'haircut.jpg',
         modificationDeadlineMinutes: 60,
