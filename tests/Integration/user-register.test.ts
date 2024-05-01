@@ -13,6 +13,7 @@ describe('User Register Use Case', () => {
     usersRepository = new InMemoryUsersRepository()
     sut = new UserRegisterUseCase(usersRepository)
 
+    // User 01 -------------------
     const userId = 'User-01'
     usersRepository.items.set(userId, {
       id: userId,
@@ -60,6 +61,28 @@ describe('User Register Use Case', () => {
     ).rejects.toBeInstanceOf(EmailNotAvailableException)
   })
 
+  it('It should prevent a user register with an invalid service gender', async () => {
+    await expect(() =>
+      sut.execute({
+        name: 'John Doe',
+        serviceGender: 'INVALID_GENDER' as 'BOTH', // invalid gender
+        email: 'johndoe@example.com',
+        password: '123456',
+      }),
+    ).rejects.toBeInstanceOf(InvalidGenderException)
+  })
+
+  it('should prevent a user register with service gender as blank', async () => {
+    await expect(() =>
+      sut.execute({
+        name: 'John Doe',
+        serviceGender: '' as 'BOTH', // invalid gender
+        email: 'johndoe@example.com',
+        password: '123456',
+      }),
+    ).rejects.toBeInstanceOf(InvalidGenderException)
+  })
+
   it('should validate serviceGender as "MALE"', async () => {
     const { user } = await sut.execute({
       name: 'John Doe',
@@ -88,27 +111,5 @@ describe('User Register Use Case', () => {
       password: '123456',
     })
     expect(user.id).toEqual(expect.any(String))
-  })
-
-  it('It should prevent a user register with an invalid service gender', async () => {
-    await expect(() =>
-      sut.execute({
-        name: 'John Doe',
-        serviceGender: 'INVALID_GENDER' as 'BOTH', // invalid gender
-        email: 'johndoe@example.com',
-        password: '123456',
-      }),
-    ).rejects.toBeInstanceOf(InvalidGenderException)
-  })
-
-  it('should prevent a user register with service gender as blank', async () => {
-    await expect(() =>
-      sut.execute({
-        name: 'John Doe',
-        serviceGender: '' as 'BOTH', // invalid gender
-        email: 'johndoe@example.com',
-        password: '123456',
-      }),
-    ).rejects.toBeInstanceOf(InvalidGenderException)
   })
 })
