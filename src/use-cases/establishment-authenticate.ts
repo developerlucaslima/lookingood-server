@@ -1,7 +1,7 @@
 import { compare } from 'bcryptjs'
 import { Establishment } from '@prisma/client'
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
-import { InvalidCredentialsException } from './errors/401-invalid-credentials-exception'
+import { UnauthorizedCredentialsException } from './errors/401-unauthorized-credentials-exception'
 
 interface EstablishmentAuthenticateUseCaseRequest {
   email: string
@@ -19,22 +19,22 @@ export class EstablishmentAuthenticateUseCase {
     email,
     password,
   }: EstablishmentAuthenticateUseCaseRequest): Promise<EstablishmentAuthenticateUseCaseResponse> {
-    // It should prevent establishment authenticate with wrong email
+    // It should prevent establishment authenticate with wrong email.
     const establishment = await this.establishmentsRepository.findByEmail(email)
     if (!establishment) {
-      throw new InvalidCredentialsException()
+      throw new UnauthorizedCredentialsException()
     }
 
-    // It should prevent establishment authenticate with wrong password
+    // It should prevent establishment authenticate with wrong password.
     const doesPasswordsMatch = await compare(
       password,
       establishment.passwordHash,
     )
     if (!doesPasswordsMatch) {
-      throw new InvalidCredentialsException()
+      throw new UnauthorizedCredentialsException()
     }
 
-    // It should allow establishment authenticate
+    // It should allow establishment authenticate.
     return {
       establishment,
     }
