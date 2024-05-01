@@ -1,7 +1,7 @@
 import { InMemoryEstablishmentsRepository } from '@/repositories/in-memory/in-memory-establishments-repository'
 import { InMemoryProfessionalsRepository } from '@/repositories/in-memory/in-memory-professionals-repository'
 import { AddProfessionalUseCase } from '@/use-cases/add-professional'
-import { EstablishmentNotFoundException } from '@/use-cases/errors/404-establishment-not-found-exception'
+import { UnauthorizedEstablishmentException } from '@/use-cases/errors/401-unauthorized-establishment-exception'
 import { Decimal } from '@prisma/client/runtime/library'
 import { hash } from 'bcryptjs'
 import { describe, beforeEach, it, expect } from 'vitest'
@@ -19,6 +19,7 @@ describe('Add Professional Use Case', () => {
       professionalsRepository,
     )
 
+    // Establishment 01 -------------------
     const establishmentId = 'Establishment-01'
     establishmentsRepository.items.set(establishmentId, {
       id: establishmentId,
@@ -35,7 +36,7 @@ describe('Add Professional Use Case', () => {
     })
   })
 
-  it('should allow add a professional', async () => {
+  it('should allow add professional', async () => {
     const { professional } = await sut.execute({
       name: 'John Doe',
       imageUrl: 'image.url',
@@ -52,6 +53,6 @@ describe('Add Professional Use Case', () => {
         imageUrl: 'image.url',
         establishmentId: 'Nonexistent-Establishment-01', // invalid establishment
       }),
-    ).rejects.toBeInstanceOf(EstablishmentNotFoundException)
+    ).rejects.toBeInstanceOf(UnauthorizedEstablishmentException)
   })
 })
