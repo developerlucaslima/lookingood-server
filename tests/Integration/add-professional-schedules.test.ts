@@ -4,10 +4,9 @@ import { InMemoryProfessionalsRepository } from '@/repositories/in-memory/in-mem
 import { InMemoryProfessionalsSchedulesRepository } from '@/repositories/in-memory/in-memory-professionals-schedules-repository'
 import { AddProfessionalScheduleUseCase } from '@/use-cases/add-professional-schedule'
 import { InvalidInputParametersException } from '@/use-cases/errors/400-invalid-input-parameters-exception'
-import { EstablishmentNotFoundException } from '@/use-cases/errors/404-establishment-not-found-exception'
+import { UnauthorizedEstablishmentException } from '@/use-cases/errors/401-unauthorized-establishment-exception'
 import { ProfessionalNotFoundException } from '@/use-cases/errors/404-professional-not-found-exception'
-import { ScheduleNotFoundException } from '@/use-cases/errors/404-schedule-not-found-exception'
-import { InvalidEmployeeScheduleException } from '@/use-cases/errors/422-invalid-employee-schedule-exception'
+import { InvalidScheduleException } from '@/use-cases/errors/422-invalid-schedule-exception'
 import { WeekDay } from '@prisma/client'
 import { Decimal } from '@prisma/client/runtime/library'
 import { hash } from 'bcryptjs'
@@ -92,7 +91,7 @@ describe('Add Professional Schedule Use Case', () => {
     })
   })
 
-  it('should allow add a professional schedule', async () => {
+  it('should allow add professional schedule', async () => {
     const { schedule } = await sut.execute({
       startTime: '08:00',
       minutesWorking: 480,
@@ -128,7 +127,20 @@ describe('Add Professional Schedule Use Case', () => {
         weekDay: 'MONDAY',
         professionalId: 'Professional-02', // professional from invalid establishment
       }),
-    ).rejects.toBeInstanceOf(EstablishmentNotFoundException)
+    ).rejects.toBeInstanceOf(UnauthorizedEstablishmentException)
+  })
+
+  it('should prevent add professional schedule with break if it have not break start or end time.', async () => {
+    await expect(() =>
+      sut.execute({
+        startTime: '08:00',
+        minutesWorking: 480,
+        breakTime: '12:00',
+        minutesBreak: null, // invalid minutes
+        weekDay: 'MONDAY',
+        professionalId: 'Professional-01',
+      }),
+    ).rejects.toBeInstanceOf(InvalidScheduleException)
   })
 
   it('should prevent add professional schedule with negative time parameters', async () => {
@@ -150,10 +162,23 @@ describe('Add Professional Schedule Use Case', () => {
         startTime: '08:00',
         minutesWorking: 480,
         breakTime: '12:00',
-        minutesBreak: 30,
+        minutesBreak: 60,
         weekDay: 'SUNDAY', // invalid day for this establishment
         professionalId: 'Professional-01',
       }),
-    ).rejects.toBeInstanceOf(ScheduleNotFoundException)
+    ).rejects.toBeInstanceOf(InvalidScheduleException)
+  })
+
+  it("should prevent add professional schedule if the professional's schedule conflicts with the establishment's schedule", async () => {
+    await expect(() =>
+      sut.execute({
+        startTime: '08:00',
+        minutesWorking: 480,
+        breakTime: '12:00',
+        minutesBreak: 30, // invalid minutes
+        weekDay: 'MONDAY',
+        professionalId: 'Professional-01',
+      }),
+    ).rejects.toBeInstanceOf(InvalidScheduleException)
   })
 })
