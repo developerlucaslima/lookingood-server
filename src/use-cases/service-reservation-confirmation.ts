@@ -2,7 +2,7 @@ import { EstablishmentsRepository } from '@/repositories/establishments-reposito
 import { ReservationsRepository } from '@/repositories/reservations-repository'
 import { Reservation } from '@prisma/client'
 import { ReservationNotFoundException } from './errors/404-reservation-not-found-exception'
-import { EstablishmentNotFoundException } from './errors/404-establishment-not-found-exception'
+import { UnauthorizedEstablishmentException } from './errors/401-unauthorized-establishment-exception'
 
 interface ServiceReservationConfirmationUseCaseRequest {
   reservationId: string
@@ -23,22 +23,27 @@ export class ServiceReservationConfirmationUseCase {
     reservationId,
     establishmentId,
   }: ServiceReservationConfirmationUseCaseRequest): Promise<ServiceReservationConfirmationsUseCaseResponse> {
-    // It should prevent service reservation confirmation if the reservation doesn't exist
+    // It should prevent service reservation confirmation if the reservation does not exist
     const reservation =
       await this.reservationsRepository.findById(reservationId)
     if (!reservation) {
       throw new ReservationNotFoundException()
     }
 
-    // It should prevent service reservation confirmation if the establishment doesn't exist or doesn't match the reservation's establishment
+    // It should prevent service confirmation update if the establishment does not exist
     const establishment =
       await this.establishmentsRepository.findById(establishmentId)
-    if (!establishment || establishment.id !== reservation.establishmentId) {
-      throw new EstablishmentNotFoundException()
+    if (!establishment) {
+      throw new UnauthorizedEstablishmentException('unauthenticated')
     }
 
-    // It should allow service reservation confirmation
-    reservation.status = `CONFIRMED`
+    // It should prevent service reservation confirmation if the establishment does not match the reservation
+    if (establishmentId !== reservation.establishmentId) {
+      throw new UnauthorizedEstablishmentException('unauthorized')
+    }
+
+    // It should allow service reservation confirmation.
+    reservation.status = 'CONFIRMED'
     await this.reservationsRepository.update(reservation)
     return {
       reservation,
