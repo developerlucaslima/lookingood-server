@@ -1,7 +1,7 @@
 import { ProfessionalsRepository } from '@/repositories/professionals-repository'
 import { Professional } from '@prisma/client'
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
-import { EstablishmentNotFoundException } from './errors/404-establishment-not-found-exception'
+import { UnauthorizedEstablishmentException } from './errors/401-unauthorized-establishment-exception'
 
 interface AddProfessionalUseCaseRequest {
   name: string
@@ -24,14 +24,14 @@ export class AddProfessionalUseCase {
     imageUrl,
     establishmentId,
   }: AddProfessionalUseCaseRequest): Promise<AddProfessionalUseCaseResponse> {
-    // It should prevent add professional if the establishment does not exist
+    // It should prevent add professional if the establishment does not exist.
     const establishment =
       await this.establishmentRepository.findById(establishmentId)
     if (!establishment) {
-      throw new EstablishmentNotFoundException()
+      throw new UnauthorizedEstablishmentException('unauthenticated')
     }
 
-    // It should allow add professional
+    // It should allow add professional.
     const professional = await this.professionalsRepository.create({
       name,
       imageUrl,
