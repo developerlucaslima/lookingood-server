@@ -16,13 +16,13 @@ export class GetUserProfileUseCase {
   async execute({
     userId,
   }: GetUserProfileUseCaseRequest): Promise<GetUserProfileUseCaseResponse> {
-    // It prevent get user profile if user does not exist
+    // It prevent get user profile if user does not exist.
     const user = await this.usersRepository.findById(userId)
     if (!user) {
       throw new UserNotFoundException()
     }
 
-    // It should allow get user profile
+    // It should allow get user profile.
     return {
       user,
     }
