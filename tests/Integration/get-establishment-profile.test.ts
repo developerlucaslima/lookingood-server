@@ -1,9 +1,9 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 import { GetEstablishmentProfileUseCase } from '@/use-cases/get-establishment-profile'
 import { InMemoryEstablishmentsRepository } from '@/repositories/in-memory/in-memory-establishments-repository'
-import { EstablishmentNotFoundException } from '@/use-cases/errors/404-establishment-not-found-exception'
 import { Decimal } from '@prisma/client/runtime/library'
 import { hash } from 'bcryptjs'
+import { EstablishmentNotFoundException } from '@/use-cases/errors/404-establishment-not-found-exception'
 
 let establishmentsRepository: InMemoryEstablishmentsRepository
 let sut: GetEstablishmentProfileUseCase
@@ -13,6 +13,7 @@ describe('Get Establishment Profile Use Case', () => {
     establishmentsRepository = new InMemoryEstablishmentsRepository()
     sut = new GetEstablishmentProfileUseCase(establishmentsRepository)
 
+    // Establishment 01 -------------------
     const establishmentId = 'Establishment-01'
     establishmentsRepository.items.set(establishmentId, {
       id: establishmentId,
@@ -37,7 +38,7 @@ describe('Get Establishment Profile Use Case', () => {
     expect(establishment.id).toEqual(expect.any(String))
   })
 
-  it('prevent get establishment profile if establishment does not exist', async () => {
+  it('should prevent get establishment profile if establishment does not exist', async () => {
     await expect(
       sut.execute({
         establishmentId: 'Nonexistent-Establishment-01', // invalid establishment
