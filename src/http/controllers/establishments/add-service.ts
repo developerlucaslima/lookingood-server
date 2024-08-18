@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 import { EstablishmentNotFoundException } from '@/errors/establishment-not-found.exception'
-import { makeAddServiceUseCase } from '@/use-cases/factories/make-add-service-use-case'
+import { addServiceFactory } from '@/use-cases/factories/add-service-factory'
 
 export async function addServiceController(
   request: FastifyRequest,
@@ -29,7 +29,7 @@ export async function addServiceController(
     .parse(request.body)
 
   try {
-    const addServiceUseCase = makeAddServiceUseCase()
+    const addServiceUseCase = addServiceFactory()
 
     await addServiceUseCase.execute({
       name,
