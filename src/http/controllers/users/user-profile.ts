@@ -1,13 +1,14 @@
-import { makeGetUserProfileUseCase } from '@/use-cases/factories/make-get-user-profile-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 
-export async function userProfile(
+import { makeUserProfileUseCase } from '@/use-cases/factories/make-user-profile-use-case'
+
+export async function userProfileController(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const getUserProfile = makeGetUserProfileUseCase()
+  const userProfileUseCase = makeUserProfileUseCase()
 
-  const { user } = await getUserProfile.execute({
+  const { user } = await userProfileUseCase.execute({
     userId: request.user.sub,
   })
 
