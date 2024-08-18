@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
-import { makeUpdateBookingServiceUseCase } from '@/use-cases/factories/make-service-booking-update-use-case'
+import { updateBookingServiceFactory } from '@/use-cases/factories/update-booking-service-factory'
 
 export async function updateBookingServiceController(
   request: FastifyRequest,
@@ -24,7 +24,7 @@ export async function updateBookingServiceController(
     })
     .parse(request.body)
 
-  const updateBookingServiceUseCase = makeUpdateBookingServiceUseCase()
+  const updateBookingServiceUseCase = updateBookingServiceFactory()
 
   await updateBookingServiceUseCase.execute({
     professionalId,
