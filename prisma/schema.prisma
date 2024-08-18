@@ -1,4 +1,4 @@
-// ----------- Config ----------- 
+// ----------- Config -----------
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,7 +8,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ----------- Enums ----------- 
+// ----------- Enums -----------
 enum Gender {
   BOTH
   MALE
@@ -37,7 +37,7 @@ enum Status {
   NO_SHOW
 }
 
-// ----------- Models ----------- 
+// ----------- Models -----------
 model User {
   id            String   @id @default(uuid())
   name          String
@@ -47,8 +47,7 @@ model User {
   createdAt     DateTime @default(now())
   role          Role     @default(USER)
 
-  // --- Relationship ---
-  reservation Reservation[]
+  Booking Booking[]
 
   @@map("users")
 }
@@ -66,10 +65,9 @@ model Establishment {
   longitude    Decimal
   role         Role     @default(ESTABLISHMENT)
 
-  // --- Relationship ---
   service               Service[]
   Professional          Professional[]
-  Reservation           Reservation[]
+  Booking               Booking[]
   EstablishmentSchedule EstablishmentSchedule[]
 
   @@map("establishments")
@@ -83,7 +81,6 @@ model EstablishmentSchedule {
   minutesBreak   Int?
   weekDay        WeekDay
 
-  // --- Foreign Key ---
   establishment   Establishment @relation(fields: [establishmentId], references: [id])
   establishmentId String
 
@@ -95,12 +92,10 @@ model Professional {
   name     String
   imageUrl String?
 
-  // --- Foreign Key ---
   establishment   Establishment @relation(fields: [establishmentId], references: [id])
   establishmentId String
 
-  // --- Relationship ---
-  reservation          Reservation[]
+  Booking              Booking[]
   ProfessionalSchedule ProfessionalSchedule[]
 
   @@map("professionals")
@@ -114,7 +109,6 @@ model ProfessionalSchedule {
   minutesBreak   Int?
   weekDay        WeekDay
 
-  // --- Foreign Key ---
   professional   Professional @relation(fields: [professionalId], references: [id])
   professionalId String
 
@@ -131,23 +125,20 @@ model Service {
   durationMinutes             Int
   modificationDeadlineMinutes Int
 
-  // --- Foreign Key ---
   establishment   Establishment @relation(fields: [establishmentId], references: [id])
   establishmentId String
 
-  // --- Relationship ---
-  reservation Reservation[]
+  Booking Booking[]
 
   @@map("services")
 }
 
-model Reservation {
+model Booking {
   id        String   @id @default(uuid())
   status    Status   @default(WAITING_FOR_CONFIRMATION)
   startTime DateTime
   endTime   DateTime
 
-  // --- Foreign Key ---
   Professional    Professional  @relation(fields: [professionalId], references: [id])
   professionalId  String
   service         Service       @relation(fields: [serviceId], references: [id])
@@ -157,5 +148,5 @@ model Reservation {
   establishment   Establishment @relation(fields: [establishmentId], references: [id])
   establishmentId String
 
-  @@map("reservations")
+  @@map("bookings")
 }
