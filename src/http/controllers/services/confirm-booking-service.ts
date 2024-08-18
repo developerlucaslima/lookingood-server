@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
-import { makeConfirmBookingServiceUseCase } from '@/use-cases/factories/make-service-booking-confirmation-use-case'
+import { confirmBookingServiceFactory } from '@/use-cases/factories/confirm-booking-service-factory'
 
 export async function confirmBookingServiceController(
   request: FastifyRequest,
@@ -14,7 +14,7 @@ export async function confirmBookingServiceController(
     })
     .parse(request.params)
 
-  const confirmBookedServicesUseCase = makeConfirmBookingServiceUseCase()
+  const confirmBookedServicesUseCase = confirmBookingServiceFactory()
 
   await confirmBookedServicesUseCase.execute({
     bookingId,
