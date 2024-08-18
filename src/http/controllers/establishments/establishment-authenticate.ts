@@ -1,9 +1,10 @@
-import { InvalidCredentialsError } from '@/use-cases/errors/invalid-credentials-error'
-import { makeEstablishmentAuthenticateUseCase } from '@/use-cases/factories/make-establishment-authenticate-use-case'
-import { FastifyRequest, FastifyReply } from 'fastify'
+import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
-export async function establishmentAuthenticate(
+import { InvalidCredentialsException } from '@/errors/invalid-credentials.exception'
+import { makeEstablishmentAuthenticateUseCase } from '@/use-cases/factories/make-establishment-authenticate-use-case'
+
+export async function establishmentAuthenticateController(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
@@ -23,7 +24,7 @@ export async function establishmentAuthenticate(
     })
 
     const token = await reply.jwtSign(
-      {},
+      { role: establishment.role },
       {
         sign: {
           sub: establishment.id,
@@ -32,7 +33,7 @@ export async function establishmentAuthenticate(
     )
 
     const refreshToken = await reply.jwtSign(
-      {},
+      { role: establishment.role },
       {
         sign: {
           sub: establishment.id,
@@ -53,7 +54,7 @@ export async function establishmentAuthenticate(
         token,
       })
   } catch (err) {
-    if (err instanceof InvalidCredentialsError) {
+    if (err instanceof InvalidCredentialsException) {
       return reply.status(400).send({ message: err.message })
     }
 
