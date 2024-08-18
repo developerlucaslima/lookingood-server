@@ -1,7 +1,8 @@
-import { ProfessionalsRepository } from '@/repositories/professionals-repository'
 import { Professional } from '@prisma/client'
+
+import { EstablishmentNotFoundException } from '@/errors/establishment-not-found.exception'
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
-import { UnauthorizedEstablishmentException } from './errors/401-unauthorized-establishment-exception'
+import { ProfessionalsRepository } from '@/repositories/professionals-repository'
 
 interface AddProfessionalUseCaseRequest {
   name: string
@@ -28,7 +29,7 @@ export class AddProfessionalUseCase {
     const establishment =
       await this.establishmentRepository.findById(establishmentId)
     if (!establishment) {
-      throw new UnauthorizedEstablishmentException('unauthenticated')
+      throw new EstablishmentNotFoundException()
     }
 
     // It should allow add professional.
