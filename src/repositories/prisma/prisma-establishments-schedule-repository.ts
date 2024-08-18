@@ -1,5 +1,7 @@
-import { prisma } from '@/prisma'
 import { $Enums, Prisma } from '@prisma/client'
+
+import { prisma } from '@/prisma'
+
 import { EstablishmentsSchedulesRepository } from '../establishments-schedules-repository'
 
 export class PrismaEstablishmentsSchedulesRepository
