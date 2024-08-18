@@ -2,8 +2,16 @@
   "extends": [
     "@rocketseat/eslint-config/node"
   ],
+  "plugins": [
+    "simple-import-sort"
+],
   "rules": {
     "no-useless-constructor": "off",
-    "camelcase": "off"
+    "camelcase": "off",
+    "simple-import-sort/imports": "error"
+  },
+  "parserOptions": {
+      "sourceType": "module",
+      "ecmaVersion": "latest"
   }
 }
