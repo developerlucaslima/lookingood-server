@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
-import { makeBookingServiceUseCase } from '@/use-cases/factories/make-booking-service-use-case'
+import { bookingServiceFactory } from '@/use-cases/factories/booking-service-factory'
 
 export async function bookingServiceController(
   request: FastifyRequest,
@@ -18,7 +18,7 @@ export async function bookingServiceController(
     })
     .parse(request.body)
 
-  const bookingServiceUseCase = makeBookingServiceUseCase()
+  const bookingServiceUseCase = bookingServiceFactory()
 
   await bookingServiceUseCase.execute({
     startTime,
