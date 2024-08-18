@@ -1,4 +1,4 @@
-import { $Enums, Prisma, EstablishmentSchedule } from '@prisma/client'
+import { $Enums, EstablishmentSchedule, Prisma } from '@prisma/client'
 
 export interface EstablishmentsSchedulesRepository {
   create(
