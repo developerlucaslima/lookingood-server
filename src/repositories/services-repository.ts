@@ -1,4 +1,4 @@
-import { Service, Prisma } from '@prisma/client'
+import { Prisma, Service } from '@prisma/client'
 
 export interface ServicesRepository {
   create(data: Prisma.ServiceUncheckedCreateInput): Promise<Service>
