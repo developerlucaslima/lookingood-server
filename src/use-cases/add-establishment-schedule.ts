@@ -1,9 +1,11 @@
-import { EstablishmentsRepository } from '@/repositories/establishments-repository'
 import { $Enums, EstablishmentSchedule } from '@prisma/client'
+
+import { EstablishmentNotFoundException } from '@/errors/establishment-not-found.exception'
+import { EstablishmentsRepository } from '@/repositories/establishments-repository'
 import { EstablishmentsSchedulesRepository } from '@/repositories/establishments-schedules-repository'
-import { InvalidInputParametersException } from './errors/400-invalid-input-parameters-exception'
-import { UnauthorizedEstablishmentException } from './errors/401-unauthorized-establishment-exception'
-import { InvalidScheduleException } from './errors/422-invalid-schedule-exception'
+
+import { InvalidInputParametersException } from '../errors/invalid-input-parameters.exception'
+import { InvalidScheduleException } from '../errors/invalid-schedule.exception'
 
 interface AddEstablishmentScheduleUseCaseRequest {
   startTime: string
@@ -36,17 +38,17 @@ export class AddEstablishmentScheduleUseCase {
     const establishment =
       await this.establishmentsRepository.findById(establishmentId)
     if (!establishment) {
-      throw new UnauthorizedEstablishmentException('unauthenticated')
+      throw new EstablishmentNotFoundException()
     }
 
     // It should prevent add establishment schedule with break if it have not break start or end time.
     if ((!breakTime && minutesBreak) || (breakTime && !minutesBreak)) {
-      throw new InvalidScheduleException('invalid_break')
+      throw new InvalidScheduleException()
     }
 
     // It should prevent add establishment schedule with negative time parameters.
     if (minutesWorking < 0 || (breakTime && minutesBreak && minutesBreak < 0)) {
-      throw new InvalidInputParametersException('negative')
+      throw new InvalidInputParametersException()
     }
 
     // it should allow add establishment schedule.
