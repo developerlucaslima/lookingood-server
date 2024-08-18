@@ -11,7 +11,7 @@ import { ServicesRepository } from '@/repositories/services-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 import { getDayNameOfWeek } from '@/utils/get-day-name-of-week'
 import { getEndTimeByStartTime } from '@/utils/get-end-time-by-start-time'
-import { isWithinProfessionalsSchedule } from '@/utils/is-within-with-professionals-schedule'
+import { isBookingWithinProfessionalSchedule } from '@/utils/is-booking-within-professional-schedule'
 
 import { EstablishmentNotFoundException } from '../errors/establishment-not-found.exception'
 import { ProfessionalNotFoundException } from '../errors/professional-not-found.exception'
@@ -103,7 +103,11 @@ export class BookingServiceUseCase {
     if (!professionalSchedule) {
       throw new ProfessionalNotAvailableException()
     } else if (
-      !isWithinProfessionalsSchedule(professionalSchedule, startTime, endTime)
+      !isBookingWithinProfessionalSchedule(
+        professionalSchedule,
+        startTime,
+        endTime,
+      )
     ) {
       throw new ProfessionalNotAvailableException()
     }
