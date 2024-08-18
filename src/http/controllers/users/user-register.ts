@@ -1,16 +1,17 @@
-import { EmailAlreadyExistsError } from '@/use-cases/errors/email-already-exists-error'
-import { makeUserRegisterUseCase } from '@/use-cases/factories/make-user-register-use-case'
-import { FastifyRequest, FastifyReply } from 'fastify'
+import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
-export async function userRegister(
+import { EmailNotAvailableException } from '@/errors/email-not-available.exception.ts'
+import { makeUserRegisterUseCase } from '@/use-cases/factories/make-user-register-use-case'
+
+export async function userRegisterController(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
   const { name, serviceGender, email, password } = z
     .object({
       name: z.string(),
-      serviceGender: z.enum(['Male', 'Female', 'Both']),
+      serviceGender: z.enum(['MALE', 'FEMALE', 'BOTH']),
       email: z.string().email(),
       password: z.string().min(6),
     })
@@ -26,7 +27,7 @@ export async function userRegister(
       password,
     })
   } catch (err) {
-    if (err instanceof EmailAlreadyExistsError) {
+    if (err instanceof EmailNotAvailableException) {
       return reply.status(409).send({ message: err.message })
     }
 
