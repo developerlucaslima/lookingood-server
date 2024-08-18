@@ -1,12 +1,12 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 
-import { makeUserProfileUseCase } from '@/use-cases/factories/make-user-profile-use-case'
+import { userProfileFactory } from '@/use-cases/factories/user-profile-factory'
 
 export async function userProfileController(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const userProfileUseCase = makeUserProfileUseCase()
+  const userProfileUseCase = userProfileFactory()
 
   const { user } = await userProfileUseCase.execute({
     userId: request.user.sub,
