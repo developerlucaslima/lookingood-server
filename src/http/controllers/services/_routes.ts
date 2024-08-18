@@ -3,9 +3,9 @@ import { FastifyInstance } from 'fastify'
 import { verifyJwt } from '@/http/middlewares/verify-jwt'
 import { verifyUserRole } from '@/http/middlewares/verify-user-role'
 
-import { bookingServiceController } from './service-booking'
-import { confirmBookingServiceController } from './service-booking-confirmation'
-import { updateBookingServiceController } from './service-booking-update'
+import { bookingServiceController } from './booking-service'
+import { confirmBookingServiceController } from './confirm-booking-service'
+import { updateBookingServiceController } from './update-service-booking'
 
 export async function appServiceRoutes(app: FastifyInstance) {
   app.post(
