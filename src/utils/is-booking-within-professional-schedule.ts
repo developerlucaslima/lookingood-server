@@ -1,8 +1,9 @@
 import { ProfessionalSchedule } from '@prisma/client'
+
 import { getMinutesByTime } from './get-minutes-by-time'
 
-export function isWithinProfessionalsSchedule(
-  professionalSchedule: ProfessionalSchedule,
+export function isBookingWithinProfessionalSchedule(
+  professionalSchedule: Readonly<ProfessionalSchedule>,
   startTime: Date,
   endTime: Date,
 ): boolean {
@@ -11,22 +12,22 @@ export function isWithinProfessionalsSchedule(
   )
   const professionalEndMinutes =
     professionalStartMinutes + professionalSchedule.minutesWorking
-  const reservationStartMinutes = getMinutesByTime(
+  const bookingStartMinutes = getMinutesByTime(
     `${startTime.getHours()}:${startTime.getMinutes()}`,
   )
-  const reservationEndMinutes = getMinutesByTime(
+  const bookingEndMinutes = getMinutesByTime(
     `${endTime.getHours()}:${endTime.getMinutes()}`,
   )
 
-  // Check if the reservation falls outside of the professional's working hours
+  // Check if the booking falls outside of the professional's working hours
   if (
-    reservationStartMinutes < professionalStartMinutes ||
-    reservationEndMinutes > professionalEndMinutes
+    bookingStartMinutes < professionalStartMinutes ||
+    bookingEndMinutes > professionalEndMinutes
   ) {
     return false
   }
 
-  // Check if the reservation falls within the professional's break time, if applicable
+  // Check if the booking falls within the professional's break time, if applicable
   if (professionalSchedule.breakTime && professionalSchedule.minutesBreak) {
     const professionalBreakStartMinutes = getMinutesByTime(
       professionalSchedule.breakTime,
@@ -35,13 +36,13 @@ export function isWithinProfessionalsSchedule(
       professionalBreakStartMinutes + professionalSchedule.minutesBreak
 
     if (
-      reservationStartMinutes >= professionalBreakStartMinutes &&
-      reservationEndMinutes <= professionalBreakEndMinutes
+      bookingStartMinutes >= professionalBreakStartMinutes &&
+      bookingEndMinutes <= professionalBreakEndMinutes
     ) {
       return false
     }
   }
 
-  // If the reservation passes all checks, it is within the professional's schedule
+  // If the booking passes all checks, it is within the professional's schedule
   return true
 }
