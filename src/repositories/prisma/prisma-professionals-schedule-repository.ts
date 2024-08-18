@@ -1,8 +1,10 @@
-import { prisma } from '@/prisma'
 import { $Enums, Prisma } from '@prisma/client'
+
+import { prisma } from '@/prisma'
+
 import { ProfessionalsSchedulesRepository } from '../professionals-schedules-repository'
 
-export class PrismaProfessionalsScheduleRepository
+export class PrismaProfessionalsSchedulesRepository
   implements ProfessionalsSchedulesRepository
 {
   async create(data: Prisma.ProfessionalScheduleUncheckedCreateInput) {
