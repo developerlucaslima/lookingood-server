@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 
-export async function establishmentRefresh(
+export async function establishmentRefreshController(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
@@ -20,7 +20,7 @@ export async function establishmentRefresh(
     {
       sign: {
         sub: request.user.sub,
-        expiresIn: '7d',
+        expiresIn: '3d',
       },
     },
   )
