@@ -1,5 +1,7 @@
 import { Prisma } from '@prisma/client'
+
 import { prisma } from '@/prisma'
+
 import { EstablishmentsRepository } from '../establishments-repository'
 
 export class PrismaEstablishmentsRepository
