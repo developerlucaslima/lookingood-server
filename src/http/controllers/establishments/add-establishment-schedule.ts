@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 import { EstablishmentNotFoundException } from '@/errors/establishment-not-found.exception'
-import { makeAddEstablishmentScheduleUseCase } from '@/use-cases/factories/make-add-establishment-schedule-use-case'
+import { addEstablishmentScheduleFactory } from '@/use-cases/factories/add-establishment-schedule-factory'
 
 export async function addEstablishmentScheduleController(
   request: FastifyRequest,
@@ -30,8 +30,7 @@ export async function addEstablishmentScheduleController(
     .parse(request.body)
 
   try {
-    const addEstablishmentScheduleUseCase =
-      makeAddEstablishmentScheduleUseCase()
+    const addEstablishmentScheduleUseCase = addEstablishmentScheduleFactory()
 
     await addEstablishmentScheduleUseCase.execute({
       startTime,
