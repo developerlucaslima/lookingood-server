@@ -1,9 +1,10 @@
-import { EstablishmentNotFoundError } from '@/use-cases/errors/establishment-not-found-error'
-import { makeAddProfessionalUseCase } from '@/use-cases/factories/make-add-professional-use-case'
-import { FastifyRequest, FastifyReply } from 'fastify'
+import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
-export async function addProfessional(
+import { EstablishmentNotFoundException } from '@/errors/establishment-not-found.exception'
+import { makeAddProfessionalUseCase } from '@/use-cases/factories/make-add-professional-use-case'
+
+export async function addProfessionalController(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
@@ -23,7 +24,7 @@ export async function addProfessional(
       establishmentId: request.user.sub,
     })
   } catch (err) {
-    if (err instanceof EstablishmentNotFoundError) {
+    if (err instanceof EstablishmentNotFoundException) {
       return reply.status(404).send({ message: err.message })
     }
 
