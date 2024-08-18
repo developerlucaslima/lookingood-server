@@ -1,4 +1,4 @@
-import { Professional, Prisma } from '@prisma/client'
+import { Prisma, Professional } from '@prisma/client'
 
 export interface ProfessionalsRepository {
   create(data: Prisma.ProfessionalUncheckedCreateInput): Promise<Professional>
