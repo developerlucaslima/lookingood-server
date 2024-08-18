@@ -1,21 +1,23 @@
-import { EstablishmentsRepository } from '@/repositories/establishments-repository'
 import { Establishment } from '@prisma/client'
-import { EstablishmentNotFoundException } from './errors/404-establishment-not-found-exception'
 
-interface GetEstablishmentProfileUseCaseRequest {
+import { EstablishmentsRepository } from '@/repositories/establishments-repository'
+
+import { EstablishmentNotFoundException } from '../errors/establishment-not-found.exception'
+
+interface EstablishmentProfileUseCaseRequest {
   establishmentId: string
 }
 
-interface GetEstablishmentProfileUseCaseResponse {
+interface EstablishmentProfileUseCaseResponse {
   establishment: Establishment
 }
 
-export class GetEstablishmentProfileUseCase {
+export class EstablishmentProfileUseCase {
   constructor(private establishmentsRepository: EstablishmentsRepository) {}
 
   async execute({
     establishmentId,
-  }: GetEstablishmentProfileUseCaseRequest): Promise<GetEstablishmentProfileUseCaseResponse> {
+  }: EstablishmentProfileUseCaseRequest): Promise<EstablishmentProfileUseCaseResponse> {
     // It should prevent get establishment profile if establishment does not exist.
     const establishment =
       await this.establishmentsRepository.findById(establishmentId)
