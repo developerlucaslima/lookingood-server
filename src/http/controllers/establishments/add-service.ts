@@ -1,9 +1,13 @@
-import { EstablishmentNotFoundError } from '@/use-cases/errors/establishment-not-found-error'
-import { makeAddServiceUseCase } from '@/use-cases/factories/make-add-service-use-case'
-import { FastifyRequest, FastifyReply } from 'fastify'
+import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
-export async function addService(request: FastifyRequest, reply: FastifyReply) {
+import { EstablishmentNotFoundException } from '@/errors/establishment-not-found.exception'
+import { makeAddServiceUseCase } from '@/use-cases/factories/make-add-service-use-case'
+
+export async function addServiceController(
+  request: FastifyRequest,
+  reply: FastifyReply,
+) {
   const {
     name,
     price,
@@ -16,7 +20,7 @@ export async function addService(request: FastifyRequest, reply: FastifyReply) {
     .object({
       name: z.string(),
       price: z.number().positive(),
-      genderFor: z.enum(['Male', 'Female', 'Both']),
+      genderFor: z.enum(['MALE', 'FEMALE', 'BOTH']),
       description: z.string().nullable(),
       imageUrl: z.string().nullable(),
       modificationDeadlineMinutes: z.number().positive(),
@@ -38,7 +42,7 @@ export async function addService(request: FastifyRequest, reply: FastifyReply) {
       durationMinutes,
     })
   } catch (err) {
-    if (err instanceof EstablishmentNotFoundError) {
+    if (err instanceof EstablishmentNotFoundException) {
       return reply.status(404).send({ message: err.message })
     }
 
