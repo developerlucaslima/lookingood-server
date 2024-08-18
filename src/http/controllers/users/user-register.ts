@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 import { EmailNotAvailableException } from '@/errors/email-not-available.exception.ts'
-import { makeUserRegisterUseCase } from '@/use-cases/factories/make-user-register-use-case'
+import { userRegisterFactory } from '@/use-cases/factories/user-register-factory'
 
 export async function userRegisterController(
   request: FastifyRequest,
@@ -18,7 +18,7 @@ export async function userRegisterController(
     .parse(request.body)
 
   try {
-    const userRegisterUseCase = makeUserRegisterUseCase()
+    const userRegisterUseCase = userRegisterFactory()
 
     await userRegisterUseCase.execute({
       name,
