@@ -1,7 +1,8 @@
-import { makeGetEstablishmentProfileUseCase } from '@/use-cases/factories/make-get-establishment-profile-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 
-export async function establishmentProfile(
+import { makeGetEstablishmentProfileUseCase } from '@/use-cases/factories/make-get-establishment-profile-use-case'
+
+export async function establishmentProfileController(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
