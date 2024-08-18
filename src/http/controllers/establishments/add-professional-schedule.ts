@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 import { ProfessionalNotFoundException } from '@/errors/professional-not-found.exception'
-import { addProfessionalScheduleFactory } from '@/use-cases/factories/add-professional-schedule-use-case'
+import { addProfessionalScheduleFactory } from '@/use-cases/factories/add-professional-schedule-factory'
 
 export async function addProfessionalScheduleController(
   request: FastifyRequest,
