@@ -1,21 +1,23 @@
-import { UsersRepository } from '@/repositories/users-repository'
 import { User } from '@prisma/client'
-import { UserNotFoundException } from './errors/404-user-not-found-exception'
 
-interface GetUserProfileUseCaseRequest {
+import { UsersRepository } from '@/repositories/users-repository'
+
+import { UserNotFoundException } from '../errors/user-not-found.exception'
+
+interface UserProfileUseCaseRequest {
   userId: string
 }
 
-interface GetUserProfileUseCaseResponse {
+interface UserProfileUseCaseResponse {
   user: User
 }
 
-export class GetUserProfileUseCase {
+export class UserProfileUseCase {
   constructor(private usersRepository: UsersRepository) {}
 
   async execute({
     userId,
-  }: GetUserProfileUseCaseRequest): Promise<GetUserProfileUseCaseResponse> {
+  }: UserProfileUseCaseRequest): Promise<UserProfileUseCaseResponse> {
     // It prevent get user profile if user does not exist.
     const user = await this.usersRepository.findById(userId)
     if (!user) {
