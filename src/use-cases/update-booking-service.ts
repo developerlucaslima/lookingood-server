@@ -13,7 +13,7 @@ import { UsersRepository } from '@/repositories/users-repository'
 import { getDayNameOfWeek } from '@/utils/get-day-name-of-week'
 import { getEndTimeByStartTime } from '@/utils/get-end-time-by-start-time'
 import { isAvailableToUpdate } from '@/utils/is-available-to-change'
-import { isWithinProfessionalsSchedule } from '@/utils/is-within-with-professionals-schedule'
+import { isBookingWithinProfessionalSchedule } from '@/utils/is-booking-within-professional-schedule'
 
 import { BookingNotFoundException } from '../errors/booking-not-found.exception'
 import { ProfessionalNotFoundException } from '../errors/professional-not-found.exception'
@@ -118,7 +118,11 @@ export class UpdateBookingServiceUseCase {
     if (!professionalSchedule) {
       throw new ProfessionalNotAvailableException()
     } else if (
-      !isWithinProfessionalsSchedule(professionalSchedule, startTime, endTime)
+      !isBookingWithinProfessionalSchedule(
+        professionalSchedule,
+        startTime,
+        endTime,
+      )
     ) {
       throw new ProfessionalNotAvailableException()
     }
