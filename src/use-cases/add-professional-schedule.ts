@@ -1,13 +1,15 @@
-import { ProfessionalsRepository } from '@/repositories/professionals-repository'
 import { $Enums, ProfessionalSchedule } from '@prisma/client'
+
+import { EstablishmentNotFoundException } from '@/errors/establishment-not-found.exception'
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
-import { compareSchedules } from '@/utils/compare-schedules'
-import { ProfessionalNotFoundException } from './errors/404-professional-not-found-exception'
-import { InvalidInputParametersException } from './errors/400-invalid-input-parameters-exception'
 import { EstablishmentsSchedulesRepository } from '@/repositories/establishments-schedules-repository'
+import { ProfessionalsRepository } from '@/repositories/professionals-repository'
 import { ProfessionalsSchedulesRepository } from '@/repositories/professionals-schedules-repository'
-import { InvalidScheduleException } from './errors/422-invalid-schedule-exception'
-import { UnauthorizedEstablishmentException } from './errors/401-unauthorized-establishment-exception'
+import { compareSchedules } from '@/utils/compare-schedules'
+
+import { InvalidInputParametersException } from '../errors/invalid-input-parameters.exception'
+import { InvalidScheduleException } from '../errors/invalid-schedule.exception'
+import { ProfessionalNotFoundException } from '../errors/professional-not-found.exception'
 
 interface AddProfessionalScheduleUseCaseRequest {
   startTime: string
@@ -50,17 +52,17 @@ export class AddProfessionalScheduleUseCase {
       professional.establishmentId,
     )
     if (!establishment) {
-      throw new UnauthorizedEstablishmentException('unauthenticated')
+      throw new EstablishmentNotFoundException()
     }
 
     // It should prevent add professional schedule with break if it have not break start or end time.
     if ((!breakTime && minutesBreak) || (breakTime && !minutesBreak)) {
-      throw new InvalidScheduleException('invalid_break')
+      throw new InvalidScheduleException()
     }
 
     // It should prevent add professional schedule with negative time parameters.
     if (minutesWorking < 0 || (breakTime && minutesBreak && minutesBreak < 0)) {
-      throw new InvalidInputParametersException('negative')
+      throw new InvalidInputParametersException()
     }
 
     // It should prevent add professional schedule if the establishment does not have opening hours for the given weekday.
@@ -70,7 +72,7 @@ export class AddProfessionalScheduleUseCase {
         weekDay,
       )
     if (!establishmentSchedule) {
-      throw new InvalidScheduleException('establishment_no_schedule')
+      throw new InvalidScheduleException()
     }
 
     // It should prevent add professional schedule if the professional's schedule conflicts with the establishment's schedule.
@@ -86,7 +88,7 @@ export class AddProfessionalScheduleUseCase {
         establishmentSchedule.minutesBreak,
       )
       if (!isCompatibleSchedules) {
-        throw new InvalidScheduleException('mismatched')
+        throw new InvalidScheduleException()
       }
     }
 
