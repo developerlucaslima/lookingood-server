@@ -1,8 +1,10 @@
-import { UsersRepository } from '@/repositories/users-repository'
-import { hash } from 'bcryptjs'
 import { $Enums, User } from '@prisma/client'
-import { EmailNotAvailableException } from './errors/409-email-not-available-exception.ts'
-import { InvalidGenderException } from './errors/422-invalid-gender-exception.js'
+import { hash } from 'bcryptjs'
+
+import { UsersRepository } from '@/repositories/users-repository'
+
+import { EmailNotAvailableException } from '../errors/email-not-available.exception.ts.js'
+import { InvalidGenderException } from '../errors/invalid-gender.exception.js'
 
 interface UserRegisterUseCaseRequest {
   name: string
@@ -16,7 +18,7 @@ interface UserRegisterUseCaseResponse {
 }
 
 export class UserRegisterUseCase {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(private readonly usersRepository: UsersRepository) {}
 
   async execute({
     name,
