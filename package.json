@@ -9,12 +9,12 @@
     "test:create-prisma-environment": "npm link ./prisma/vitest-environment-prisma",
     "test:install-prisma-environment": "npm link vitest-environment-prisma",
     "build": "tsup src --out-dir build",
-    "test": "vitest run --dir tests/Integration",
-    "test:watch": "vitest --dir tests/Integration",
+    "test": "vitest run --dir tests/integration",
+    "test:watch": "vitest --dir tests/integration",
     "pretest:e2e": "run-s test:create-prisma-environment test:install-prisma-environment",
     "test:e2e": "vitest run --dir tests/E2E",
-    "test:coverage": "vitest run --dir tests/Integration --coverage",
-    "test:ui": "vitest --dir tests/Integration --ui"
+    "test:coverage": "vitest run --dir tests/integration --coverage",
+    "test:ui": "vitest --dir tests/integration --ui"
   },
   "keywords": [],
   "author": "Dev Lucas Lima",
@@ -26,6 +26,7 @@
     "@types/supertest": "6.0.2",
     "@vitest/ui": "1.2.2",
     "eslint": "8.56.0",
+    "eslint-plugin-simple-import-sort": "12.1.0",
     "npm-run-all": "4.1.5",
     "prisma": "5.9.1",
     "tsup": "8.0.1",
@@ -42,6 +43,7 @@
     "dayjs": "1.11.10",
     "dotenv": "16.4.1",
     "fastify": "4.26.0",
+    "looking-good_server": "file:",
     "supertest": "6.3.4",
     "zod": "3.22.4"
   }
