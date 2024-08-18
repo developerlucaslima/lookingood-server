@@ -1,9 +1,10 @@
-import { EmailAlreadyExistsError } from '@/use-cases/errors/email-already-exists-error'
-import { makeEstablishmentRegisterUseCase } from '@/use-cases/factories/make-establishment-register-use-case'
-import { FastifyRequest, FastifyReply } from 'fastify'
+import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
-export async function establishmentRegister(
+import { EmailNotAvailableException } from '@/errors/email-not-available.exception.ts'
+import { makeEstablishmentRegisterUseCase } from '@/use-cases/factories/make-establishment-register-use-case'
+
+export async function establishmentRegisterController(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
@@ -47,7 +48,7 @@ export async function establishmentRegister(
       longitude,
     })
   } catch (err) {
-    if (err instanceof EmailAlreadyExistsError) {
+    if (err instanceof EmailNotAvailableException) {
       return reply.status(409).send({ message: err.message })
     }
 
