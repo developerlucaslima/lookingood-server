@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 import { EstablishmentNotFoundException } from '@/errors/establishment-not-found.exception'
-import { makeAddProfessionalUseCase } from '@/use-cases/factories/make-add-professional-use-case'
+import { addProfessionalFactory } from '@/use-cases/factories/add-professional-factory'
 
 export async function addProfessionalController(
   request: FastifyRequest,
@@ -16,7 +16,7 @@ export async function addProfessionalController(
     .parse(request.body)
 
   try {
-    const addProfessionalUseCase = makeAddProfessionalUseCase()
+    const addProfessionalUseCase = addProfessionalFactory()
 
     await addProfessionalUseCase.execute({
       name,
