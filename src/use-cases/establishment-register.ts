@@ -1,7 +1,9 @@
-import { hash } from 'bcryptjs'
 import { Establishment } from '@prisma/client'
+import { hash } from 'bcryptjs'
+
 import { EstablishmentsRepository } from '@/repositories/establishments-repository'
-import { EmailNotAvailableException } from './errors/409-email-not-available-exception.ts'
+
+import { EmailNotAvailableException } from '../errors/email-not-available.exception.ts.js'
 
 interface EstablishmentRegisterUseCaseRequest {
   name: string
