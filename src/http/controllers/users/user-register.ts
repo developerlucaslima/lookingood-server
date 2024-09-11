@@ -11,9 +11,9 @@ export async function userRegisterController(
   const { name, serviceGender, email, password } = z
     .object({
       name: z.string(),
-      serviceGender: z.enum(['MALE', 'FEMALE', 'BOTH']),
       email: z.string().email(),
       password: z.string().min(6),
+      serviceGender: z.enum(['MALE', 'FEMALE', 'BOTH']),
     })
     .parse(request.body)
 
@@ -22,9 +22,9 @@ export async function userRegisterController(
 
     await userRegisterUseCase.execute({
       name,
-      serviceGender,
       email,
       password,
+      serviceGender,
     })
   } catch (err) {
     if (err instanceof EmailNotAvailableException) {
