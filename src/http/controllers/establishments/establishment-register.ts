@@ -49,7 +49,7 @@ export async function establishmentRegisterController(
     })
   } catch (err) {
     if (err instanceof EmailNotAvailableException) {
-      return reply.status(409).send({ message: err.message })
+      return reply.status(err.code).send({ message: err.message })
     }
 
     throw err
