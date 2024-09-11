@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 
 services:
   api-solid-pg:
@@ -6,6 +6,6 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRESQL_USERNAME=lookinggood
-      - POSTGRESQL_PASSWORD=lookinggood
-      - POSTGRESQL_DATABASE=lookinggood
+      - POSTGRESQL_USERNAME=bnwserver
+      - POSTGRESQL_PASSWORD=bnwserver
+      - POSTGRESQL_DATABASE=bnwserver
