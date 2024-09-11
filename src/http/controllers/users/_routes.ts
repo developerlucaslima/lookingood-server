@@ -9,8 +9,8 @@ import { userRefreshController } from './user-refresh'
 import { userRegisterController } from './user-register'
 
 export async function appUserRoutes(app: FastifyInstance) {
-  app.post('/users-register', userRegisterController)
-  app.post('/users-auth', userAuthenticateController)
+  app.post('/user-register', userRegisterController)
+  app.post('/user-auth', userAuthenticateController)
 
   /** Token Refresh */
   app.patch('/token/user-refresh', userRefreshController)
