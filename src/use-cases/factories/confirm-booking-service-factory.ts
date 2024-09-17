@@ -4,12 +4,12 @@ import { PrismaEstablishmentsRepository } from '@/repositories/prisma/prisma-est
 import { ConfirmBookingServiceUseCase } from '../confirm-booking-service'
 
 export function confirmBookingServiceFactory() {
-  const reservationsRepository = new PrismaBookingsRepository()
-  const establishmentsRepository = new PrismaEstablishmentsRepository()
-  const confirmBookingServiceUseCase = new ConfirmBookingServiceUseCase(
-    reservationsRepository,
-    establishmentsRepository,
-  )
+	const reservationsRepository = new PrismaBookingsRepository()
+	const establishmentsRepository = new PrismaEstablishmentsRepository()
+	const confirmBookingServiceUseCase = new ConfirmBookingServiceUseCase(
+		reservationsRepository,
+		establishmentsRepository,
+	)
 
-  return confirmBookingServiceUseCase
+	return confirmBookingServiceUseCase
 }

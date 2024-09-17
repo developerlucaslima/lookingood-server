@@ -1,37 +1,35 @@
-import { Prisma } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
 
 import { prisma } from '@/prisma'
 
-import { EstablishmentsRepository } from '../establishments-repository'
+import type { EstablishmentsRepository } from '../establishments-repository'
 
-export class PrismaEstablishmentsRepository
-  implements EstablishmentsRepository
-{
-  async create(data: Prisma.EstablishmentUncheckedCreateInput) {
-    const establishment = await prisma.establishment.create({
-      data,
-    })
+export class PrismaEstablishmentsRepository implements EstablishmentsRepository {
+	async create(data: Prisma.EstablishmentUncheckedCreateInput) {
+		const establishment = await prisma.establishment.create({
+			data,
+		})
 
-    return establishment
-  }
+		return establishment
+	}
 
-  async findById(id: string) {
-    const establishment = await prisma.establishment.findUnique({
-      where: {
-        id,
-      },
-    })
+	async findById(id: string) {
+		const establishment = await prisma.establishment.findUnique({
+			where: {
+				id,
+			},
+		})
 
-    return establishment
-  }
+		return establishment
+	}
 
-  async findByEmail(email: string) {
-    const establishment = await prisma.establishment.findUnique({
-      where: {
-        email,
-      },
-    })
+	async findByEmail(email: string) {
+		const establishment = await prisma.establishment.findUnique({
+			where: {
+				email,
+			},
+		})
 
-    return establishment
-  }
+		return establishment
+	}
 }

@@ -1,41 +1,36 @@
-import { $Enums, Prisma } from '@prisma/client'
+import type { $Enums, Prisma } from '@prisma/client'
 
 import { prisma } from '@/prisma'
 
-import { EstablishmentsSchedulesRepository } from '../establishments-schedules-repository'
+import type { EstablishmentsSchedulesRepository } from '../establishments-schedules-repository'
 
-export class PrismaEstablishmentsSchedulesRepository
-  implements EstablishmentsSchedulesRepository
-{
-  async create(data: Prisma.EstablishmentScheduleUncheckedCreateInput) {
-    const schedule = await prisma.establishmentSchedule.create({
-      data,
-    })
+export class PrismaEstablishmentsSchedulesRepository implements EstablishmentsSchedulesRepository {
+	async create(data: Prisma.EstablishmentScheduleUncheckedCreateInput) {
+		const schedule = await prisma.establishmentSchedule.create({
+			data,
+		})
 
-    return schedule
-  }
+		return schedule
+	}
 
-  async findManyByEstablishmentId(establishmentId: string) {
-    const schedule = await prisma.establishmentSchedule.findMany({
-      where: {
-        establishmentId,
-      },
-    })
+	async findManyByEstablishmentId(establishmentId: string) {
+		const schedule = await prisma.establishmentSchedule.findMany({
+			where: {
+				establishmentId,
+			},
+		})
 
-    return schedule
-  }
+		return schedule
+	}
 
-  async findByEstablishmentIdAndWeekDay(
-    establishmentId: string,
-    weekDay: $Enums.WeekDay,
-  ) {
-    const schedule = await prisma.establishmentSchedule.findFirst({
-      where: {
-        establishmentId,
-        weekDay,
-      },
-    })
+	async findByEstablishmentIdAndWeekDay(establishmentId: string, weekDay: $Enums.WeekDay) {
+		const schedule = await prisma.establishmentSchedule.findFirst({
+			where: {
+				establishmentId,
+				weekDay,
+			},
+		})
 
-    return schedule
-  }
+		return schedule
+	}
 }

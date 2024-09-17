@@ -4,13 +4,13 @@ import { PrismaProfessionalsRepository } from '@/repositories/prisma/prisma-prof
 import { AddProfessionalUseCase } from '../add-professional'
 
 export function addProfessionalFactory() {
-  const establishmentsRepository = new PrismaEstablishmentsRepository()
-  const professionalsRepository = new PrismaProfessionalsRepository()
+	const establishmentsRepository = new PrismaEstablishmentsRepository()
+	const professionalsRepository = new PrismaProfessionalsRepository()
 
-  const addProfessionalUseCase = new AddProfessionalUseCase(
-    establishmentsRepository,
-    professionalsRepository,
-  )
+	const addProfessionalUseCase = new AddProfessionalUseCase(
+		establishmentsRepository,
+		professionalsRepository,
+	)
 
-  return addProfessionalUseCase
+	return addProfessionalUseCase
 }
