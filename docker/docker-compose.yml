@@ -1,0 +1,34 @@
+services:
+  postgresql:
+    image: bitnami/postgresql
+    container_name: postgresql
+    volumes:
+      - db:/var/lib/postgresql
+    environment:
+      POSTGRESQL_USER: sbserver
+      POSTGRESQL_PASSWORD: sbserver
+      POSTGRESQL_DATABASE: sbserver
+    ports:
+      - 5432:5432
+    networks:
+      - sb-network
+
+  api-sb:
+    build:
+      context: .
+    container_name: api-sb
+    ports:
+      - 3333:3333
+    depends_on:
+      - postgresql
+    networks:
+      - sb-network
+    env_file:
+      - .env
+
+networks:
+  sb-network:
+    driver: bridge
+
+volumes:
+  db:
