@@ -1,4 +1,4 @@
-import { FastifyInstance } from 'fastify'
+import type { FastifyInstance } from 'fastify'
 
 import { verifyJwt } from '@/http/middlewares/verify-jwt'
 import { verifyUserRole } from '@/http/middlewares/verify-user-role'
@@ -9,16 +9,12 @@ import { userRefreshController } from './user-refresh'
 import { userRegisterController } from './user-register'
 
 export async function appUserRoutes(app: FastifyInstance) {
-  app.post('/user-register', userRegisterController)
-  app.post('/user-auth', userAuthenticateController)
+	app.post('/user-register', userRegisterController)
+	app.post('/user-auth', userAuthenticateController)
 
-  /** Token Refresh */
-  app.patch('/token/user-refresh', userRefreshController)
+	/** Token Refresh */
+	app.patch('/token/user-refresh', userRefreshController)
 
-  /** Authenticated */
-  app.get(
-    '/me',
-    { onRequest: [verifyJwt, verifyUserRole('USER')] },
-    userProfileController,
-  )
+	/** Authenticated */
+	app.get('/me', { onRequest: [verifyJwt, verifyUserRole('USER')] }, userProfileController)
 }
