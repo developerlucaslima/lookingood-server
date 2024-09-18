@@ -3,10 +3,8 @@ import { PrismaEstablishmentsRepository } from '@/repositories/prisma/prisma-est
 import { EstablishmentRegisterUseCase } from '../establishment-register'
 
 export function establishmentRegisterFactory() {
-  const establishmentsRepository = new PrismaEstablishmentsRepository()
-  const establishmentRegisterUseCase = new EstablishmentRegisterUseCase(
-    establishmentsRepository,
-  )
+	const establishmentsRepository = new PrismaEstablishmentsRepository()
+	const establishmentRegisterUseCase = new EstablishmentRegisterUseCase(establishmentsRepository)
 
-  return establishmentRegisterUseCase
+	return establishmentRegisterUseCase
 }

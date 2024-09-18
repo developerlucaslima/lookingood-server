@@ -1,25 +1,25 @@
-import { Prisma } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
 
 import { prisma } from '@/prisma'
 
-import { ProfessionalsRepository } from '../professionals-repository'
+import type { ProfessionalsRepository } from '../professionals-repository'
 
 export class PrismaProfessionalsRepository implements ProfessionalsRepository {
-  async create(data: Prisma.ProfessionalUncheckedCreateInput) {
-    const professional = await prisma.professional.create({
-      data,
-    })
+	async create(data: Prisma.ProfessionalUncheckedCreateInput) {
+		const professional = await prisma.professional.create({
+			data,
+		})
 
-    return professional
-  }
+		return professional
+	}
 
-  async findById(id: string) {
-    const professional = await prisma.professional.findUnique({
-      where: {
-        id,
-      },
-    })
+	async findById(id: string) {
+		const professional = await prisma.professional.findUnique({
+			where: {
+				id,
+			},
+		})
 
-    return professional
-  }
+		return professional
+	}
 }

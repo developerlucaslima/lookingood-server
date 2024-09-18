@@ -8,22 +8,21 @@ import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users-reposi
 import { UpdateBookingServiceUseCase } from '../update-booking-service'
 
 export function updateBookingServiceFactory() {
-  const establishmentsRepository = new PrismaEstablishmentsRepository()
-  const professionalsRepository = new PrismaProfessionalsRepository()
-  const servicesRepository = new PrismaServicesRepository()
-  const professionalSchedulesRepository =
-    new PrismaProfessionalsSchedulesRepository()
-  const reservationsRepository = new PrismaBookingsRepository()
-  const usersRepository = new PrismaUsersRepository()
+	const establishmentsRepository = new PrismaEstablishmentsRepository()
+	const professionalsRepository = new PrismaProfessionalsRepository()
+	const servicesRepository = new PrismaServicesRepository()
+	const professionalSchedulesRepository = new PrismaProfessionalsSchedulesRepository()
+	const reservationsRepository = new PrismaBookingsRepository()
+	const usersRepository = new PrismaUsersRepository()
 
-  const serviceBookingUpdateUseCase = new UpdateBookingServiceUseCase(
-    establishmentsRepository,
-    professionalsRepository,
-    professionalSchedulesRepository,
-    servicesRepository,
-    reservationsRepository,
-    usersRepository,
-  )
+	const serviceBookingUpdateUseCase = new UpdateBookingServiceUseCase(
+		establishmentsRepository,
+		professionalsRepository,
+		professionalSchedulesRepository,
+		servicesRepository,
+		reservationsRepository,
+		usersRepository,
+	)
 
-  return serviceBookingUpdateUseCase
+	return serviceBookingUpdateUseCase
 }

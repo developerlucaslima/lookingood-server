@@ -1,0 +1,39 @@
+# Etapa de Build
+FROM node:20.17.0-alpine3.20 AS build
+
+WORKDIR /usr/src/app
+
+# Copia os arquivos de configuração essenciais
+COPY package.json .npmrc vite.config.ts ./
+
+# Copia o código-fonte da aplicação
+COPY . .
+
+# Constrói o projeto
+RUN npm install && npm run build
+
+# Etapa de Produção usando Alpine
+FROM node:20.17.0-alpine3.20
+
+WORKDIR /usr/src/app
+
+# Instala o Netcat
+RUN apk add --no-cache netcat-openbsd
+
+# Copia as pastas e arquivos necessários do build anterior
+COPY --from=build /usr/src/app/prisma ./prisma
+COPY --from=build /usr/src/app/package.json ./package.json
+COPY --from=build /usr/src/app/node_modules ./node_modules
+COPY --from=build /usr/src/app/build ./build
+
+# Copia o script wait-for-it.sh
+COPY ./docker/wait-for-it.sh ./docker/wait-for-it.sh
+
+# Permissão de execução para o script wait-for-it.sh
+RUN chmod +x ./docker/wait-for-it.sh
+
+# Exposição da porta da aplicação
+EXPOSE 3333
+
+# Comando para iniciar a aplicação
+CMD ["sh", "-c", "./docker/wait-for-it.sh postgresql:5432 -- npx prisma migrate dev --name init && npx prisma migrate deploy && npm run start:prod"]

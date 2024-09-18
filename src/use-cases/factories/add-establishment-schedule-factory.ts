@@ -4,13 +4,13 @@ import { PrismaEstablishmentsSchedulesRepository } from '@/repositories/prisma/p
 import { AddEstablishmentScheduleUseCase } from '../add-establishment-schedule'
 
 export function addEstablishmentScheduleFactory() {
-  const establishmentsRepository = new PrismaEstablishmentsRepository()
-  const professionalsRepository = new PrismaEstablishmentsSchedulesRepository()
+	const establishmentsRepository = new PrismaEstablishmentsRepository()
+	const professionalsRepository = new PrismaEstablishmentsSchedulesRepository()
 
-  const addEstablishmentScheduleUseCase = new AddEstablishmentScheduleUseCase(
-    establishmentsRepository,
-    professionalsRepository,
-  )
+	const addEstablishmentScheduleUseCase = new AddEstablishmentScheduleUseCase(
+		establishmentsRepository,
+		professionalsRepository,
+	)
 
-  return addEstablishmentScheduleUseCase
+	return addEstablishmentScheduleUseCase
 }

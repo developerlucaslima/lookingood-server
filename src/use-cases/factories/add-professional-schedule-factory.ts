@@ -6,19 +6,17 @@ import { PrismaProfessionalsSchedulesRepository } from '@/repositories/prisma/pr
 import { AddProfessionalScheduleUseCase } from '../add-professional-schedule'
 
 export function addProfessionalScheduleFactory() {
-  const professionalsRepository = new PrismaProfessionalsRepository()
-  const professionalSchedulesRepository =
-    new PrismaProfessionalsSchedulesRepository()
-  const establishmentsRepository = new PrismaEstablishmentsRepository()
-  const establishmentSchedulesRepository =
-    new PrismaEstablishmentsSchedulesRepository()
+	const professionalsRepository = new PrismaProfessionalsRepository()
+	const professionalSchedulesRepository = new PrismaProfessionalsSchedulesRepository()
+	const establishmentsRepository = new PrismaEstablishmentsRepository()
+	const establishmentSchedulesRepository = new PrismaEstablishmentsSchedulesRepository()
 
-  const addProfessionalScheduleUseCase = new AddProfessionalScheduleUseCase(
-    professionalsRepository,
-    professionalSchedulesRepository,
-    establishmentsRepository,
-    establishmentSchedulesRepository,
-  )
+	const addProfessionalScheduleUseCase = new AddProfessionalScheduleUseCase(
+		professionalsRepository,
+		professionalSchedulesRepository,
+		establishmentsRepository,
+		establishmentSchedulesRepository,
+	)
 
-  return addProfessionalScheduleUseCase
+	return addProfessionalScheduleUseCase
 }

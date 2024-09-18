@@ -1,26 +1,24 @@
-import { Prisma, Professional } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
-import { ProfessionalsRepository } from '../professionals-repository'
+import type { Prisma, Professional } from '@prisma/client'
+import type { ProfessionalsRepository } from '../professionals-repository'
 
-export class InMemoryProfessionalsRepository
-  implements ProfessionalsRepository
-{
-  public items: Map<Professional['id'], Professional> = new Map()
+export class InMemoryProfessionalsRepository implements ProfessionalsRepository {
+	public items: Map<Professional['id'], Professional> = new Map()
 
-  async create(data: Prisma.ProfessionalUncheckedCreateInput) {
-    const establishment: Professional = {
-      id: randomUUID(),
-      name: data.name,
-      imageUrl: data.imageUrl ?? null,
-      establishmentId: data.establishmentId,
-    }
+	async create(data: Prisma.ProfessionalUncheckedCreateInput) {
+		const establishment: Professional = {
+			id: randomUUID(),
+			name: data.name,
+			imageUrl: data.imageUrl ?? null,
+			establishmentId: data.establishmentId,
+		}
 
-    this.items.set(establishment.id, establishment)
+		this.items.set(establishment.id, establishment)
 
-    return establishment
-  }
+		return establishment
+	}
 
-  async findById(id: string) {
-    return this.items.get(id) || null
-  }
+	async findById(id: string) {
+		return this.items.get(id) || null
+	}
 }

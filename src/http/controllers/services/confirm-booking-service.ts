@@ -1,25 +1,40 @@
-import { FastifyReply, FastifyRequest } from 'fastify'
+import type { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 import { confirmBookingServiceFactory } from '@/use-cases/factories/confirm-booking-service-factory'
+import { BookingNotFoundException } from '@/errors/booking-not-found.exception'
+import { EstablishmentNotFoundException } from '@/errors/establishment-not-found.exception'
+import { MismatchResourcesException } from '@/errors/mismatch-resources.exception'
 
 export async function confirmBookingServiceController(
-  request: FastifyRequest,
-  reply: FastifyReply,
+	request: FastifyRequest,
+	reply: FastifyReply,
 ) {
-  const { bookingId, establishmentId } = z
-    .object({
-      bookingId: z.string().uuid(),
-      establishmentId: z.string().uuid(),
-    })
-    .parse(request.params)
+	const { bookingId, establishmentId } = z
+		.object({
+			bookingId: z.string().uuid(),
+			establishmentId: z.string().uuid(),
+		})
+		.parse(request.params)
 
-  const confirmBookedServicesUseCase = confirmBookingServiceFactory()
+	try {
+		const confirmBookedServicesUseCase = confirmBookingServiceFactory()
 
-  await confirmBookedServicesUseCase.execute({
-    bookingId,
-    establishmentId,
-  })
+		await confirmBookedServicesUseCase.execute({
+			bookingId,
+			establishmentId,
+		})
 
-  return reply.status(204).send()
+		return reply.status(204).send()
+	} catch (err) {
+		if (
+			err instanceof BookingNotFoundException ||
+			err instanceof EstablishmentNotFoundException ||
+			err instanceof MismatchResourcesException
+		) {
+			return reply.status(err.code).send({ message: err.message })
+		}
+
+		throw err
+	}
 }
